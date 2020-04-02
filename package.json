@@ -12,9 +12,16 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prebuild": "CI=false react-scripts test --colors",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "precommit": "git add .",
+    "commit": "git commit -m ",
+    "postcommit": "git push",
+    "predeploy": "npm run build",
+    "deploy": "now ./build",
+    "postdeploy": "now alias -A ./build/now.json"
   },
   "eslintConfig": {
     "extends": "react-app"
