@@ -24,7 +24,7 @@ class App extends Component {
       projects: [],
       loggedIn: !!window.sessionStorage.jwt,
       userId: null,
-      userIsAdmin: false,
+      isAdmin: false,
       companyId: null,
       isModbile: true
     }
@@ -56,7 +56,7 @@ class App extends Component {
       let payload = res.authToken.split('.')[1];
 			payload = Buffer.from(payload, 'base64').toString('ascii');
 			payload = JSON.parse(payload)
-      this.setState({loggedIn: true, userId: payload.userID, companyId: payload.companyId })
+      this.setState({loggedIn: true, userId: payload.userID, companyId: payload.companyId , userIsAdmin: payload.userIsAdmin})
     })
   }
 
@@ -88,8 +88,8 @@ class App extends Component {
     return this.state.projects
   }
 
-  getUserIsAdmin = () => {
-    return this.state.userIsAdmin
+  getIsAdmin = () => {
+    return this.state.isAdmin
   }
 
   //Lifecycle functions
@@ -109,7 +109,7 @@ class App extends Component {
     const value = {
       login: this.login,
       getTasks: this.getTasks,
-      getUserIsAdmin: this.getUserIsAdmin,
+      getisAdmin: this.getIsAdmin,
       getProjects: this.getProjects,
       getCompanyInfo: this.getCompanyInfo,
       signUp: this.signUp
