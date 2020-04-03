@@ -26,7 +26,7 @@ class App extends Component {
       userId: null,
       isAdmin: false,
       companyId: null,
-      isModbile: true
+      isMobile: true
     }
     //if state isent present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem('state'))
@@ -34,11 +34,11 @@ class App extends Component {
       : initialState
 
     //override this.setState method to save state to sessionStorage with every update
-    const orginial = this.setState;     
+    const originial = this.setState;     
     this.setState = function() {
       let arguments0 = arguments[0];
       let arguments1 = () => (arguments[1], sessionStorage.setItem('state', JSON.stringify(this.state)));
-      orginial.bind(this)(arguments0, arguments1);
+      originial.bind(this)(arguments0, arguments1);
     };
   }
   
