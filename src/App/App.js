@@ -28,12 +28,12 @@ class App extends Component {
       companyId: null,
       isModbile: true
     }
-    //if state isent present in localStorage use that otherwise use initial state
+    //if state isent present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem('state'))
       ? JSON.parse(sessionStorage.getItem('state'))
       : initialState
 
-    //override this.setState method to save state to local storage with every update
+    //override this.setState method to save state to sessionStorage with every update
     const orginial = this.setState;     
     this.setState = function() {
       let arguments0 = arguments[0];
@@ -64,14 +64,14 @@ class App extends Component {
 
   }
 
+  configUrl = endpoint => {
+    return `${config.API}/${endpoint}?company_id=${this.state.companyId}`
+  }
+
   getCompanyInfo = () => {
     const options = config.getOptions('get')
     if(this.state.loggedIn){
-      Promise.all([
-        //temp endpoints
-        fetch(`${config.API}/projects?company_id=${this.state.companyId}`, options),
-        fetch(`${config.API}/tasks?company_id=${this.state.companyId}`, options)
-      ])
+      Promise.all([fetch(this.configUrl('projects'), options), fetch(this.configUrl('tasks'), options)])
       .then(res => Promise.all([res[0].json(), res[1].json()]))
       .then(res => this.setState({projects: [...res[0]], tasks: [...res[1]]}))
       .catch(err => console.error(err))
