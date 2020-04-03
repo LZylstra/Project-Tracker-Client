@@ -68,6 +68,7 @@ class App extends Component {
     const options = config.getOptions('get')
     if(this.state.loggedIn){
       Promise.all([
+        //temp endpoints
         fetch(`${config.API}/projects?company_id=${this.state.companyId}`, options),
         fetch(`${config.API}/tasks?company_id=${this.state.companyId}`, options)
       ])
