@@ -16,7 +16,7 @@ import config from '../config';
 
 class App extends Component { 
 
-  //add persistance to state by storing state in localStorage
+  //add persistance to state by storing state in sessionStorage
   constructor(props){
     super(props);
     const initialState = {
