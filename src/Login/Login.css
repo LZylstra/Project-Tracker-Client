@@ -1,0 +1,39 @@
+.login{
+    height: 97%;
+}
+
+#login-form{
+    height: 100%;
+    background-color: green;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    
+}
+
+.hidden-label{
+    display: none;
+}
+
+.login-button-wrapper{
+    background-color: green;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 40%;
+    width: 100%;
+    padding-bottom: 20%;
+}
+
+.inputs{
+    box-sizing: border-box;
+    height: 45px;
+    width: 80%;
+    margin-top: 15px;
+    border-radius: 45px;
+    font-size: large;
+    font-weight: bold;
+    padding-left: 15%;
+}

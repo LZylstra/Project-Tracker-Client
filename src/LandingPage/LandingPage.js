@@ -8,7 +8,7 @@ class LandingPage extends Component {
 	}
 
 	onRegister = () => {
-		this.props.history('/SignUp')
+		this.props.history.push('/SignUp')
 	}
 
 

@@ -26,7 +26,7 @@ class App extends Component {
       userId: null,
       isAdmin: false,
       companyId: null,
-      isMobile: true
+      isMobile: window.innerWidth < 800
     }
     //if state isent present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem('state'))
@@ -47,20 +47,24 @@ class App extends Component {
 
   login = (email, password) => {
     const options = config.getOptions('post')
-    options.body = {
+    options.body = JSON.stringify({
       email: email,
       password: password
-    }
-    fetch(`${config.API}/api/login`, options).then(res => res.json()).then(res => {
+    })
+    return fetch(`${config.API}/api/auth/login`, options).then(res => res.json()).then(res => {
+      if(!!res.error){
+        return res
+      }
       window.sessionStorage.setItem('jwt', res.authToken)
       let payload = res.authToken.split('.')[1];
 			payload = Buffer.from(payload, 'base64').toString('ascii');
 			payload = JSON.parse(payload)
       this.setState({loggedIn: true, userId: payload.userID, companyId: payload.companyId , userIsAdmin: payload.userIsAdmin})
-    })
+      return res
+    }).catch(err => console.error(err))
   }
 
-  signUp = () => {
+  signUp = newUser => {
 
   }
 
@@ -69,13 +73,13 @@ class App extends Component {
   }
 
   getCompanyInfo = () => {
-    const options = config.getOptions('get')
-    if(this.state.loggedIn){
-      Promise.all([fetch(this.configUrl('projects'), options), fetch(this.configUrl('tasks'), options)])
-      .then(res => Promise.all([res[0].json(), res[1].json()]))
-      .then(res => this.setState({projects: [...res[0]], tasks: [...res[1]]}))
-      .catch(err => console.error(err))
-    }
+    // const options = config.getOptions('get')
+    // if(this.state.loggedIn){
+    //   Promise.all([fetch(this.configUrl('projects'), options), fetch(this.configUrl('tasks'), options)])
+    //   .then(res => Promise.all([res[0].json(), res[1].json()]))
+    //   .then(res => this.setState({projects: [...res[0]], tasks: [...res[1]]}))
+    //   .catch(err => console.error(err))
+    // }
   }
 
   //Get state functions
