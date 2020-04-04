@@ -6,7 +6,8 @@ class AddTask extends Component {
     name: "",
     description: "",
     priority: "",
-    assignment: ",",
+	  assignment: "",
+	projectName:""
   };
 
   clearForm = () => {
@@ -54,7 +55,7 @@ class AddTask extends Component {
             />
           </p>
           <p className="input-container">
-            <label for="assignment">Assign To:</label>
+            <label htmlFor="assignment">Assign To:</label>
             <select
               onChange={this.handleChange}
               value={this.state.assignment}
@@ -63,6 +64,18 @@ class AddTask extends Component {
             >
               <option>User 1</option>
               <option>User 2</option>
+            </select>
+          </p>
+          <p className="input-container">
+            <label htmlFor="projectName">For Project:</label>
+            <select
+              onChange={this.handleChange}
+              value={this.state.projectName}
+              name="projectName"
+              id="projectName"
+            >
+              <option>Capstone</option>
+              <option>no covid news</option>
             </select>
           </p>
 
