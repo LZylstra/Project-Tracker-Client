@@ -1,0 +1,63 @@
+* {
+    box-sizing:border-box;
+}
+
+.form-container {
+    width:600px;
+    margin:0 auto;
+}
+
+.button-container {
+    width:fit-content; 
+    float:right;
+}
+
+.input-container {
+    width:100%;
+}
+
+textarea, input[type=text] {
+    width:100%;
+}
+
+textarea {
+    height:150px;
+}
+
+input[type=radio] {
+    margin-left:20px;
+    cursor: pointer;
+}
+
+.clear-button {
+    width:100px;
+    background:rgb(240, 122, 122);
+    border-radius:0;
+    font-weight:600;
+}
+
+.add-button {
+    width:100px;
+    background:lightgreen;
+    border-radius:0;
+    font-weight:600;
+
+}
+
+.high-priority {
+    color:red;
+}
+
+.medium-priority {
+    color:orange;
+}
+
+.low-priority {
+    color:green;
+}
+
+@media screen and (max-width:600px) {
+    .form-container {
+        width:100%;
+    }
+}
