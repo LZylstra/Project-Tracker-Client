@@ -34,11 +34,11 @@ class App extends Component {
       : initialState
 
     //override this.setState method to save state to sessionStorage with every update
-    const originial = this.setState;     
+    const original = this.setState;     
     this.setState = function() {
       let arguments0 = arguments[0];
       let arguments1 = () => (arguments[1], sessionStorage.setItem('state', JSON.stringify(this.state)));
-      originial.bind(this)(arguments0, arguments1);
+      original.bind(this)(arguments0, arguments1);
     };
   }
   
@@ -55,21 +55,39 @@ class App extends Component {
       if(!!res.error){
         return res
       }
-      window.sessionStorage.setItem('jwt', res.authToken)
-      let payload = res.authToken.split('.')[1];
-			payload = Buffer.from(payload, 'base64').toString('ascii');
-			payload = JSON.parse(payload)
-      this.setState({loggedIn: true, userId: payload.userID, companyId: payload.companyId , userIsAdmin: payload.userIsAdmin})
+      this.extractPayload(res)
       return res
     }).catch(err => console.error(err))
   }
 
-  signUp = newUser => {
+  extractPayload = res => {
+    window.sessionStorage.setItem('jwt', res.authToken)
+    let payload = res.authToken.split('.')[1];
+    payload = Buffer.from(payload, 'base64').toString('ascii');
+    payload = JSON.parse(payload)
+    this.setState({loggedIn: true, userId: payload.userID, companyId: payload.companyId , userIsAdmin: payload.userIsAdmin})
+  }
 
+  signUp = newUser => {
+    const options = config.getOptions('post')
+    options.body = JSON.stringify(newUser)
+    return fetch(`${config.API}/api/users`, options).then(res => res.json()).then(res => {
+      return res
+    })
+  }
+
+  addCompany = companyName => {
+    const options = config.getOptions('post')
+    options.body = JSON.stringify({
+      company_name: companyName
+    })
+    return fetch(`${config.API}/api/company`, options).then(res => res.json()).then(res => {
+      return res
+    })
   }
 
   configUrl = endpoint => {
-    return `${config.API}/${endpoint}?company_id=${this.state.companyId}`
+    return `${config.API}/api/${endpoint}?company_id=${this.state.companyId}`
   }
 
   getCompanyInfo = () => {
@@ -116,7 +134,9 @@ class App extends Component {
       getisAdmin: this.getIsAdmin,
       getProjects: this.getProjects,
       getCompanyInfo: this.getCompanyInfo,
-      signUp: this.signUp
+      signUp: this.signUp,
+      addCompany: this.addCompany,
+      extractPayload: this.extractPayload
     }
     return (
       <ApiContext.Provider value={value}>
