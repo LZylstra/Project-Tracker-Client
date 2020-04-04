@@ -34,11 +34,11 @@ class App extends Component {
       : initialState
 
     //override this.setState method to save state to sessionStorage with every update
-    const originial = this.setState;     
+    const original = this.setState;     
     this.setState = function() {
       let arguments0 = arguments[0];
       let arguments1 = () => (arguments[1], sessionStorage.setItem('state', JSON.stringify(this.state)));
-      originial.bind(this)(arguments0, arguments1);
+      original.bind(this)(arguments0, arguments1);
     };
   }
   
