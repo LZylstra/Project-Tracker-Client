@@ -38,7 +38,7 @@ class AddProject extends Component {
             <label htmlFor="name-input">Project Name:</label>
             <input
               type="text"
-              id="name-input"
+              className="name-input"
               name="name"
               value={this.state.name}
               onChange={this.handleChange}
@@ -48,7 +48,7 @@ class AddProject extends Component {
             <label htmlFor="description">Description:</label>
             <textarea
               name="description"
-              id="description"
+              className="description"
               onChange={this.handleChange}
               value={this.state.description}
             />
