@@ -3,23 +3,14 @@ import './Task.css';
 
 class Task extends Component {
 
-  dummyTask = {
-    task_name: "clean house",
-    assignedTo: "John",
-    description:
-      "I'm baby kitsch austin farm-to-table enamel pin, quinoa raclette juice biodiesel blog master cleanse quinoa fanny pack literally salvia kitsch synth listicle. Gastropub intelligentsia bicycle rights lyft lumbersexual helvetica cold-pressed iceland.",
-    priority: "low",
-    status: "in progress",
-    datecreated: "10-22-19",
-    datemodified: "1-4-20",
-  };
+  static defaultProps = { task: {} };
 
   constructor(props) {
     super(props);
     this.state = {
       isExpanded: false,
-      status: this.dummyTask.status,
-	  assignedTo: this.dummyTask.assignedTo,
+      status: this.props.status,
+	  assignedTo: this.props.assignedTo,
 	  arrowDirection: "fas fa-chevron-right"
     };
   }
@@ -41,14 +32,36 @@ class Task extends Component {
 	});
 	  //make patch request to api to update task
   };
+  renderPriority = (priority) => { 
+    let priorityColor;
+    switch (priority) { 
+      case "High":
+        priorityColor = "red"
+        break;
+      case "Medium":
+        priorityColor = "orange";
+        break;
+      case "Low":
+        priorityColor = "lightgreen";
+        break;
+      case "Urgent":
+        priorityColor = "darkred";
+        break;
+      default:
+        priorityColor = "lightgreen";
+        break;
+    }
+    return priorityColor;
+    }
+  
 
   render() {
     return (
       <div className="task">
         <div className="task-title-bar">
           <h2 className="task-title" onClick={() => this.toggleExpandTask()}>
-            {this.dummyTask.task_name}
-            <span className="status">{this.dummyTask.priority}</span>
+            {this.props.task_name}
+            <span className="priority" style={{ color: `${this.renderPriority(this.props.priority)}` }} >{this.props.priority}</span>
             <span className="task-arrow">
 			<i class={this.state.arrowDirection}></i>
             </span>
@@ -61,13 +74,13 @@ class Task extends Component {
                 <p>
                   Date Created:
                   <span className="date-created">
-                    {this.dummyTask.datecreated}
+                    {this.props.datecreated}
                   </span>
                 </p>
                 <p>
                   Date Modified:
                   <span className="modified">
-                    {this.dummyTask.datemodified}
+                    {this.props.datemodified}
                   </span>
                 </p>
 
@@ -100,7 +113,7 @@ class Task extends Component {
                 </div>
               </div>
               <div className="task-description" style={{ width: "60%" }}>
-                <p>{this.dummyTask.description}</p>
+                <p>{this.props.description}</p>
               </div>
             </div>
             <div className="admin-button-container">

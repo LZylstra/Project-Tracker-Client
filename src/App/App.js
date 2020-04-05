@@ -146,7 +146,7 @@ class App extends Component {
           <Route exact path="/SignUp" component={SignUp}/>
           <Route exact path="/Login" component={Login}/>
           <Route exact path="/projects/:projectId" component={ProjectPage}/>
-          <Route exact path="tasks/:taskId" component={TaskPage}/>
+          <Route exact path="/tasks/:taskId" component={TaskPage}/>
           <Route exact path="/AddTask" component={AddTask}/>
           <Route exact path="/AddProject" component={AddProject}/>
           <footer/>
