@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
-import './Task.css';
+import React, { Component } from "react";
+import "./Task.css";
 
 class Task extends Component {
-
   static defaultProps = { task: {} };
 
   constructor(props) {
@@ -10,11 +9,11 @@ class Task extends Component {
     this.state = {
       isExpanded: false,
       status: this.props.status,
-	  assignedTo: this.props.assignedTo,
-	  arrowDirection: "fas fa-chevron-right"
+      assignedTo: this.props.assignedTo,
+      arrowDirection: "fas fa-chevron-right",
     };
   }
-	
+
   toggleExpandTask = () => {
     this.setState({
       isExpanded: !this.state.isExpanded,
@@ -24,19 +23,21 @@ class Task extends Component {
           : "fas fa-chevron-right",
     });
   };
+
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({
       [name]: value,
-	});
-	  //make patch request to api to update task
+    });
+    //make patch request to api to update task
   };
-  renderPriority = (priority) => { 
+  
+  renderPriority = (priority) => {
     let priorityColor;
-    switch (priority) { 
+    switch (priority) {
       case "High":
-        priorityColor = "red"
+        priorityColor = "red";
         break;
       case "Medium":
         priorityColor = "orange";
@@ -52,8 +53,7 @@ class Task extends Component {
         break;
     }
     return priorityColor;
-    }
-  
+  };
 
   render() {
     return (
@@ -61,9 +61,14 @@ class Task extends Component {
         <div className="task-title-bar">
           <h2 className="task-title" onClick={() => this.toggleExpandTask()}>
             {this.props.task_name}
-            <span className="priority" style={{ color: `${this.renderPriority(this.props.priority)}` }} >{this.props.priority}</span>
+            <span
+              className="priority"
+              style={{ color: `${this.renderPriority(this.props.priority)}` }}
+            >
+              {this.props.priority}
+            </span>
             <span className="task-arrow">
-			<i class={this.state.arrowDirection}></i>
+              <i class={this.state.arrowDirection}></i>
             </span>
           </h2>
         </div>
@@ -73,15 +78,11 @@ class Task extends Component {
               <div className="task-details-sidebar">
                 <p>
                   Date Created:
-                  <span className="date-created">
-                    {this.props.datecreated}
-                  </span>
+                  <span className="date-created">{this.props.datecreated}</span>
                 </p>
                 <p>
                   Date Modified:
-                  <span className="modified">
-                    {this.props.datemodified}
-                  </span>
+                  <span className="modified">{this.props.datemodified}</span>
                 </p>
 
                 <div className="input-container">
