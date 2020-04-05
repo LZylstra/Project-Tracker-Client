@@ -1,0 +1,53 @@
+.task {
+      width:75%;
+      margin:0 auto;
+     
+}
+.task-title-bar {
+    width:100%;
+    text-align:center;
+    background:rgb(34, 33, 33);
+    color:white;
+    padding:10px;
+    position:relative;
+    cursor:pointer;
+    
+}
+.task-arrow {
+    position:absolute;
+    right:20px;
+    
+}
+.task-details {
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+.status {
+    position:absolute;
+    right:150px;
+    color:lightgreen;
+    width:fit-content;
+    
+}
+
+
+.admin-button-container {
+    width:300px;
+    margin:0 auto;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+
+
+}
+.edit-button {
+    background-color:lightgreen;
+    width:100px;
+    border-radius:0;
+}
+.delete-button {
+    background-color:red;
+    border-radius:0;
+    width:100px;
+}
