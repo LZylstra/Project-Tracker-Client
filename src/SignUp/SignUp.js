@@ -9,7 +9,8 @@ class SignUp extends Component {
 		password: "",
 		confirmPassword: "",
 		companyName: "",
-		submitted: false
+		submitted: false,
+		showPopUp: false
 	}
 
 	static contextType = ApiContext; 
@@ -53,7 +54,42 @@ class SignUp extends Component {
 			isadmin: false,
 			company_name: this.state.companyName.trim()
 		}
-		this.context.signUp(newUser)
+		this.context.signUp(newUser).then(res => {
+			if(!!res.error){
+				this.setState({showPopUp: true})
+				return
+			}
+			this.context.extractPayload(res)
+			this.props.history.push('/')
+		})
+	}
+
+	handleAddCompany = () => {
+		const newUser = {
+			email: this.state.email.trim(),
+			password: this.state.password,
+			full_name: this.state.fullName.trim(),
+			isadmin: 1,
+			company_name: this.state.companyName.trim()
+		}
+		this.context.addCompany(newUser.company_name).then((res) => {
+			this.context.signUp(newUser).then(response => {
+				this.context.extractPayload(response)
+				this.props.history.push('/')
+			})
+		})
+	}
+
+	handleDoNotAddCompany = () => {
+		this.setState({showPopUp: false})
+	}
+
+	renderPopUp = () => {
+		return <div className='pop-up'>
+			<p>This company does not exist. Would you like to create a new company named "{this.state.companyName}"</p>
+			<button onClick={this.handleAddCompany} >Yes</button>
+			<button onClick={this.handleDoNotAddCompany} >No</button>
+		</div>
 	}
 	
 	//Validation methods
@@ -123,6 +159,7 @@ class SignUp extends Component {
 		return (
 			<div className="signup">
 				<form id="signup-form" onSubmit={this.handleSubmit} >
+					{this.state.showPopUp && this.renderPopUp()}
 					{
 						emailValidation && <p className='error'>{this.validateEmail()}</p>
 					}
