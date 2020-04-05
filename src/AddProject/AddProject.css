@@ -44,6 +44,10 @@ input[type=radio] {
     font-size:small;
 
 }
+.urgent-priority {
+    color:red;
+    font-weight:700;
+}
 
 .high-priority {
     color:red;

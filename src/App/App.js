@@ -119,7 +119,6 @@ class App extends Component {
   getProjectsByCompanyId = () => {
     const options = config.getOptions("get");
     const url = `${config.API}/api/projects/c/${this.state.companyId}`;
-    console.log(url);
     return fetch(url, options)
       .then((res) => {
         if (!res.ok) {
@@ -134,8 +133,42 @@ class App extends Component {
       )
       .catch((res) => this.setState({ apiError: res.error }));
   };
+  addProject = (project_name, description, priority) => { 
+     const options = config.getOptions("post");
+    const url = `${config.API}/api/projects/c/${this.state.companyId}`;
+     options.body = JSON.stringify({
+       project_name,
+       description,
+       priority,
+     });
+     return fetch(url, options)
+       .then((res) => {
+         if (!res.ok) {
+           return res.json().then((e) => Promise.reject(e));
+         }
+         return res.json();
+       })
+       .then((projectsResponse) =>
+         this.setState({
+           projects: projectsResponse,
+         })
+       )
+       .catch((res) => this.setState({ apiError: res.error }));
+  }
+  getProjectById = (id) => {
+    const options = config.getOptions("get");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .catch((res) => this.setState({ apiError: res.error }));
+  };
 
-  
+
 
   //Get state functions
 
@@ -151,9 +184,9 @@ class App extends Component {
     return this.state.isAdmin;
   };
 
-  showApiError = () => { 
+  showApiError = () => {
     return this.state.apiError;
-  }
+  };
 
   //Lifecycle functions
 
@@ -179,6 +212,10 @@ class App extends Component {
       addCompany: this.addCompany,
       extractPayload: this.extractPayload,
       getProjectsByCompanyId: this.getProjectsByCompanyId,
+      getProjectById: this.getProjectById,
+      editProject: this.editProject,
+      deleteProject: this.deleteProject,
+      showApiError:this.showApiError
     };
 
     return (

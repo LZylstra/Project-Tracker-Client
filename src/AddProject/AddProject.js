@@ -6,14 +6,16 @@ class AddProject extends Component {
 	state = {
 		name:"",
 		description: "",
-	  priority: "",
+    priority: "",
+    dueDate:""
 		
 	}	
 	clearForm = () => { 
 		this.setState({
 			name: "",
 			description: "",
-			priority: ""
+      priority: "",
+      dueDate:""
 		})
 	}
 	handleChange = (event) => {
@@ -53,15 +55,33 @@ class AddProject extends Component {
               value={this.state.description}
             />
           </p>
+          <p className="input-container">
+            <label htmlFor="dueDate">Due date:</label>
+            <input
+              type="date"
+              id="dueDate"
+              name="dueDate"
+              value={this.state.dueDate}
+              onChange={this.handleChange}
+            />
+          </p>
           <div className="input-container">
             <label htmlFor="priority"> Priority:</label>
-
             <input
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.priority === "high"}
-              value="high"
+              checked={this.state.priority === "Urgent"}
+              value="Urgent"
+            />
+
+            <label className="urgent-priority">Urgent</label>
+            <input
+              type="radio"
+              onChange={this.handleChange}
+              name="priority"
+              checked={this.state.priority === "High"}
+              value="High"
             />
             <label className="high-priority">High</label>
 
@@ -69,16 +89,16 @@ class AddProject extends Component {
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.priority === "medium"}
-              value="medium"
+              checked={this.state.priority === "Medium"}
+              value="Medium"
             />
             <label className="medium-priority">Medium</label>
             <input
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.priority === "low"}
-              value="low"
+              checked={this.state.priority === "Low"}
+              value="Low"
             />
 
             <label className="low-priority">Low</label>

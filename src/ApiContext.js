@@ -18,6 +18,7 @@ export default React.createContext({
     getTasksByProjectId: () => { },
     getTasksByCompanyId: () => { },
     getTaskById: () => { },
+    addTask: () => { },
     editTask: () => { },
     deleteTask: () => { }
     
