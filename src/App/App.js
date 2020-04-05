@@ -70,11 +70,12 @@ class App extends Component {
     let payload = res.authToken.split(".")[1];
     payload = Buffer.from(payload, "base64").toString("ascii");
     payload = JSON.parse(payload);
+    console.log(payload);
     this.setState({
       loggedIn: true,
-      userId: payload.userID,
-      companyId: payload.companyId,
-      userIsAdmin: payload.userIsAdmin,
+      userId: payload.user_id,
+      companyId: payload.companyid,
+      userIsAdmin: payload.isadmin,
     });
   };
 
@@ -133,13 +134,16 @@ class App extends Component {
       )
       .catch((res) => this.setState({ apiError: res.error }));
   };
-  addProject = (project_name, description, priority) => { 
+  addProject = (project_name, description, priority, duedate) => { 
      const options = config.getOptions("post");
     const url = `${config.API}/api/projects/c/${this.state.companyId}`;
      options.body = JSON.stringify({
        project_name,
        description,
        priority,
+       dateadded: new Date(),
+       duedate
+
      });
      return fetch(url, options)
        .then((res) => {
@@ -148,27 +152,13 @@ class App extends Component {
          }
          return res.json();
        })
-       .then((projectsResponse) =>
+       .then((project) =>
          this.setState({
-           projects: projectsResponse,
+           projects: [...this.state.projects, project],
          })
        )
        .catch((res) => this.setState({ apiError: res.error }));
   }
-  getProjectById = (id) => {
-    const options = config.getOptions("get");
-    const url = `${config.API}/api/projects/${id}`;
-    return fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((e) => Promise.reject(e));
-        }
-        return res.json();
-      })
-      .catch((res) => this.setState({ apiError: res.error }));
-  };
-
-
 
   //Get state functions
 
@@ -212,9 +202,7 @@ class App extends Component {
       addCompany: this.addCompany,
       extractPayload: this.extractPayload,
       getProjectsByCompanyId: this.getProjectsByCompanyId,
-      getProjectById: this.getProjectById,
-      editProject: this.editProject,
-      deleteProject: this.deleteProject,
+      addProject:this.addProject,
       showApiError:this.showApiError
     };
 

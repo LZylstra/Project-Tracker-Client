@@ -1,38 +1,50 @@
 import React, { Component } from "react";
+import ApiContext from '../ApiContext';
 import "./AddProject.css";
 
 class AddProject extends Component {
+  static contextType = ApiContext;
 
-	state = {
-		name:"",
-		description: "",
+  state = {
+    name: "",
+    description: "",
     priority: "",
-    dueDate:""
-		
-	}	
-	clearForm = () => { 
-		this.setState({
-			name: "",
-			description: "",
+    dueDate: "",
+  };
+  clearForm = () => {
+    this.setState({
+      name: "",
+      description: "",
       priority: "",
-      dueDate:""
-		})
-	}
-	handleChange = (event) => {
-		const name = event.target.name;
-		const value = event.target.value;
-        this.setState({
-           [name]: value,
-        });
-  }
-  
-	
-	handleSubmit = (event) => { 
+      dueDate: "",
+    });
+  };
+  handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  formatDate = (str) => {
+    const [year, month, day] = str.split("-");
+    return new Date(year, month - 1, day);
+  };
+
+  handleSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
-	}
+
+    this.context.addProject(
+      this.state.name,
+      this.state.description,
+      this.state.priority,
+      this.formatDate(this.state.dueDate)
+    );
+  };
   render() {
-	  return (
+    return (
       <div className="form-container">
         <h2>Add Project</h2>
         <form onSubmit={this.handleSubmit}>
@@ -103,6 +115,7 @@ class AddProject extends Component {
 
             <label className="low-priority">Low</label>
           </div>
+         
           <div className="button-container">
             <button className="add-button" type="submit">
               Add Project
