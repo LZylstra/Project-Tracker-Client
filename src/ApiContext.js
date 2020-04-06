@@ -6,6 +6,23 @@ export default React.createContext({
     getUserIsAdmin: () =>{},
     getTasks: () => {},
     getCompanyInfo: ()=> {},
-    signUp: () => {}
+    signUp: () => { },
+    showApiError: () => {},
+    //project endpoint api calls
+    getProjectsByCompanyId: () => { },
+    getProjectById: () => { },
+    addProject: () => {},
+    deleteProject: () => {},
+    editProject: () => { },
+    //task endpoint api calls
+    getTasksByProjectId: () => { },
+    getTasksByCompanyId: () => { },
+    getTaskById: () => { },
+    addTask: () => { },
+    editTask: () => { },
+    deleteTask: () => { }
+    
+
+    
 })
 
