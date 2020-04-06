@@ -1,19 +1,25 @@
 #project-list {
     list-style-type:none;
     background:#373131;
-    height:100vh;
-     color: white;
-    width:25%;
-
+  
+    color: white;
+    width:600px;
+}
+.project-info {
+    display:flex;
+}
+#expanded-project {
+    width:500px;
 }
 .project-list-item {
     border-bottom:1px solid white;
-
     font-size: 20px;
     padding: 10px;
     width: 100%;
 }
-
+li {
+    cursor:pointer;
+}
 ul {
     padding-left:0;
 }
@@ -22,7 +28,7 @@ ul {
     margin-right:20px;
 }
 #project-list-title {
-       background: transparent;
+    background: transparent;
     width: 100%;
     border: none;
     text-align:center;
@@ -33,7 +39,7 @@ ul {
 }
 #add-project-button {
     cursor:pointer;
-        background: transparent;
+    background: transparent;
     color: white;
     font-size: 15px;
     width:100%;
