@@ -211,13 +211,13 @@ class App extends Component {
         <div className="App">
           <Header />
           {this.renderHome()}
-          <Route exact path="/SignUp" component={SignUp} />
-          <Route exact path="/Login" component={Login} />
-          <Route exact path="/projects/:projectId" component={ProjectPage} />
-          <Route exact path="tasks/:taskId" component={TaskPage} />
-          <Route exact path="/AddTask" component={AddTask} />
-          <Route exact path="/AddProject" component={AddProject} />
-          <footer />
+          <Route exact path="/SignUp" component={SignUp}/>
+          <Route exact path="/Login" component={Login}/>
+          <Route exact path="/projects/:projectId" component={ProjectPage}/>
+          <Route exact path="/tasks/:taskId" component={TaskPage}/>
+          <Route exact path="/AddTask" component={AddTask}/>
+          <Route exact path="/AddProject" component={AddProject}/>
+          <footer/>
         </div>
       </ApiContext.Provider>
     );
