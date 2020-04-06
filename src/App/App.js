@@ -134,31 +134,69 @@ class App extends Component {
       )
       .catch((res) => this.setState({ apiError: res.error }));
   };
-  addProject = (project_name, description, priority, duedate) => { 
-     const options = config.getOptions("post");
-    const url = `${config.API}/api/projects/c/${this.state.companyId}`;
-     options.body = JSON.stringify({
-       project_name,
-       description,
-       priority,
-       dateadded: new Date(),
-       duedate
 
-     });
-     return fetch(url, options)
-       .then((res) => {
-         if (!res.ok) {
-           return res.json().then((e) => Promise.reject(e));
-         }
-         return res.json();
-       })
-       .then((project) =>
-         this.setState({
-           projects: [...this.state.projects, project],
-         })
-       )
-       .catch((res) => this.setState({ apiError: res.error }));
-  }
+  addProject = (project_name, description, priority, duedate) => {
+    const options = config.getOptions("post");
+    const url = `${config.API}/api/projects/c/${this.state.companyId}`;
+    options.body = JSON.stringify({
+      project_name,
+      description,
+      priority,
+      dateadded: new Date(),
+      duedate,
+    });
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((project) =>
+        this.setState({
+          projects: [...this.state.projects, project],
+        })
+      )
+      .catch((res) => this.setState({ apiError: res.error }));
+  };
+  getProjectById = (id) => {
+    const options = config.getOptions("get");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .catch((res) => this.setState({ apiError: res.error }));
+  };
+
+  editProject = (project_name, description, priority, duedate, status, id) => {
+    const options = config.getOptions("patch");
+    const url = `${config.API}/api/projects/${id}`;
+    options.body = JSON.stringify({
+      project_name,
+      description,
+      priority,
+      duedate,
+      status,
+    });
+    console.log(options.body);
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((project) =>
+        this.setState({
+          projects: [...this.state.projects, project],
+        })
+      )
+      .catch((res) => this.setState({ apiError: res.error }));
+  };
 
   //Get state functions
 
@@ -202,8 +240,10 @@ class App extends Component {
       addCompany: this.addCompany,
       extractPayload: this.extractPayload,
       getProjectsByCompanyId: this.getProjectsByCompanyId,
-      addProject:this.addProject,
-      showApiError:this.showApiError
+      addProject: this.addProject,
+      editProject: this.editProject,
+      getProjectById: this.getProjectById,
+      showApiError: this.showApiError,
     };
 
     return (
@@ -217,6 +257,12 @@ class App extends Component {
           <Route exact path="tasks/:taskId" component={TaskPage} />
           <Route exact path="/AddTask" component={AddTask} />
           <Route exact path="/AddProject" component={AddProject} />
+          <Route
+            path="/edit/project/:project_id"
+            render={({ match }) => (
+              <AddProject projectId={match.params.project_id} />
+            )}
+          />
           <footer />
         </div>
       </ApiContext.Provider>

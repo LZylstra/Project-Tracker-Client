@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
-import './Task.css';
+import React, { Component } from "react";
+import "./Task.css";
 
 class Task extends Component {
-
   dummyTask = {
     task_name: "clean house",
     assignedTo: "John",
@@ -19,11 +18,11 @@ class Task extends Component {
     this.state = {
       isExpanded: false,
       status: this.dummyTask.status,
-	  assignedTo: this.dummyTask.assignedTo,
-	  arrowDirection: "fas fa-chevron-right"
+      assignedTo: this.dummyTask.assignedTo,
+      arrowDirection: "fas fa-chevron-right",
     };
   }
-	
+
   toggleExpandTask = () => {
     this.setState({
       isExpanded: !this.state.isExpanded,
@@ -38,8 +37,8 @@ class Task extends Component {
     const value = event.target.value;
     this.setState({
       [name]: value,
-	});
-	  //make patch request to api to update task
+    });
+    //make patch request to api to update task
   };
 
   render() {
@@ -50,7 +49,7 @@ class Task extends Component {
             {this.dummyTask.task_name}
             <span className="status">{this.dummyTask.priority}</span>
             <span className="task-arrow">
-			<i class={this.state.arrowDirection}></i>
+              <i class={this.state.arrowDirection}></i>
             </span>
           </h2>
         </div>
