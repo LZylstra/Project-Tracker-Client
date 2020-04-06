@@ -9,26 +9,41 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-		isLoading: true,
-		projects: [],
-		tasks:[]
-		
+      isLoading: true,
+      selectedProject: null,
     };
   }
 
   componentDidMount() {
-    this.context.getProjectsByCompanyId().then((res) => {
-      const projects = this.context.getProjects();
+	  this.context.getProjectsByCompanyId().then((res) => {
+		  const projects = this.context.getProjects();
       this.setState({
-        isLoading: false,
-        projects: projects,
+		  isLoading: false,
+		  selectedProject:projects[0]
       });
     });
 	}
 	
-	render() {
-		return <div>{ this.state.isLoading?<p>Loading projects</p> : <ProjectList projects={this.state.projects} />
-	}</div>;
+	showProjectDetail = (id) => {
+	const projects = this.context.getProjects();
+    const selected = projects.find((project) => project.id === id);
+    this.setState({
+      selectedProject:selected
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        {this.state.isLoading ? (
+          <p>Loading projects</p>
+        ) : (
+					<ProjectList projects={this.context.getProjects()}
+						showProjectDetail={this.showProjectDetail}
+						selected={this.state.selectedProject}/>
+        )}
+      </div>
+    );
   }
 }
 

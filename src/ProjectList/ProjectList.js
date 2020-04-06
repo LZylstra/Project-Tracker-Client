@@ -3,14 +3,7 @@ import { Link } from 'react-router-dom';
 import "./ProjectList.css";
 
 class ProjectList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedName: "",
-      selectedDescription: "",
-      selectedDueDate: "",
-    };
-  }
+
   formatDate = (duedate) => { 
     if (duedate) { 
         let extraChars = duedate.indexOf("T");
@@ -19,19 +12,10 @@ class ProjectList extends Component {
   
   }
 
-  showProjectDetail = (id) => {
-    const selected = this.props.projects.find((project) => project.id === id);
-    this.setState({
-      selectedName: selected.project_name,
-      selectedDescription: selected.description,
-      selectedDueDate: selected.duedate,
-    });
-  };
-
   makeProjectsList = (projects) => {
     return projects.map((project) => (
       <li
-        onClick={() => this.showProjectDetail(project.id)}
+        onClick={() => this.props.showProjectDetail(project.id)}
         key={project.id}
         className="project-list-item"
       >
@@ -59,9 +43,9 @@ class ProjectList extends Component {
         <button>Delete Selected</button>
       </div>
       <div id="expanded-project">
-        <h1 id="project-title">{this.state.selectedName}</h1>
-        <div id="project-description">{this.state.selectedDescription}</div>
-        <div id="project-dueDate">Due Date: {this.formatDate(this.state.selectedDueDate)}</div>
+        <h1 id="project-title">{this.props.selected.project_name}</h1>
+        <div id="project-description">{this.props.selected.description}</div>
+        <div id="project-dueDate">Due Date: {this.formatDate(this.props.selected.duedate)}</div>
       </div>
     </div>
   );
