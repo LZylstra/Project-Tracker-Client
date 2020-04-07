@@ -17,10 +17,8 @@ class AddProject extends Component {
   };
 
   componentDidMount() {
-   
     if (this.props.projectId) {
-      this.context.getProjectById(this.props.projectId)
-        .then((res) => {
+      this.context.getProjectById(this.props.projectId).then((res) => {
         this.setState({
           projectFields: {
             name: res.project_name,
@@ -42,7 +40,7 @@ class AddProject extends Component {
         description: "",
         priority: "",
         dueDate: "",
-        status:""
+        status: "",
       },
     });
   };
@@ -79,15 +77,12 @@ class AddProject extends Component {
       );
       return;
     }
-    this.context
-      .addProject(
-        this.state.projectFields.name,
-        this.state.projectFields.description,
-        this.state.projectFields.priority,
-        this.formatDate(this.state.projectFields.dueDate)
-      )
-      
-        
+    this.context.addProject(
+      this.state.projectFields.name,
+      this.state.projectFields.description,
+      this.state.projectFields.priority,
+      this.formatDate(this.state.projectFields.dueDate)
+    );
   };
   render() {
     return (
@@ -184,9 +179,13 @@ class AddProject extends Component {
 
           <div className="button-container">
             <button className="add-button" type="submit">
-             {this.state.editMode? "Edit Project" : "Add Project"}
+              {this.state.editMode ? "Edit Project" : "Add Project"}
             </button>
-            <button type="button" className="clear-button" onClick={() => this.clearForm()}>
+            <button
+              type="button"
+              className="clear-button"
+              onClick={() => this.clearForm()}
+            >
               Clear
             </button>
           </div>

@@ -1,18 +1,18 @@
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import './App.css';
-import ApiContext from '../ApiContext';
-import LandingPage from '../LandingPage/LandingPage';
-import Home from '../Home/Home';
-import Header from '../Header/Header';
-import SignUp from '../SignUp/SignUp';
-import Login from '../Login/Login';
-import ProjectList from '../ProjectList/ProjectList';
-import ProjectPage from '../ProjectPage/ProjectPage';
-import TaskPage from '../TaskPage/TaskPage';
-import AddProject from '../AddProject/AddProject';
-import AddTask from '../AddTask/AddTask';
-import config from '../config';
+import React, { Component } from "react";
+import { Route } from "react-router-dom";
+import "./App.css";
+import ApiContext from "../ApiContext";
+import LandingPage from "../LandingPage/LandingPage";
+import Home from "../Home/Home";
+import Header from "../Header/Header";
+import SignUp from "../SignUp/SignUp";
+import Login from "../Login/Login";
+import ProjectList from "../ProjectList/ProjectList";
+import ProjectPage from "../ProjectPage/ProjectPage";
+import TaskPage from "../TaskPage/TaskPage";
+import AddProject from "../AddProject/AddProject";
+import AddTask from "../AddTask/AddTask";
+import config from "../config";
 
 class App extends Component {
   //add persistance to state by storing state in sessionStorage
@@ -201,20 +201,19 @@ class App extends Component {
   deleteProject = (id) => {
     const options = config.getOptions("delete");
     const url = `${config.API}/api/projects/${id}`;
-    return fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((e) => Promise.reject(e));
-        }
-        const otherProjects = this.state.projects.filter(project => project.id !== id);
-        this.setState({
-          projects: otherProjects
-        })
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      const otherProjects = this.state.projects.filter(
+        (project) => project.id !== id
+      );
+      this.setState({
+        projects: otherProjects,
+      });
+    });
+  };
 
-      })
-  }
-    
-  
   //Get state functions
 
   getTasks = () => {
@@ -260,7 +259,7 @@ class App extends Component {
       addProject: this.addProject,
       editProject: this.editProject,
       getProjectById: this.getProjectById,
-      deleteProject:this.deleteProject,
+      deleteProject: this.deleteProject,
       showApiError: this.showApiError,
     };
 
