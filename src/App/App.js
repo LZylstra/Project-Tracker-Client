@@ -198,6 +198,23 @@ class App extends Component {
       .catch((res) => this.setState({ apiError: res.error }));
   };
 
+  deleteProject = (id) => {
+    const options = config.getOptions("delete");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        const otherProjects = this.state.projects.filter(project => project.id !== id);
+        this.setState({
+          projects: otherProjects
+        })
+
+      })
+  }
+    
+  
   //Get state functions
 
   getTasks = () => {
@@ -243,6 +260,7 @@ class App extends Component {
       addProject: this.addProject,
       editProject: this.editProject,
       getProjectById: this.getProjectById,
+      deleteProject:this.deleteProject,
       showApiError: this.showApiError,
     };
 
