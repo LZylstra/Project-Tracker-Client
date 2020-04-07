@@ -1,0 +1,21 @@
+.header{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    text-align: center;
+    font-size: 2em;
+    height: 11.5%;
+    background-color: lightblue;
+    color: white;
+}
+
+#logout{
+    font-size: 0.5em;
+    display: block;
+    height: 25%;
+}
+
+.logo{
+    align-self: center;
+}

@@ -15,7 +15,7 @@
     width:100%;
 }
 
-textarea, input[type=text] {
+.description, .name-input {
     width:100%;
 }
 
@@ -33,6 +33,7 @@ input[type=radio] {
     background:rgb(240, 122, 122);
     border-radius:0;
     font-weight:600;
+    font-size:small;
 }
 
 .add-button {
@@ -40,7 +41,12 @@ input[type=radio] {
     background:lightgreen;
     border-radius:0;
     font-weight:600;
+    font-size:small;
 
+}
+.urgent-priority {
+    color:red;
+    font-weight:700;
 }
 
 .high-priority {
