@@ -28,7 +28,7 @@ class App extends Component {
       isMobile: window.innerWidth < 800,
       apiError: "",
     };
-    //if state isent present in sessionStorage use that otherwise use initial state
+    //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
       ? JSON.parse(sessionStorage.getItem("state"))
       : initialState;
@@ -53,6 +53,7 @@ class App extends Component {
       email: email,
       password: password,
     });
+
     return fetch(`${config.API}/api/auth/login`, options)
       .then((res) => res.json())
       .then((res) => {
@@ -102,17 +103,22 @@ class App extends Component {
   };
 
   configUrl = (endpoint) => {
-    return `${config.API}/api/${endpoint}?company_id=${this.state.companyId}`;
+    return `${config.API}/api/${endpoint}/c/${this.state.companyId}/`;
   };
 
   getCompanyInfo = () => {
-    // const options = config.getOptions('get')
-    // if(this.state.loggedIn){
-    //   Promise.all([fetch(this.configUrl('projects'), options), fetch(this.configUrl('tasks'), options)])
-    //   .then(res => Promise.all([res[0].json(), res[1].json()]))
-    //   .then(res => this.setState({projects: [...res[0]], tasks: [...res[1]]}))
-    //   .catch(err => console.error(err))
-    // }
+    const options = config.getOptions("get");
+    if (this.state.loggedIn) {
+      Promise.all([
+        fetch(this.configUrl("projects"), options),
+        fetch(this.configUrl("tasks"), options),
+      ])
+        .then((res) => Promise.all([res[0].json(), res[1].json()]))
+        .then((res) =>
+          this.setState({ projects: [...res[0]], tasks: [...res[1]] })
+        )
+        .catch((err) => console.error(err));
+    }
   };
 
   //Api calls to projects endpoint

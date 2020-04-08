@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import Task from '../Task/Task'
-import './TaskPage.css';
+import React, { Component } from "react";
+import Task from "../Task/Task";
+import "./TaskList.css";
 
 class TaskPage extends Component {
   dummyTasks = [
@@ -69,7 +69,7 @@ class TaskPage extends Component {
   };
 
   render() {
-    return <div>{this.renderTaskList()}</div>;
+    return <div className="task-list">{this.renderTaskList()}</div>;
   }
 }
 

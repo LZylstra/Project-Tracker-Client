@@ -32,7 +32,7 @@ class Task extends Component {
     });
     //make patch request to api to update task
   };
-  
+
   renderPriority = (priority) => {
     let priorityColor;
     switch (priority) {
@@ -68,7 +68,7 @@ class Task extends Component {
               {this.props.priority}
             </span>
             <span className="task-arrow">
-              <i class={this.state.arrowDirection}></i>
+              <i className={this.state.arrowDirection}></i>
             </span>
           </h2>
         </div>
