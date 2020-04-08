@@ -123,7 +123,7 @@ class App extends Component {
     return fetch(url, options)
       .then((res) => {
         if (!res.ok) {
-          return res.text().then((e) => Promise.reject(e));
+          return res.json().then((e) => Promise.reject(e));
         }
         return res.json();
       })
@@ -148,7 +148,7 @@ class App extends Component {
     return fetch(url, options)
       .then((res) => {
         if (!res.ok) {
-          return res.text().then((e) => Promise.reject(e));
+          return res.json().then((e) => Promise.reject(e));
         }
         return res.json();
       })
@@ -186,7 +186,7 @@ class App extends Component {
     return fetch(url, options)
       .then((res) => {
         if (!res.ok) {
-          return res.text().then((e) => Promise.reject(e));
+          return res.json().then((e) => Promise.reject(e));
         }
         return res.json();
       })
@@ -204,12 +204,12 @@ class App extends Component {
     return fetch(url, options)
       .then((res) => {
         if (!res.ok) {
-          return res.text().then((e) => Promise.reject(e));
+          return res.json().then((e) => Promise.reject(e));
         }
         const otherProjects = this.state.projects.filter(project => project.id !== id);
         this.setState({
           projects: otherProjects,
-        }).catch((res) => this.setState({ apiError: res }));
+        })
 
       })
   }

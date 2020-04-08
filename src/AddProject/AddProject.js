@@ -16,20 +16,24 @@ class AddProject extends Component {
 
   componentDidMount() {
     if (this.props.projectId) {
-      this.context.getProjectById(this.props.projectId)
+      this.context
+        .getProjectById(this.props.projectId)
         .then((res) => {
-        this.setState({
-          name: res.project_name,
-          description: res.description,
-          priority: res.priority,
-          dueDate: this.formatDateFromServer(res.duedate),
-          status: res.status,
-          editMode: true,
+          const formattedDueDate = res.duedate
+            ? this.formatDateFromServer(res.duedate)
+            : "";
+          this.setState({
+            name: res.project_name,
+            description: res.description,
+            priority: res.priority,
+            dueDate: formattedDueDate,
+            status: res.status,
+            editMode: true,
+          });
         })
-        }).catch(errorObj => {
-          this.setState({ error: errorObj.error.message });
-        })
-       
+        .catch((res) => {
+          this.setState({ error: res.error });
+        });
     }
   }
 
@@ -54,51 +58,45 @@ class AddProject extends Component {
     return str.slice(0, end);
   };
 
-  formatDate = (str) => {
+  formatDateForAPI = (str) => {
     const [year, month, day] = str.split("-");
     return new Date(year, month - 1, day);
   };
-  
-  handleAddProject = () => { 
-  this.context
-    .addProject(
-      this.state.name,
-      this.state.description,
-      this.state.priority,
-      this.formatDate(this.state.dueDate)
-    )
-    .then((response) => console.log(response))
-    .catch((err) => { 
-        console.log(err)
-        this.setState({ error: err })
-    });
-  }
+
+  handleAddProject = () => {
+    this.context
+      .addProject(
+        this.state.name,
+        this.state.description,
+        this.state.priority,
+        this.formatDateForAPI(this.state.dueDate)
+      )
+      .catch((res) => {
+        this.setState({ error: res.error });
+      });
+  };
   handleEditProject = () => {
     this.context
       .editProject(
         this.state.name,
         this.state.description,
         this.state.priority,
-        this.state.dueDate,
+        this.formatDateForAPI(this.state.dueDate),
         this.state.status,
         this.props.projectId
       )
-      .then((response) => console.log(response))
-      .catch((err) => { 
-        console.log(err)
-        this.setState({ error: err });
+      .catch((res) => {
+        this.setState({ error: res.error });
       });
-  }
+  };
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({error: ""})
+    this.setState({ error: "" });
     if (this.state.editMode) {
       this.handleEditProject();
-    }
-    else { 
+    } else {
       this.handleAddProject();
     }
-    
   };
   render() {
     return (
