@@ -7,7 +7,6 @@ import Home from '../Home/Home';
 import Header from '../Header/Header';
 import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
-import ProjectList from '../ProjectList/ProjectList';
 import ProjectPage from '../ProjectPage/ProjectPage';
 import TaskPage from '../TaskPage/TaskPage';
 import AddProject from '../AddProject/AddProject';
@@ -105,6 +104,10 @@ class App extends Component {
     return `${config.API}/api/${endpoint}?company_id=${this.state.companyId}`;
   };
 
+  handleResize = () => {
+    this.setState({isMobile: window.innerWidth < 800})
+  }
+
   getCompanyInfo = () => {
     // const options = config.getOptions('get')
     // if(this.state.loggedIn){
@@ -160,27 +163,11 @@ class App extends Component {
        .catch((res) => this.setState({ apiError: res.error }));
   }
 
-  //Get state functions
-
-  getTasks = () => {
-    return this.state.tasks;
-  };
-
-  getProjects = () => {
-    return this.state.projects;
-  };
-
-  getIsAdmin = () => {
-    return this.state.isAdmin;
-  };
-
-  showApiError = () => {
-    return this.state.apiError;
-  };
-
+ 
   //Lifecycle functions
 
   componentDidMount = () => {
+    window.addEventListener("resize", this.handleResize)
     this.getCompanyInfo();
   };
 
@@ -194,16 +181,17 @@ class App extends Component {
   render() {
     const value = {
       login: this.login,
-      getTasks: this.getTasks,
-      getisAdmin: this.getIsAdmin,
-      getProjects: this.getProjects,
+      getTasks: () => this.state.tasks,
+      getisAdmin: () => this.state.isadmin,
+      getProjects: () => this.state.projects,
       getCompanyInfo: this.getCompanyInfo,
       signUp: this.signUp,
       addCompany: this.addCompany,
       extractPayload: this.extractPayload,
       getProjectsByCompanyId: this.getProjectsByCompanyId,
       addProject:this.addProject,
-      showApiError:this.showApiError
+      showApiError: () => this.state.apiError,
+      getIsMobile: () => this.state.isMobile
     };
 
     return (
