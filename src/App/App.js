@@ -9,7 +9,7 @@ import SignUp from "../SignUp/SignUp";
 import Login from "../Login/Login";
 import ProjectList from "../ProjectList/ProjectList";
 import ProjectPage from "../ProjectPage/ProjectPage";
-import TaskPage from "../TaskPage/TaskPage";
+import TaskList from "../TaskList/TaskList";
 import AddProject from "../AddProject/AddProject";
 import AddTask from "../AddTask/AddTask";
 import config from "../config";
@@ -157,6 +157,7 @@ class App extends Component {
           projects: [...this.state.projects, project],
         })
       )
+
      
   };
   getProjectById = (id) => {
@@ -210,7 +211,7 @@ class App extends Component {
         this.setState({
           projects: otherProjects,
         })
-      }
+      })
     }
 
 
@@ -272,7 +273,7 @@ class App extends Component {
           <Route exact path="/SignUp" component={SignUp} />
           <Route exact path="/Login" component={Login} />
           <Route exact path="/projects/:projectId" component={ProjectPage} />
-          <Route exact path="tasks/:taskId" component={TaskPage} />
+          <Route exact path="/tasks/:taskId" component={TaskPage} />
           <Route exact path="/AddTask" component={AddTask} />
           <Route exact path="/AddProject" component={AddProject} />
           <Route
