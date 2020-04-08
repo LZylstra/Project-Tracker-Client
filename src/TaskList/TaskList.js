@@ -22,8 +22,8 @@ class TaskPage extends Component {
         description={task.description}
         priority={task.priority}
         status={task.status}
-        datecreated={task.datecreated}
-        datemodified={task.datemodified}
+        datecreated={this.formatDate(task.datecreated)}
+        datemodified={this.formatDate(task.datemodified)}
       />
     ));
     return taskList;
