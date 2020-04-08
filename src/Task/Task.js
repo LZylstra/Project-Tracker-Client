@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import "./Task.css";
 
 class Task extends Component {
+
+
   static defaultProps = { task: {} };
+
 
   constructor(props) {
     super(props);
@@ -53,6 +56,7 @@ class Task extends Component {
         break;
     }
     return priorityColor;
+
   };
 
   render() {
