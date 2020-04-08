@@ -1,16 +1,15 @@
-import from './';
-import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
-import ReactDOM from 'react-dom';
+import TaskPage from "../TaskPage/TaskPage";
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import ReactDOM from "react-dom";
 
-
-it('renders without crashing', () => {
-	const div = document.createElement('div')
-	ReactDOM.render(
-		<BrowserRouter>
-			</>
-		</BrowserRouter>,
-		div
-	)
-	ReactDOM.unmountComponentAtNode(div)
-})
+it("renders without crashing", () => {
+  const div = document.createElement("div");
+  ReactDOM.render(
+    <BrowserRouter>
+      <TaskPage />
+    </BrowserRouter>,
+    div
+  );
+  ReactDOM.unmountComponentAtNode(div);
+});
