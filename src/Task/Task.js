@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import "./Task.css";
 
 class Task extends Component {
+
+
   static defaultProps = { task: {} };
+
 
   constructor(props) {
     super(props);
@@ -32,7 +35,7 @@ class Task extends Component {
     });
     //make patch request to api to update task
   };
-  
+
   renderPriority = (priority) => {
     let priorityColor;
     switch (priority) {
@@ -53,6 +56,7 @@ class Task extends Component {
         break;
     }
     return priorityColor;
+
   };
 
   render() {
@@ -68,7 +72,7 @@ class Task extends Component {
               {this.props.priority}
             </span>
             <span className="task-arrow">
-              <i class={this.state.arrowDirection}></i>
+              <i className={this.state.arrowDirection}></i>
             </span>
           </h2>
         </div>

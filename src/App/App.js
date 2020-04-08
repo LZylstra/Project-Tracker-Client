@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 import './App.css';
@@ -27,7 +28,7 @@ class App extends Component {
       isMobile: window.innerWidth < 800,
       apiError: "",
     };
-    //if state isent present in sessionStorage use that otherwise use initial state
+    //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
       ? JSON.parse(sessionStorage.getItem("state"))
       : initialState;
@@ -52,6 +53,7 @@ class App extends Component {
       email: email,
       password: password,
     });
+
     return fetch(`${config.API}/api/auth/login`, options)
       .then((res) => res.json())
       .then((res) => {
@@ -101,7 +103,7 @@ class App extends Component {
   };
 
   configUrl = (endpoint) => {
-    return `${config.API}/api/${endpoint}?company_id=${this.state.companyId}`;
+    return `${config.API}/api/${endpoint}/c/${this.state.companyId}/`;
   };
 
   handleResize = () => {
@@ -109,13 +111,18 @@ class App extends Component {
   }
 
   getCompanyInfo = () => {
-    // const options = config.getOptions('get')
-    // if(this.state.loggedIn){
-    //   Promise.all([fetch(this.configUrl('projects'), options), fetch(this.configUrl('tasks'), options)])
-    //   .then(res => Promise.all([res[0].json(), res[1].json()]))
-    //   .then(res => this.setState({projects: [...res[0]], tasks: [...res[1]]}))
-    //   .catch(err => console.error(err))
-    // }
+    const options = config.getOptions("get");
+    if (this.state.loggedIn) {
+      Promise.all([
+        fetch(this.configUrl("projects"), options),
+        fetch(this.configUrl("tasks"), options),
+      ])
+        .then((res) => Promise.all([res[0].json(), res[1].json()]))
+        .then((res) =>
+          this.setState({ projects: [...res[0]], tasks: [...res[1]] })
+        )
+        .catch((err) => console.error(err));
+    }
   };
 
   //Api calls to projects endpoint
@@ -137,31 +144,81 @@ class App extends Component {
       )
       .catch((res) => this.setState({ apiError: res.error }));
   };
-  addProject = (project_name, description, priority, duedate) => { 
-     const options = config.getOptions("post");
-    const url = `${config.API}/api/projects/c/${this.state.companyId}`;
-     options.body = JSON.stringify({
-       project_name,
-       description,
-       priority,
-       dateadded: new Date(),
-       duedate
 
-     });
-     return fetch(url, options)
-       .then((res) => {
-         if (!res.ok) {
-           return res.json().then((e) => Promise.reject(e));
-         }
-         return res.json();
-       })
-       .then((project) =>
-         this.setState({
-           projects: [...this.state.projects, project],
-         })
-       )
-       .catch((res) => this.setState({ apiError: res.error }));
-  }
+  addProject = (project_name, description, priority, duedate) => {
+    const options = config.getOptions("post");
+    const url = `${config.API}/api/projects/c/${this.state.companyId}`;
+    options.body = JSON.stringify({
+      project_name,
+      description,
+      priority,
+      dateadded: new Date(),
+      duedate,
+    });
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((project) =>
+        this.setState({
+          projects: [...this.state.projects, project],
+        })
+      );
+  };
+  getProjectById = (id) => {
+    const options = config.getOptions("get");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      return res.json();
+    });
+  };
+
+  editProject = (project_name, description, priority, duedate, status, id) => {
+    const options = config.getOptions("patch");
+    const url = `${config.API}/api/projects/${id}`;
+    options.body = JSON.stringify({
+      project_name,
+      description,
+      priority,
+      duedate,
+      status,
+    });
+    console.log(options.body);
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((project) =>
+        this.setState({
+          projects: [...this.state.projects, project],
+        })
+      );
+  };
+
+  deleteProject = (id) => {
+    const options = config.getOptions("delete");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      const otherProjects = this.state.projects.filter(
+        (project) => project.id !== id
+      );
+      this.setState({
+        projects: otherProjects,
+      });
+    });
+  };
 
  
   //Lifecycle functions
@@ -192,6 +249,7 @@ class App extends Component {
       addProject:this.addProject,
       showApiError: () => this.state.apiError,
       getIsMobile: () => this.state.isMobile
+
     };
 
     return (
@@ -199,13 +257,19 @@ class App extends Component {
         <div className="App">
           <Header />
           {this.renderHome()}
-          <Route exact path="/SignUp" component={SignUp}/>
-          <Route exact path="/Login" component={Login}/>
-          <Route exact path="/projects/:projectId" component={ProjectPage}/>
-          <Route exact path="/tasks/:taskId" component={TaskPage}/>
-          <Route exact path="/AddTask" component={AddTask}/>
-          <Route exact path="/AddProject" component={AddProject}/>
-          <footer/>
+          <Route exact path="/SignUp" component={SignUp} />
+          <Route exact path="/Login" component={Login} />
+          <Route exact path="/projects/:projectId" component={ProjectPage} />
+          {/* <Route exact path="/tasks/:taskId" component={TaskPage} /> */}
+          <Route exact path="/AddTask" component={AddTask} />
+          <Route exact path="/AddProject" component={AddProject} />
+          <Route
+            path="/edit/project/:project_id"
+            render={({ match }) => (
+              <AddProject projectId={match.params.project_id} />
+            )}
+          />
+          <footer />
         </div>
       </ApiContext.Provider>
     );
