@@ -1,18 +1,18 @@
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import './App.css';
-import ApiContext from '../ApiContext';
-import LandingPage from '../LandingPage/LandingPage';
-import Home from '../Home/Home';
-import Header from '../Header/Header';
-import SignUp from '../SignUp/SignUp';
-import Login from '../Login/Login';
-import ProjectList from '../ProjectList/ProjectList';
-import ProjectPage from '../ProjectPage/ProjectPage';
-import TaskPage from '../TaskPage/TaskPage';
-import AddProject from '../AddProject/AddProject';
-import AddTask from '../AddTask/AddTask';
-import config from '../config';
+import React, { Component } from "react";
+import { Route } from "react-router-dom";
+import "./App.css";
+import ApiContext from "../ApiContext";
+import LandingPage from "../LandingPage/LandingPage";
+import Home from "../Home/Home";
+import Header from "../Header/Header";
+import SignUp from "../SignUp/SignUp";
+import Login from "../Login/Login";
+import ProjectList from "../ProjectList/ProjectList";
+import ProjectPage from "../ProjectPage/ProjectPage";
+import TaskList from "../TaskList/TaskList";
+import AddProject from "../AddProject/AddProject";
+import AddTask from "../AddTask/AddTask";
+import config from "../config";
 
 class App extends Component {
   //add persistance to state by storing state in sessionStorage
@@ -134,31 +134,87 @@ class App extends Component {
       )
       .catch((res) => this.setState({ apiError: res.error }));
   };
-  addProject = (project_name, description, priority, duedate) => { 
-     const options = config.getOptions("post");
-    const url = `${config.API}/api/projects/c/${this.state.companyId}`;
-     options.body = JSON.stringify({
-       project_name,
-       description,
-       priority,
-       dateadded: new Date(),
-       duedate
 
-     });
-     return fetch(url, options)
-       .then((res) => {
-         if (!res.ok) {
-           return res.json().then((e) => Promise.reject(e));
-         }
-         return res.json();
-       })
-       .then((project) =>
-         this.setState({
-           projects: [...this.state.projects, project],
-         })
-       )
-       .catch((res) => this.setState({ apiError: res.error }));
-  }
+  addProject = (project_name, description, priority, duedate) => {
+    const options = config.getOptions("post");
+    const url = `${config.API}/api/projects/c/${this.state.companyId}`;
+    options.body = JSON.stringify({
+      project_name,
+      description,
+      priority,
+      dateadded: new Date(),
+      duedate,
+    });
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((project) =>
+        this.setState({
+          projects: [...this.state.projects, project],
+        })
+      )
+
+     
+  };
+  getProjectById = (id) => {
+    const options = config.getOptions("get");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+   
+  };
+
+  editProject = (project_name, description, priority, duedate, status, id) => {
+    const options = config.getOptions("patch");
+    const url = `${config.API}/api/projects/${id}`;
+    options.body = JSON.stringify({
+      project_name,
+      description,
+      priority,
+      duedate,
+      status,
+    });
+    console.log(options.body);
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((project) =>
+        this.setState({
+          projects: [...this.state.projects, project],
+        })
+      )
+     
+  };
+
+  deleteProject = (id) => {
+    const options = config.getOptions("delete");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        const otherProjects = this.state.projects.filter(project => project.id !== id);
+        this.setState({
+          projects: otherProjects,
+        })
+      })
+    }
+
+
 
   //Get state functions
 
@@ -202,8 +258,11 @@ class App extends Component {
       addCompany: this.addCompany,
       extractPayload: this.extractPayload,
       getProjectsByCompanyId: this.getProjectsByCompanyId,
-      addProject:this.addProject,
-      showApiError:this.showApiError
+      addProject: this.addProject,
+      editProject: this.editProject,
+      getProjectById: this.getProjectById,
+      deleteProject: this.deleteProject,
+      showApiError: this.showApiError,
     };
 
     return (
@@ -211,13 +270,19 @@ class App extends Component {
         <div className="App">
           <Header />
           {this.renderHome()}
-          <Route exact path="/SignUp" component={SignUp}/>
-          <Route exact path="/Login" component={Login}/>
-          <Route exact path="/projects/:projectId" component={ProjectPage}/>
-          <Route exact path="/tasks/:taskId" component={TaskPage}/>
-          <Route exact path="/AddTask" component={AddTask}/>
-          <Route exact path="/AddProject" component={AddProject}/>
-          <footer/>
+          <Route exact path="/SignUp" component={SignUp} />
+          <Route exact path="/Login" component={Login} />
+          <Route exact path="/projects/:projectId" component={ProjectPage} />
+          <Route exact path="/tasks/:taskId" component={TaskPage} />
+          <Route exact path="/AddTask" component={AddTask} />
+          <Route exact path="/AddProject" component={AddProject} />
+          <Route
+            path="/edit/project/:project_id"
+            render={({ match }) => (
+              <AddProject projectId={match.params.project_id} />
+            )}
+          />
+          <footer />
         </div>
       </ApiContext.Provider>
     );
