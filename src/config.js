@@ -1,6 +1,6 @@
 export default {
-  API: process.env.REACT_APP_API_ENDPOINT,
-  //API: https://tranquil-mountain-91418.herokuapp.com/
+  // API: process.env.REACT_APP_API_ENDPOINT,
+  API: process.env.REACT_APP_API_BASE_URL || "http://localhost:8000/api",
   getOptions: (method) => {
     return JSON.parse(
       JSON.stringify({
