@@ -5,55 +5,48 @@ import "./AddProject.css";
 class AddProject extends Component {
   static contextType = ApiContext;
   state = {
-    projectFields: {
-      name: "",
-      description: "",
-      priority: "",
-      dueDate: "",
-      status: "",
-    },
+    name: "",
+    description: "",
+    priority: "",
+    dueDate: "",
+    status: "",
     editMode: false,
     error: "",
   };
 
   componentDidMount() {
-   
     if (this.props.projectId) {
       this.context.getProjectById(this.props.projectId)
         .then((res) => {
         this.setState({
-          projectFields: {
-            name: res.project_name,
-            description: res.description,
-            priority: res.priority,
-            dueDate: this.formatDateFromServer(res.duedate),
-            status: res.status,
-          },
+          name: res.project_name,
+          description: res.description,
+          priority: res.priority,
+          dueDate: this.formatDateFromServer(res.duedate),
+          status: res.status,
           editMode: true,
-        });
-      });
+        })
+        }).catch(errorObj => {
+          this.setState({ error: errorObj.error.message });
+        })
+       
     }
   }
 
   clearForm = () => {
     this.setState({
-      projectFields: {
-        name: "",
-        description: "",
-        priority: "",
-        dueDate: "",
-        status:""
-      },
+      name: "",
+      description: "",
+      priority: "",
+      dueDate: "",
+      status: "",
     });
   };
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({
-      projectFields: {
-        ...this.state.projectFields,
-        [name]: value,
-      },
+      [name]: value,
     });
   };
   formatDateFromServer = (str) => {
@@ -65,37 +58,53 @@ class AddProject extends Component {
     const [year, month, day] = str.split("-");
     return new Date(year, month - 1, day);
   };
-
+  
+  handleAddProject = () => { 
+  this.context
+    .addProject(
+      this.state.name,
+      this.state.description,
+      this.state.priority,
+      this.formatDate(this.state.dueDate)
+    )
+    .then((response) => console.log(response))
+    .catch((err) => { 
+        console.log(err)
+        this.setState({ error: err })
+    });
+  }
+  handleEditProject = () => {
+    this.context
+      .editProject(
+        this.state.name,
+        this.state.description,
+        this.state.priority,
+        this.state.dueDate,
+        this.state.status,
+        this.props.projectId
+      )
+      .then((response) => console.log(response))
+      .catch((err) => { 
+        console.log(err)
+        this.setState({ error: err });
+      });
+  }
   handleSubmit = (event) => {
     event.preventDefault();
-    if (this.props.projectId) {
-      this.context.editProject(
-        this.state.projectFields.name,
-        this.state.projectFields.description,
-        this.state.projectFields.priority,
-        this.state.projectFields.dueDate,
-        this.state.projectFields.status,
-        this.props.projectId
-      );
-      return;
+    this.setState({error: ""})
+    if (this.state.editMode) {
+      this.handleEditProject();
     }
-    this.context
-      .addProject(
-        this.state.projectFields.name,
-        this.state.projectFields.description,
-        this.state.projectFields.priority,
-        this.formatDate(this.state.projectFields.dueDate)
-      )
-      
-        
+    else { 
+      this.handleAddProject();
+    }
+    
   };
   render() {
     return (
       <div className="form-container">
         <h2>{this.state.editMode ? "Edit Project" : "Add Project"}</h2>
-        {this.state.error && (
-          <p className="error">{this.state.error.message}</p>
-        )}
+        {this.state.error && <p className="error">{this.state.error}</p>}
 
         <form onSubmit={this.handleSubmit}>
           <p className="input-container">
@@ -104,7 +113,7 @@ class AddProject extends Component {
               type="text"
               className="name-input"
               name="name"
-              value={this.state.projectFields.name}
+              value={this.state.name}
               onChange={this.handleChange}
             />
           </p>
@@ -114,7 +123,7 @@ class AddProject extends Component {
               name="description"
               className="description"
               onChange={this.handleChange}
-              value={this.state.projectFields.description}
+              value={this.state.description}
             />
           </p>
           <p className="input-container">
@@ -123,7 +132,7 @@ class AddProject extends Component {
               type="date"
               id="dueDate"
               name="dueDate"
-              value={this.state.projectFields.dueDate}
+              value={this.state.dueDate}
               onChange={this.handleChange}
             />
           </p>
@@ -132,7 +141,7 @@ class AddProject extends Component {
               <label htmlFor="status">Status:</label>
               <select
                 onChange={this.handleChange}
-                value={this.state.projectFields.status}
+                value={this.state.status}
                 name="status"
                 id="status"
               >
@@ -149,7 +158,7 @@ class AddProject extends Component {
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.projectFields.priority === "Urgent"}
+              checked={this.state.priority === "Urgent"}
               value="Urgent"
             />
 
@@ -158,7 +167,7 @@ class AddProject extends Component {
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.projectFields.priority === "High"}
+              checked={this.state.priority === "High"}
               value="High"
             />
             <label className="high-priority">High</label>
@@ -167,7 +176,7 @@ class AddProject extends Component {
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.projectFields.priority === "Medium"}
+              checked={this.state.priority === "Medium"}
               value="Medium"
             />
             <label className="medium-priority">Medium</label>
@@ -175,7 +184,7 @@ class AddProject extends Component {
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.projectFields.priority === "Low"}
+              checked={this.state.priority === "Low"}
               value="Low"
             />
 
@@ -184,9 +193,13 @@ class AddProject extends Component {
 
           <div className="button-container">
             <button className="add-button" type="submit">
-             {this.state.editMode? "Edit Project" : "Add Project"}
+              {this.state.editMode ? "Edit Project" : "Add Project"}
             </button>
-            <button type="button" className="clear-button" onClick={() => this.clearForm()}>
+            <button
+              type="button"
+              className="clear-button"
+              onClick={() => this.clearForm()}
+            >
               Clear
             </button>
           </div>
