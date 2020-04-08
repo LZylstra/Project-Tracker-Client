@@ -16,6 +16,7 @@ class AddProject extends Component {
 
   componentDidMount() {
     if (this.props.projectId) {
+
       this.context
         .getProjectById(this.props.projectId)
         .then((res) => {
@@ -23,6 +24,7 @@ class AddProject extends Component {
             ? this.formatDateFromServer(res.duedate)
             : "";
           this.setState({
+
             name: res.project_name,
             description: res.description,
             priority: res.priority,
@@ -45,7 +47,7 @@ class AddProject extends Component {
       dueDate: "",
       status: "",
     });
-  };
+  }
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -97,6 +99,7 @@ class AddProject extends Component {
     } else {
       this.handleAddProject();
     }
+
   };
   render() {
     return (
