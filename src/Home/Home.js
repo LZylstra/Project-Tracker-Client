@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import ApiContext from '../ApiContext';
-import ProjectList from '../ProjectList/ProjectList';
-import './Home.css';
+import React, { Component } from "react";
+import ApiContext from "../ApiContext";
+import ProjectList from "../ProjectList/ProjectList";
+import TaskList from "../TaskList/TaskList";
+import "./Home.css";
 
 class Home extends Component {
   static contextType = ApiContext;
@@ -15,20 +16,21 @@ class Home extends Component {
   }
 
   componentDidMount() {
-	  this.context.getProjectsByCompanyId().then((res) => {
-		  const projects = this.context.getProjects();
+    this.context.getProjectsByCompanyId().then((res) => {
+      const projects = this.context.getProjects();
       this.setState({
-		  isLoading: false,
-		  selectedProject:projects[0]
+        isLoading: false,
+        selectedProject: projects[0],
       });
     });
-	}
-	
-	showProjectDetail = (id) => {
-	const projects = this.context.getProjects();
+    this.context.getCompanyInfo();
+  }
+
+  showProjectDetail = (id) => {
+    const projects = this.context.getProjects();
     const selected = projects.find((project) => project.id === id);
     this.setState({
-      selectedProject:selected
+      selectedProject: selected,
     });
   };
 
@@ -38,9 +40,14 @@ class Home extends Component {
         {this.state.isLoading ? (
           <p>Loading projects</p>
         ) : (
-					<ProjectList projects={this.context.getProjects()}
-						showProjectDetail={this.showProjectDetail}
-						selected={this.state.selectedProject}/>
+          <>
+            <ProjectList
+              projects={this.context.getProjects()}
+              showProjectDetail={this.showProjectDetail}
+              selected={this.state.selectedProject}
+            />
+            <TaskList tasks={this.context.getTasks()} />
+          </>
         )}
       </div>
     );

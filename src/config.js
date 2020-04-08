@@ -18,3 +18,7 @@ export default {
     }
   },
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> f74cc0f3b0df6caef9f387d1b436989b14798f39
