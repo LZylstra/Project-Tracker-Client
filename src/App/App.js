@@ -9,7 +9,7 @@ import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
 import ProjectList from '../ProjectList/ProjectList';
 import ProjectPage from '../ProjectPage/ProjectPage';
-import TaskPage from '../TaskPage/TaskPage';
+import TaskPage from '../TaskList/TaskList';
 import AddProject from '../AddProject/AddProject';
 import AddTask from '../AddTask/AddTask';
 import config from '../config';
