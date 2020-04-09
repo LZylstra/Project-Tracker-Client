@@ -3,21 +3,27 @@ import "./AddTask.css";
 
 class AddTask extends Component {
   state = {
-    name: "",
-    description: "",
-    priority: "",
-	  assignment: "",
-
+    task_name:"",
+    assignedto:"",
+    description:"",
+    priority:"",
+    status:"",
+    projectid:this.props.projectId,
+    error: "",
+    editmode:false
   };
 
   clearForm = () => {
     this.setState({
-      name: "",
+      task_name: "",
       description: "",
+      assignedto: "",
       priority: "",
-      assignment: "",
+      status: "",
+      projectid:""
     });
   };
+
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -28,7 +34,14 @@ class AddTask extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
+    this.context.addTask(
+    this.state.task_name,
+    this.state.assignedto,
+    this.state.description,
+    this.state.priority,
+    this.state.status,
+    this.state.projectid,
+    )
   };
   render() {
     return (
@@ -40,8 +53,8 @@ class AddTask extends Component {
             <input
               type="text"
               className="name-input"
-              name="name"
-              value={this.state.name}
+              name="task_name"
+              value={this.state.task_name}
               onChange={this.handleChange}
             />
           </p>
@@ -58,14 +71,30 @@ class AddTask extends Component {
             <label htmlFor="assignment">Assign To:</label>
             <select
               onChange={this.handleChange}
-              value={this.state.assignment}
-              name="assignment"
+              value={this.state.assignedto}
+              name="assignedto"
               id="assignment"
             >
               <option>User 1</option>
               <option>User 2</option>
             </select>
           </p>
+          {this.props.taskId && (
+            <p className="input-container">
+              <label htmlFor="status">Status:</label>
+              <select
+                onChange={this.handleChange}
+                value={this.state.status}
+                name="status"
+                id="status"
+              >
+                <option value="New">New</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </p>
+          )}
           <div className="input-container">
             <label htmlFor="priority"> Priority:</label>
 
