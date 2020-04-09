@@ -34,6 +34,7 @@ input[type=radio] {
     border-radius:0;
     font-weight:600;
     font-size:small;
+    float:right;
 }
 
 .add-button {
@@ -47,6 +48,9 @@ input[type=radio] {
 .urgent-priority {
     color:red;
     font-weight:700;
+}
+.error {
+    color:red;
 }
 
 .high-priority {
