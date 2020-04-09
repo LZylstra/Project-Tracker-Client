@@ -20,7 +20,7 @@ class App extends Component {
     const initialState = {
       tasks: [],
       projects: [],
-      employees:[],
+      employees: [],
       loggedIn: !!window.sessionStorage.jwt,
       userId: null,
       isAdmin: false,
@@ -219,7 +219,7 @@ class App extends Component {
     });
   };
 
-  getUsersByCompanyId = (companyId) => { 
+  getUsersByCompanyId = (companyId) => {
     const options = config.getOptions("get");
     const url = `${config.API}/api/users/c/${companyId}`;
     return fetch(url, options)
@@ -231,14 +231,19 @@ class App extends Component {
       })
       .then((employees) => {
         this.setState({
-          employees
-        })   
-      })
+          employees,
+        });
+      });
+  };
 
-  }
-
-  addTask = (task_name, assignedto, description, priority, status, projectid) => {
-   
+  addTask = (
+    task_name,
+    assignedto,
+    description,
+    priority,
+    status,
+    projectid
+  ) => {
     const options = config.getOptions("post");
     const url = `${config.API}/api/tasks/p/${projectid}`;
     options.body = JSON.stringify({
@@ -247,8 +252,8 @@ class App extends Component {
       description,
       priority,
       status,
-      projectid:projectid, 
-      datemodified:new Date(),
+      projectid: projectid,
+      datemodified: new Date(),
     });
     return fetch(url, options)
       .then((res) => {
@@ -265,7 +270,7 @@ class App extends Component {
   };
   getTaskById = (id) => {
     const options = config.getOptions("get");
-    const url = `${config.API}/api/projects/${id}`;
+    const url = `${config.API}/api/tasks/${id}`;
     return fetch(url, options).then((res) => {
       if (!res.ok) {
         return res.json().then((e) => Promise.reject(e));
@@ -274,14 +279,22 @@ class App extends Component {
     });
   };
 
-  editTask = (project_name, description, priority, duedate, status, id) => {
+  editTask = (
+    task_name,
+    assignedto,
+    description,
+    priority,
+    status,
+    id
+  ) => {
     const options = config.getOptions("patch");
-    const url = `${config.API}/api/projects/${id}`;
+    const url = `${config.API}/api/tasks/${id}`;
     options.body = JSON.stringify({
-      project_name,
+      task_name,
+      assignedto,
       description,
+      datemodified:new Date(),
       priority,
-      duedate,
       status,
     });
     console.log(options.body);
@@ -301,16 +314,16 @@ class App extends Component {
 
   deleteTask = (id) => {
     const options = config.getOptions("delete");
-    const url = `${config.API}/api/projects/${id}`;
+    const url = `${config.API}/api/tasks/${id}`;
     return fetch(url, options).then((res) => {
       if (!res.ok) {
         return res.json().then((e) => Promise.reject(e));
       }
-      const otherProjects = this.state.projects.filter(
-        (project) => project.id !== id
+      const otherTasks = this.state.tasks.filter(
+        (task) => task.id !== id
       );
       this.setState({
-        projects: otherProjects,
+        tasks: otherTasks,
       });
     });
   };
@@ -336,7 +349,7 @@ class App extends Component {
       getisAdmin: () => this.state.isadmin,
       getProjects: () => this.state.projects,
       getCompanyId: () => this.state.companyId,
-      getEmployees:()=>this.state.employees,
+      getEmployees: () => this.state.employees,
       getCompanyInfo: this.getCompanyInfo,
       signUp: this.signUp,
       addCompany: this.addCompany,
@@ -346,7 +359,9 @@ class App extends Component {
       addProject: this.addProject,
       showApiError: () => this.state.apiError,
       getIsMobile: () => this.state.isMobile,
-      addTask:this.addTask
+      addTask: this.addTask,
+      getTaskById: this.getTaskById,
+      editTask:this.editTask
     };
 
     return (
@@ -362,13 +377,25 @@ class App extends Component {
           <Route
             path="/edit/project/:project_id"
             render={({ match, history }) => (
-              <AddProject history={history} projectId={match.params.project_id} />
+              <AddProject
+                history={history}
+                projectId={match.params.project_id}
+              />
             )}
           />
           <Route
             path="/addtask/:project_id"
             render={({ match, history }) => (
               <AddTask history={history} projectId={match.params.project_id} />
+            )}
+          />
+          <Route
+            path="/edit/task/:task_id"
+            render={({ match, history }) => (
+              <AddTask
+                history={history}
+                taskId={match.params.task_id}
+              />
             )}
           />
           <footer />

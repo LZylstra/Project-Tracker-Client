@@ -18,6 +18,7 @@ class TaskList extends Component {
     const taskList = tasksForProject.map((task) => (
       <Task
         key={task.id}
+        taskId={task.id}
         task_name={task.task_name}
         assignedTo={task.assignedTo}
         description={task.description}

@@ -20,11 +20,26 @@ class AddTask extends Component {
   componentDidMount() {
   
     const companyId = this.context.getCompanyId();
-   
-        this.context.getUsersByCompanyId(companyId)
-         
-  
-          .catch((res) => this.setState({ error: res.error }))
+    this.context.getUsersByCompanyId(companyId)
+      .catch((res) => this.setState({ error: res.error }))
+    
+    if (this.props.taskId) {
+      this.context
+        .getTaskById(this.props.taskId)
+        .then((res) => {
+          this.setState({
+            task_name: res.task_name,
+            description: res.description,
+            assignedto: res.assignedto,
+            priority: res.priority,
+            status: res.status,
+            editMode: true,
+          });
+        })
+        .catch((res) => {
+          this.setState({ error: res.error });
+        });
+    }
   
   }
 
@@ -49,26 +64,54 @@ class AddTask extends Component {
       [name]: value,
     });
   };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    this.context.addTask(
+  handleAddTask = () => { 
+    this.context
+      .addTask(
+        this.state.task_name,
+        this.state.assignedto,
+        this.state.description,
+        this.state.priority,
+        this.state.status,
+        this.state.projectid
+      )
+      .then(() => this.props.history.push("/"))
+      .catch((res) => this.setState({ error: res.error }));
+   
+  }
+  handleEditTask = () => { 
+this.context
+  .editTask(
     this.state.task_name,
     this.state.assignedto,
     this.state.description,
     this.state.priority,
     this.state.status,
-    this.state.projectid,
-    ).then(()=>this.props.history.push('/'))
-      .catch((res) => this.setState({ error: res.error }))
-   
+    this.props.taskId
+  )
+  .then(() => this.props.history.push("/"))
+  .catch((res) => this.setState({ error: res.error }));
+    
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.setState({ error: "" });
+ 
+    if (this.props.taskId) {
+      this.handleEditTask();
+      
+    } else { 
+this.handleAddTask();
+    }
+    
   };
 
   render() {
     return (
       <div className="form-container">
-        <h2>Add Task</h2>
+        <h2>{this.state.editMode ? "Edit Task" : "Add Task"}</h2>
+        {/* {this.state.error && <p className="error">{this.state.error}</p>} */}
+
         <form onSubmit={this.handleSubmit}>
           <p className="input-container">
             <label htmlFor="name-input">Task Name:</label>
@@ -146,11 +189,16 @@ class AddTask extends Component {
 
             <label className="low-priority">Low</label>
           </div>
+
           <div className="button-container">
             <button className="add-button" type="submit">
-              Add Task
+              {this.state.editMode ? "Edit Task" : "Add Task"}
             </button>
-            <button className="clear-button" onClick={this.clearForm}>
+            <button
+              type="button"
+              className="clear-button"
+              onClick={() => this.clearForm()}
+            >
               Clear
             </button>
           </div>

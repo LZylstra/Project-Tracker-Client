@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import "./Task.css";
 
 class Task extends Component {
@@ -122,7 +123,9 @@ class Task extends Component {
               </div>
             </div>
             <div className="admin-button-container">
-              <button className="edit-button">Edit</button>
+              <Link to={`/edit/task/${this.props.taskId}`}>
+                <button className="edit-button">Edit</button>
+              </Link>
               <button className="delete-button">Delete</button>
             </div>
           </div>
