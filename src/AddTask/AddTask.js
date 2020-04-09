@@ -52,7 +52,7 @@ class AddTask extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
+
     this.context.addTask(
     this.state.task_name,
     this.state.assignedto,
@@ -60,7 +60,7 @@ class AddTask extends Component {
     this.state.priority,
     this.state.status,
     this.state.projectid,
-    )
+    ).then(()=>this.props.history.push('/'))
       .catch((res) => this.setState({ error: res.error }))
    
   };
