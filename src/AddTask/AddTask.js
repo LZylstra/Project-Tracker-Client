@@ -1,23 +1,47 @@
 import React, { Component } from "react";
+import ApiContext from '../ApiContext';
 import "./AddTask.css";
 
 class AddTask extends Component {
+  static contextType = ApiContext;
+
   state = {
-    name: "",
+    task_name: "",
+    assignedto: 1,
     description: "",
     priority: "",
-	  assignment: "",
-
+    status: "",
+    projectid: 1,
+    error: "",
+    editmode: false,
+ 
+    
   };
+  componentDidMount() {
+  
+    const companyId = this.context.getCompanyId();
+   
+        this.context.getUsersByCompanyId(companyId)
+         
+  
+          .catch((res) => this.setState({ error: res.error }))
+  
+  }
 
   clearForm = () => {
     this.setState({
-      name: "",
+      task_name: "",
       description: "",
+      assignedto: "",
       priority: "",
-      assignment: "",
+      status: "",
+      projectid:""
     });
   };
+  createAssigneeList = (employees) => { 
+    return employees.map((employee,index) => <option key={index} value={employee.id}>{employee.full_name}</option>)
+  }
+
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -29,7 +53,16 @@ class AddTask extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
+    this.context.addTask(
+    this.state.task_name,
+    this.state.assignedto,
+    this.state.description,
+    this.state.priority,
+    this.state.status,
+    1,
+    )
   };
+
   render() {
     return (
       <div className="form-container">
@@ -40,8 +73,8 @@ class AddTask extends Component {
             <input
               type="text"
               className="name-input"
-              name="name"
-              value={this.state.name}
+              name="task_name"
+              value={this.state.task_name}
               onChange={this.handleChange}
             />
           </p>
@@ -58,14 +91,29 @@ class AddTask extends Component {
             <label htmlFor="assignment">Assign To:</label>
             <select
               onChange={this.handleChange}
-              value={this.state.assignment}
-              name="assignment"
+              value={this.state.assignedto}
+              name="assignedto"
               id="assignment"
             >
-              <option>User 1</option>
-              <option>User 2</option>
+              {this.createAssigneeList(this.context.getEmployees())}
             </select>
           </p>
+          {this.props.taskId && (
+            <p className="input-container">
+              <label htmlFor="status">Status:</label>
+              <select
+                onChange={this.handleChange}
+                value={this.state.status}
+                name="status"
+                id="status"
+              >
+                <option value="New">New</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </p>
+          )}
           <div className="input-container">
             <label htmlFor="priority"> Priority:</label>
 
@@ -73,8 +121,8 @@ class AddTask extends Component {
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.priority === "high"}
-              value="high"
+              checked={this.state.priority === "High"}
+              value="High"
             />
             <label className="high-priority">High</label>
 
@@ -82,16 +130,16 @@ class AddTask extends Component {
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.priority === "medium"}
-              value="medium"
+              checked={this.state.priority === "Medium"}
+              value="Medium"
             />
             <label className="medium-priority">Medium</label>
             <input
               type="radio"
               onChange={this.handleChange}
               name="priority"
-              checked={this.state.priority === "low"}
-              value="low"
+              checked={this.state.priority === "Low"}
+              value="Low"
             />
 
             <label className="low-priority">Low</label>
