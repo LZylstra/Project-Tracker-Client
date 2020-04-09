@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Task from "../Task/Task";
+import { Link } from "react-router-dom";
 import "./TaskList.css";
 
-class TaskPage extends Component {
+class TaskList extends Component {
   static defaultProps = { tasks: [] };
 
   formatDate = (duedate) => {
@@ -30,9 +31,15 @@ class TaskPage extends Component {
   };
 
   render() {
-    return <div className="task-list">{this.renderTaskList()}
-    </div>;
+    return (
+      <div className="task-list">
+        {this.renderTaskList()}
+        <Link to={`/addtask/${this.props.projectId}`}>
+          <button>+ Add Task</button>
+        </Link>
+      </div>
+    );
   }
 }
 
-export default TaskPage;
+export default TaskList;

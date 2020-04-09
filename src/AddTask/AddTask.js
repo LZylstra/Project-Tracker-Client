@@ -11,7 +11,7 @@ class AddTask extends Component {
     description: "",
     priority: "",
     status: "",
-    projectid: 1,
+    projectid: this.props.projectId,
     error: "",
     editmode: false,
  
@@ -59,8 +59,10 @@ class AddTask extends Component {
     this.state.description,
     this.state.priority,
     this.state.status,
-    1,
+    this.state.projectid,
     )
+      .catch((res) => this.setState({ error: res.error }))
+   
   };
 
   render() {

@@ -238,7 +238,7 @@ class App extends Component {
   }
 
   addTask = (task_name, assignedto, description, priority, status, projectid) => {
-    let projectIdNum = parseInt(projectid);
+   
     const options = config.getOptions("post");
     const url = `${config.API}/api/tasks/p/${projectid}`;
     options.body = JSON.stringify({
@@ -247,7 +247,7 @@ class App extends Component {
       description,
       priority,
       status,
-      projectid:projectIdNum, 
+      projectid:projectid, 
       datemodified:new Date(),
     });
     return fetch(url, options)
@@ -358,12 +358,17 @@ class App extends Component {
           <Route exact path="/Login" component={Login} />
           <Route exact path="/projects/:projectId" component={ProjectPage} />
           {/* <Route exact path="/tasks/:taskId" component={TaskPage} /> */}
-          <Route exact path="/AddTask" component={AddTask} />
           <Route exact path="/AddProject" component={AddProject} />
           <Route
             path="/edit/project/:project_id"
             render={({ match }) => (
               <AddProject projectId={match.params.project_id} />
+            )}
+          />
+          <Route
+            path="/addtask/:project_id"
+            render={({ match }) => (
+              <AddTask projectId={match.params.project_id} />
             )}
           />
           <footer />
