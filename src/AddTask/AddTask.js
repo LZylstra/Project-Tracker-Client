@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ApiContext from '../ApiContext';
+import ApiContext from "../ApiContext";
 import "./AddTask.css";
 
 class AddTask extends Component {
@@ -14,15 +14,13 @@ class AddTask extends Component {
     projectid: this.props.projectId,
     error: "",
     editmode: false,
- 
-    
   };
   componentDidMount() {
-  
     const companyId = this.context.getCompanyId();
-    this.context.getUsersByCompanyId(companyId)
-      .catch((res) => this.setState({ error: res.error }))
-    
+    this.context
+      .getUsersByCompanyId(companyId)
+      .catch((res) => this.setState({ error: res.error }));
+
     if (this.props.taskId) {
       this.context
         .getTaskById(this.props.taskId)
@@ -40,7 +38,6 @@ class AddTask extends Component {
           this.setState({ error: res.error });
         });
     }
-  
   }
 
   clearForm = () => {
@@ -50,12 +47,16 @@ class AddTask extends Component {
       assignedto: "",
       priority: "",
       status: "",
-      projectid:""
+      projectid: "",
     });
   };
-  createAssigneeList = (employees) => { 
-    return employees.map((employee,index) => <option key={index} value={employee.id}>{employee.full_name}</option>)
-  }
+  createAssigneeList = (employees) => {
+    return employees.map((employee, index) => (
+      <option key={index} value={employee.id}>
+        {employee.full_name}
+      </option>
+    ));
+  };
 
   handleChange = (event) => {
     const name = event.target.name;
@@ -64,7 +65,7 @@ class AddTask extends Component {
       [name]: value,
     });
   };
-  handleAddTask = () => { 
+  handleAddTask = () => {
     this.context
       .addTask(
         this.state.task_name,
@@ -76,34 +77,30 @@ class AddTask extends Component {
       )
       .then(() => this.props.history.push("/"))
       .catch((res) => this.setState({ error: res.error }));
-   
-  }
-  handleEditTask = () => { 
-this.context
-  .editTask(
-    this.state.task_name,
-    this.state.assignedto,
-    this.state.description,
-    this.state.priority,
-    this.state.status,
-    this.props.taskId
-  )
-  .then(() => this.props.history.push("/"))
-  .catch((res) => this.setState({ error: res.error }));
-    
-  }
+  };
+  handleEditTask = () => {
+    this.context
+      .editTask(
+        this.state.task_name,
+        this.state.assignedto,
+        this.state.description,
+        this.state.priority,
+        this.state.status,
+        this.props.taskId
+      )
+      .then(() => this.props.history.push("/"))
+      .catch((res) => this.setState({ error: res.error }));
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ error: "" });
- 
+
     if (this.props.taskId) {
       this.handleEditTask();
-      
-    } else { 
-this.handleAddTask();
+    } else {
+      this.handleAddTask();
     }
-    
   };
 
   render() {

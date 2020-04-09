@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
+import ApiContext from '../ApiContext';
 import "./Task.css";
 
 class Task extends Component {
 
+  static contextType = ApiContext;
 
   static defaultProps = { task: {} };
 
@@ -126,7 +128,7 @@ class Task extends Component {
               <Link to={`/edit/task/${this.props.taskId}`}>
                 <button className="edit-button">Edit</button>
               </Link>
-              <button className="delete-button">Delete</button>
+              <button className="delete-button" onClick={()=>this.context.deleteTask(this.props.taskId)}>Delete</button>
             </div>
           </div>
         )}

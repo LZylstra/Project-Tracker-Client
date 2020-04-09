@@ -305,9 +305,9 @@ class App extends Component {
         }
         return res.json();
       })
-      .then((project) =>
+      .then((task) =>
         this.setState({
-          projects: [...this.state.projects, project],
+          task: [...this.state.tasks, task],
         })
       );
   };
@@ -361,7 +361,8 @@ class App extends Component {
       getIsMobile: () => this.state.isMobile,
       addTask: this.addTask,
       getTaskById: this.getTaskById,
-      editTask:this.editTask
+      editTask: this.editTask,
+      deleteTask:this.deleteTask
     };
 
     return (
