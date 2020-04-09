@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ApiContext from '../ApiContext';
+import TaskList from "../TaskList/TaskList";
 import './Project.css';
 
 class Project extends Component {
@@ -24,13 +25,22 @@ class Project extends Component {
 	expandedProject = () => {
 		return (
 			<div id="expanded-project">
-				<h1 id="project-title">{this.props.project.project_name}</h1>
+				{
+					!this.context.getIsMobile() && 
+						<h1 id="project-title">{this.props.project.project_name}</h1>
+				}
 				<div id="project-description">{this.props.project.description}</div>
 				<div id="project-dueDate">Due Date: {this.formatDate(this.props.project.duedate)}</div>
-				<div className="button-container">
-          			<button>Completed</button>
-          			<button>Edit</button>
-        		</div>
+				{
+					!this.context.getIsMobile() &&
+						(
+							<div className="button-container">
+								<button>Completed</button>
+								<button>Edit</button>
+        					</div>
+						)
+				}
+				<TaskList tasks={this.context.getTasks().filter(task => task.projectid === this.props.project.id)}/>
 			</div>
 		)
 	}

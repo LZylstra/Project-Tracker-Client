@@ -9,7 +9,6 @@ import Header from '../Header/Header';
 import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
 import ProjectPage from '../ProjectPage/ProjectPage';
-import TaskPage from '../TaskPage/TaskPage';
 import AddProject from '../AddProject/AddProject';
 import AddTask from '../AddTask/AddTask';
 import config from '../config';
