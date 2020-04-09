@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import ApiContext from '../ApiContext';
+import Project from '../Project/Project';
 import { Link } from 'react-router-dom';
 import "./ProjectList.css";
 
 class ProjectList extends Component {
-
+  static contextType = ApiContext
   formatDate = (duedate) => { 
     if (duedate) { 
         let extraChars = duedate.indexOf("T");
@@ -14,16 +16,18 @@ class ProjectList extends Component {
 
   makeProjectsList = (projects) => {
     return projects.map((project) => (
-      <li
-        onClick={() => this.props.showProjectDetail(project.id)}
-        key={project.id}
-        className="project-list-item"
-      >
-        <span className="project-item-title">{project.project_name}</span>
-        <span className="project-priority">{project.priority}</span>
-      </li>
+      <Project showProjectDetail={this.props.showProjectDetail} project={project}/>
     ));
   };
+
+
+
+  displayProjectListJSXMobile = () => {
+    return (
+      this.makeProjectsList(this.props.projects)
+    )
+  }
+
   displayProjectListJSX = () => (
     <div className="project-info">
       <div id="project-list">
@@ -36,21 +40,24 @@ class ProjectList extends Component {
         </Link>
         <h2 id="project-list-title">Your Projects</h2>
         <ul>{this.makeProjectsList(this.props.projects)}</ul>
-        <div className="button-container">
-          <button>Completed</button>
-          <button>Edit</button>
-        </div>
         <button>Delete Selected</button>
       </div>
       <div id="expanded-project">
         <h1 id="project-title">{this.props.selected.project_name}</h1>
         <div id="project-description">{this.props.selected.description}</div>
         <div id="project-dueDate">Due Date: {this.formatDate(this.props.selected.duedate)}</div>
+        <div className="button-container">
+          <button>Completed</button>
+          <button>Edit</button>
+        </div>
       </div>
     </div>
   );
   render() {
-    return <>{this.displayProjectListJSX()}</>;
+    console.log(this.context)
+    return this.context.getIsMobile() ?
+      this.displayProjectListJSXMobile():
+      this.displayProjectListJSX()
   }
 }
 
