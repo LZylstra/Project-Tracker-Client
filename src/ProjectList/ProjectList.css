@@ -9,7 +9,7 @@
     display:flex;
 }
 #expanded-project {
-    width:500px;
+    width:100%;
 }
 .project-list-item {
     border-bottom:1px solid white;
