@@ -9,7 +9,6 @@ import Header from '../Header/Header';
 import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
 import ProjectPage from '../ProjectPage/ProjectPage';
-import TaskPage from '../TaskPage/TaskPage';
 import AddProject from '../AddProject/AddProject';
 import AddTask from '../AddTask/AddTask';
 import config from '../config';
@@ -21,6 +20,7 @@ class App extends Component {
     const initialState = {
       tasks: [],
       projects: [],
+      employees:[],
       loggedIn: !!window.sessionStorage.jwt,
       userId: null,
       isAdmin: false,
@@ -107,8 +107,8 @@ class App extends Component {
   };
 
   handleResize = () => {
-    this.setState({isMobile: window.innerWidth < 800})
-  }
+    this.setState({ isMobile: window.innerWidth < 800 });
+  };
 
   getCompanyInfo = () => {
     const options = config.getOptions("get");
@@ -220,11 +220,106 @@ class App extends Component {
     });
   };
 
- 
+  getUsersByCompanyId = (companyId) => { 
+    const options = config.getOptions("get");
+    const url = `${config.API}/api/users/c/${companyId}`;
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((employees) => {
+        this.setState({
+          employees
+        })   
+      })
+
+  }
+
+  addTask = (task_name, assignedto, description, priority, status, projectid) => {
+    let projectIdNum = parseInt(projectid);
+    const options = config.getOptions("post");
+    const url = `${config.API}/api/tasks/p/${projectid}`;
+    options.body = JSON.stringify({
+      task_name,
+      assignedto,
+      description,
+      priority,
+      status,
+      projectid:projectIdNum, 
+      datemodified:new Date(),
+    });
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((task) =>
+        this.setState({
+          tasks: [...this.state.tasks, task],
+        })
+      );
+  };
+  getTaskById = (id) => {
+    const options = config.getOptions("get");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      return res.json();
+    });
+  };
+
+  editTask = (project_name, description, priority, duedate, status, id) => {
+    const options = config.getOptions("patch");
+    const url = `${config.API}/api/projects/${id}`;
+    options.body = JSON.stringify({
+      project_name,
+      description,
+      priority,
+      duedate,
+      status,
+    });
+    console.log(options.body);
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((project) =>
+        this.setState({
+          projects: [...this.state.projects, project],
+        })
+      );
+  };
+
+  deleteTask = (id) => {
+    const options = config.getOptions("delete");
+    const url = `${config.API}/api/projects/${id}`;
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      const otherProjects = this.state.projects.filter(
+        (project) => project.id !== id
+      );
+      this.setState({
+        projects: otherProjects,
+      });
+    });
+  };
+
   //Lifecycle functions
 
   componentDidMount = () => {
-    window.addEventListener("resize", this.handleResize)
+    window.addEventListener("resize", this.handleResize);
     this.getCompanyInfo();
   };
 
@@ -241,15 +336,18 @@ class App extends Component {
       getTasks: () => this.state.tasks,
       getisAdmin: () => this.state.isadmin,
       getProjects: () => this.state.projects,
+      getCompanyId: () => this.state.companyId,
+      getEmployees:()=>this.state.employees,
       getCompanyInfo: this.getCompanyInfo,
       signUp: this.signUp,
       addCompany: this.addCompany,
       extractPayload: this.extractPayload,
       getProjectsByCompanyId: this.getProjectsByCompanyId,
-      addProject:this.addProject,
+      getUsersByCompanyId: this.getUsersByCompanyId,
+      addProject: this.addProject,
       showApiError: () => this.state.apiError,
-      getIsMobile: () => this.state.isMobile
-
+      getIsMobile: () => this.state.isMobile,
+      addTask:this.addTask
     };
 
     return (
