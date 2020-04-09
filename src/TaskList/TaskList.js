@@ -30,7 +30,8 @@ class TaskPage extends Component {
   };
 
   render() {
-    return <div className="task-list">{this.renderTaskList()}</div>;
+    return <div className="task-list">{this.renderTaskList()}
+    <button className="add-task-btn">+ Add Task</button></div>;
   }
 }
 

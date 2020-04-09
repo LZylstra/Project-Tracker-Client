@@ -4,7 +4,8 @@ export default React.createContext({
     login: () => {},
     getProjects: () => {},
     getUserIsAdmin: () =>{},
-    getTasks: () => {},
+    getTasks: () => { },
+    getCompanyId: () => { },
     getCompanyInfo: ()=> {},
     signUp: () => { },
     showApiError: () => {},
@@ -20,7 +21,8 @@ export default React.createContext({
     getTaskById: () => { },
     addTask: () => { },
     editTask: () => { },
-    deleteTask: () => { }
+    deleteTask: () => { },
+    getUsersByCompanyId: () => { }
     
 
     

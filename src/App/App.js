@@ -20,6 +20,7 @@ class App extends Component {
     const initialState = {
       tasks: [],
       projects: [],
+      employees:[],
       loggedIn: !!window.sessionStorage.jwt,
       userId: null,
       isAdmin: false,
@@ -219,23 +220,35 @@ class App extends Component {
     });
   };
 
-  addTask = (
-    task_name,
-    assignedto,
-    description,
-    priority,
-    status,
-    projectid
-  ) => {
+  getUsersByCompanyId = (companyId) => { 
+    const options = config.getOptions("get");
+    const url = `${config.API}/api/users/c/${companyId}`;
+    return fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((e) => Promise.reject(e));
+        }
+        return res.json();
+      })
+      .then((employees) => {
+        this.setState({
+          employees
+        })   
+      })
+
+  }
+
+  addTask = (task_name, assignedto, description, priority, status, projectid) => {
+    let projectIdNum = parseInt(projectid);
     const options = config.getOptions("post");
-    const url = `${config.API}/api/projects/c/${this.state.companyId}`;
+    const url = `${config.API}/api/tasks/p/${projectid}`;
     options.body = JSON.stringify({
       task_name,
       assignedto,
       description,
       priority,
       status,
-      projectid,
+      projectid:projectIdNum, 
       datemodified:new Date(),
     });
     return fetch(url, options)
@@ -245,9 +258,9 @@ class App extends Component {
         }
         return res.json();
       })
-      .then((project) =>
+      .then((task) =>
         this.setState({
-          projects: [...this.state.projects, project],
+          tasks: [...this.state.tasks, task],
         })
       );
   };
@@ -323,14 +336,18 @@ class App extends Component {
       getTasks: () => this.state.tasks,
       getisAdmin: () => this.state.isadmin,
       getProjects: () => this.state.projects,
+      getCompanyId: () => this.state.companyId,
+      getEmployees:()=>this.state.employees,
       getCompanyInfo: this.getCompanyInfo,
       signUp: this.signUp,
       addCompany: this.addCompany,
       extractPayload: this.extractPayload,
       getProjectsByCompanyId: this.getProjectsByCompanyId,
+      getUsersByCompanyId: this.getUsersByCompanyId,
       addProject: this.addProject,
       showApiError: () => this.state.apiError,
       getIsMobile: () => this.state.isMobile,
+      addTask:this.addTask
     };
 
     return (
