@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "alias": "project-tracker",
+  "name": "project-tracker",
+  "routes": [{ "handle": "filesystem" }, { "src": "/.*", "dest": "index.html" }]
+}

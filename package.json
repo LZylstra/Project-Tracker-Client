@@ -21,7 +21,7 @@
     "commit": "git commit -m ",
     "postcommit": "git push",
     "predeploy": "npm run build",
-    "deploy": "now ./build",
+    "deploy": "now --prod ./build",
     "postdeploy": "now alias -A ./build/now.json"
   },
   "eslintConfig": {

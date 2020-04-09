@@ -144,7 +144,6 @@ class App extends Component {
       )
       .catch((res) => this.setState({ apiError: res.error }));
   };
-
   addProject = (project_name, description, priority, duedate) => {
     const options = config.getOptions("post");
     const url = `${config.API}/api/projects/c/${this.state.companyId}`;

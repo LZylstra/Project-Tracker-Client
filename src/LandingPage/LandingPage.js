@@ -15,11 +15,20 @@ class LandingPage extends Component {
 	render(){
 		return (
 			<div className="landing-page">
-				<p className="greeting">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				<div className="greeting">
+				<p id="greeting-header" className="greeting-header">
+					Welcome to Project Tracker
+				</p>
+				<p id="description">Lorem ipsum dolor sit amet, consectetur adipiscing <br></br>elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
 				<div className="button-wrapper">
-					<button onClick={this.onLogin}>Login</button>
-					<button onClick={this.onRegister}>Register</button>
+					<button  onClick={this.onLogin}>Login</button>
+					<button  onClick={this.onRegister}>Register</button>
 				</div>
+				</div>
+		
+
+		
 			</div>
 		)
 	}
