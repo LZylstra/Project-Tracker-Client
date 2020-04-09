@@ -14,9 +14,9 @@ class ProjectList extends Component {
   
   }
 
-  makeProjectsList = (projects) => {
-    return projects.map((project) => (
-      <Project showProjectDetail={this.props.showProjectDetail} project={project}/>
+  makeProjectsList = projects => {
+    return projects.map(project => (
+      <Project showProjectDetail={this.props.showProjectDetail} project={project} children={this.props.children} key={project.id}/>
     ));
   };
 
@@ -24,7 +24,19 @@ class ProjectList extends Component {
 
   displayProjectListJSXMobile = () => {
     return (
-      this.makeProjectsList(this.props.projects)
+      <div className="project-info">
+        <div id="project-list">
+          <Link to="/AddProject">
+            <button id="add-project-button">
+              <h1>
+                Add Project<i className="add-project-plus fas fa-plus"></i>
+              </h1>
+            </button>
+          </Link>
+          <h2 id="project-list-title">Your Projects</h2>
+          <ul>{this.makeProjectsList(this.props.projects)}</ul>
+        </div>
+      </div>
     )
   }
 
@@ -34,7 +46,7 @@ class ProjectList extends Component {
         <Link to="/AddProject">
           <button id="add-project-button">
             <h1>
-              Add Project<i class="add-project-plus fas fa-plus"></i>
+              Add Project<i className="add-project-plus fas fa-plus"></i>
             </h1>
           </button>
         </Link>
@@ -50,11 +62,11 @@ class ProjectList extends Component {
           <button>Completed</button>
           <button>Edit</button>
         </div>
+        {this.props.children}
       </div>
     </div>
   );
   render() {
-    console.log(this.context)
     return this.context.getIsMobile() ?
       this.displayProjectListJSXMobile():
       this.displayProjectListJSX()

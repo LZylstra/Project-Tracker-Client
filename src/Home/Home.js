@@ -45,8 +45,12 @@ class Home extends Component {
               projects={this.context.getProjects()}
               showProjectDetail={this.showProjectDetail}
               selected={this.state.selectedProject}
-            />
-            <TaskList tasks={this.context.getTasks()} />
+            >
+              <TaskList tasks={this.context.getTasks().filter(task => {
+                return task.projectid === this.state.selectedProject.id
+              })} />  
+            </ProjectList>
+            
           </>
         )}
       </div>
