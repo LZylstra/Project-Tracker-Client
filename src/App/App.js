@@ -367,7 +367,7 @@ class App extends Component {
           />
           <Route
             path="/addtask/:project_id"
-            render={({ match,  history }) => (
+            render={({ match, history }) => (
               <AddTask history={history} projectId={match.params.project_id} />
             )}
           />
