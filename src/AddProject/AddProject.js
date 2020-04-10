@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ApiContext from "../ApiContext";
+// import config from "../config";
 import "./AddProject.css";
 
 class AddProject extends Component {
@@ -16,7 +17,6 @@ class AddProject extends Component {
 
   componentDidMount() {
     if (this.props.projectId) {
-
       this.context
         .getProjectById(this.props.projectId)
         .then((res) => {
@@ -24,7 +24,6 @@ class AddProject extends Component {
             ? this.formatDateFromServer(res.duedate)
             : "";
           this.setState({
-
             name: res.project_name,
             description: res.description,
             priority: res.priority,
@@ -47,7 +46,7 @@ class AddProject extends Component {
       dueDate: "",
       status: "",
     });
-  }
+  };
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -72,7 +71,8 @@ class AddProject extends Component {
         this.state.description,
         this.state.priority,
         this.formatDateForAPI(this.state.dueDate)
-      ).then(()=> this.props.history.push("/"))
+      )
+      .then(() => this.props.history.push("/"))
       .catch((res) => {
         this.setState({ error: res.error });
       });
@@ -100,9 +100,9 @@ class AddProject extends Component {
     } else {
       this.handleAddProject();
     }
-
   };
   render() {
+    // config.checkForAuth();
     return (
       <div className="form-container">
         <h2>{this.state.editMode ? "Edit Project" : "Add Project"}</h2>
