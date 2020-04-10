@@ -1,17 +1,19 @@
-
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import './App.css';
-import ApiContext from '../ApiContext';
-import LandingPage from '../LandingPage/LandingPage';
-import Home from '../Home/Home';
-import Header from '../Header/Header';
-import SignUp from '../SignUp/SignUp';
-import Login from '../Login/Login';
-import ProjectPage from '../ProjectPage/ProjectPage';
-import AddProject from '../AddProject/AddProject';
-import AddTask from '../AddTask/AddTask';
-import config from '../config';
+import React, { Component } from "react";
+import { Route, Switch } from "react-router-dom";
+import "./App.css";
+import ApiContext from "../ApiContext";
+import LandingPage from "../LandingPage/LandingPage";
+import Home from "../Home/Home";
+import Header from "../Header/Header";
+import SignUp from "../SignUp/SignUp";
+import Login from "../Login/Login";
+import ProjectPage from "../ProjectPage/ProjectPage";
+import AddProject from "../AddProject/AddProject";
+import AddTask from "../AddTask/AddTask";
+import config from "../config";
+import PageNotFound from "../PageNotFound/PageNotFound";
+import PrivateRoute from "../utils/PrivateRoute";
+import PublicOnlyRoute from "../utils/PublicOnlyRoute";
 
 class App extends Component {
   //add persistance to state by storing state in sessionStorage
@@ -306,21 +308,14 @@ class App extends Component {
     });
   };
 
-  editTask = (
-    task_name,
-    assignedto,
-    description,
-    priority,
-    status,
-    id
-  ) => {
+  editTask = (task_name, assignedto, description, priority, status, id) => {
     const options = config.getOptions("patch");
     const url = `${config.API}/api/tasks/${id}`;
     options.body = JSON.stringify({
       task_name,
       assignedto,
       description,
-      datemodified:new Date(),
+      datemodified: new Date(),
       priority,
       status,
     });
@@ -346,9 +341,7 @@ class App extends Component {
       if (!res.ok) {
         return res.json().then((e) => Promise.reject(e));
       }
-      const otherTasks = this.state.tasks.filter(
-        (task) => task.id !== id
-      );
+      const otherTasks = this.state.tasks.filter((task) => task.id !== id);
       this.setState({
         tasks: otherTasks,
       });
@@ -399,36 +392,43 @@ class App extends Component {
       <ApiContext.Provider value={value}>
         <div className="App">
           <Header />
-          {this.renderHome()}
-          <Route exact path="/SignUp" component={SignUp} />
-          <Route exact path="/Login" component={Login} />
-          <Route exact path="/projects/:projectId" component={ProjectPage} />
-          {/* <Route exact path="/tasks/:taskId" component={TaskPage} /> */}
-          <Route exact path="/AddProject" component={AddProject} />
-          <Route
-            path="/edit/project/:project_id"
-            render={({ match, history }) => (
-              <AddProject
-                history={history}
-                projectId={match.params.project_id}
-              />
-            )}
-          />
-          <Route
-            path="/addtask/:project_id"
-            render={({ match, history }) => (
-              <AddTask history={history} projectId={match.params.project_id} />
-            )}
-          />
-          <Route
-            path="/edit/task/:task_id"
-            render={({ match, history }) => (
-              <AddTask
-                history={history}
-                taskId={match.params.task_id}
-              />
-            )}
-          />
+
+          <Switch>
+            {this.renderHome()}
+            <PublicOnlyRoute exact path="/SignUp" component={SignUp} />
+            <PublicOnlyRoute exact path="/Login" component={Login} />
+            <PrivateRoute
+              exact
+              path="/projects/:projectId"
+              component={ProjectPage}
+            />
+            <PrivateRoute exact path="/AddProject" component={AddProject} />
+            <PrivateRoute
+              path="/edit/project/:project_id"
+              render={({ match, history }) => (
+                <AddProject
+                  history={history}
+                  projectId={match.params.project_id}
+                />
+              )}
+            />
+            <PrivateRoute
+              path="/addtask/:project_id"
+              render={({ match, history }) => (
+                <AddTask
+                  history={history}
+                  projectId={match.params.project_id}
+                />
+              )}
+            />
+            <PrivateRoute
+              path="/edit/task/:task_id"
+              render={({ match, history }) => (
+                <AddTask history={history} taskId={match.params.task_id} />
+              )}
+            />
+            <Route component={PageNotFound} />
+          </Switch>
           <footer />
         </div>
       </ApiContext.Provider>
