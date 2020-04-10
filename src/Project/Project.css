@@ -1,3 +1,4 @@
+
 #project-title, #project-description, #project-dueDate{
 margin: 20px;
 
@@ -8,4 +9,5 @@ margin: 20px;
 
 #project-dueDate{
     font-weight: bold;
+
 }

@@ -1,17 +1,19 @@
-
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import './App.css';
-import ApiContext from '../ApiContext';
-import LandingPage from '../LandingPage/LandingPage';
-import Home from '../Home/Home';
-import Header from '../Header/Header';
-import SignUp from '../SignUp/SignUp';
-import Login from '../Login/Login';
-import ProjectPage from '../ProjectPage/ProjectPage';
-import AddProject from '../AddProject/AddProject';
-import AddTask from '../AddTask/AddTask';
-import config from '../config';
+import React, { Component } from "react";
+import { Route, Switch } from "react-router-dom";
+import "./App.css";
+import ApiContext from "../ApiContext";
+import LandingPage from "../LandingPage/LandingPage";
+import Home from "../Home/Home";
+import Header from "../Header/Header";
+import SignUp from "../SignUp/SignUp";
+import Login from "../Login/Login";
+import ProjectPage from "../ProjectPage/ProjectPage";
+import AddProject from "../AddProject/AddProject";
+import AddTask from "../AddTask/AddTask";
+import config from "../config";
+import PageNotFound from "../PageNotFound/PageNotFound";
+import PrivateRoute from "../utils/PrivateRoute";
+import PublicOnlyRoute from "../utils/PublicOnlyRoute";
 
 class App extends Component {
   //add persistance to state by storing state in sessionStorage
@@ -45,6 +47,28 @@ class App extends Component {
     };
   }
 
+  addToProjectsSelected = id => {
+    console.log(this.state.selectedProjects)
+    let newSelectedProjects;
+    if(this.state.selectedProjects.length > 0){
+      newSelectedProjects = this.state.selectedProjects + "," + id
+    }else{
+      newSelectedProjects = this.state.selectedProjects + id
+    }
+    this.setState({selectedProjects: newSelectedProjects})
+  }
+
+  removeFromProjectsSelected = id => {
+    const newId = id.toString()
+    let newSelectedProjects;
+    if(this.state.selectedProjects.length > newId.length){
+      newSelectedProjects = this.state.selectedProjects.split(',' + newId).join('')
+    } else {
+      newSelectedProjects = this.state.selectedProjects.split(newId).join('')
+    }
+    this.setState({selectedProjects: newSelectedProjects})
+  }
+
   //Api call functions
 
   login = (email, password) => {
@@ -76,7 +100,7 @@ class App extends Component {
       loggedIn: true,
       userId: payload.user_id,
       companyId: payload.companyid,
-      userIsAdmin: payload.isadmin,
+      isAdmin: payload.isadmin,
     });
   };
 
@@ -110,6 +134,8 @@ class App extends Component {
     this.setState({ isMobile: window.innerWidth < 800 });
   };
 
+  //Api calls to projects endpoint
+
   getCompanyInfo = () => {
     const options = config.getOptions("get");
     if (this.state.loggedIn) {
@@ -119,13 +145,11 @@ class App extends Component {
       ])
         .then((res) => Promise.all([res[0].json(), res[1].json()]))
         .then((res) =>
-          this.setState({ projects: [...res[0]], tasks: [...res[1]] })
+          this.setState({ projects: [...res[0]], tasks: [...res[1]], selectedProjects: "" })
         )
         .catch((err) => console.error(err));
     }
   };
-
-  //Api calls to projects endpoint
 
   getProjectsByCompanyId = () => {
     const options = config.getOptions("get");
@@ -219,6 +243,11 @@ class App extends Component {
     });
   };
 
+  deleteSelectedProjects = () => {
+    const ids = this.state.selectedProjects.split(',').map(id => parseInt(id))
+    Promise.all(ids.map(id => this.deleteProject(id)))
+  }
+
   getUsersByCompanyId = (companyId) => {
     const options = config.getOptions("get");
     const url = `${config.API}/api/users/c/${companyId}`;
@@ -236,25 +265,10 @@ class App extends Component {
       });
   };
 
-  addTask = (
-    task_name,
-    assignedto,
-    description,
-    priority,
-    status,
-    projectid
-  ) => {
+  addTask = (task, projectid) => {
     const options = config.getOptions("post");
     const url = `${config.API}/api/tasks/p/${projectid}`;
-    options.body = JSON.stringify({
-      task_name,
-      assignedto,
-      description,
-      priority,
-      status,
-      projectid: projectid,
-      datemodified: new Date(),
-    });
+    options.body = JSON.stringify(task);
     return fetch(url, options)
       .then((res) => {
         if (!res.ok) {
@@ -279,24 +293,11 @@ class App extends Component {
     });
   };
 
-  editTask = (
-    task_name,
-    assignedto,
-    description,
-    priority,
-    status,
-    id
-  ) => {
+  editTask = (task, id) => {
     const options = config.getOptions("patch");
     const url = `${config.API}/api/tasks/${id}`;
-    options.body = JSON.stringify({
-      task_name,
-      assignedto,
-      description,
-      datemodified:new Date(),
-      priority,
-      status,
-    });
+    console.log(task);
+    options.body = JSON.stringify(task);
     console.log(options.body);
     return fetch(url, options)
       .then((res) => {
@@ -311,6 +312,7 @@ class App extends Component {
         })
       );
   };
+ 
 
   deleteTask = (id) => {
     const options = config.getOptions("delete");
@@ -319,9 +321,7 @@ class App extends Component {
       if (!res.ok) {
         return res.json().then((e) => Promise.reject(e));
       }
-      const otherTasks = this.state.tasks.filter(
-        (task) => task.id !== id
-      );
+      const otherTasks = this.state.tasks.filter((task) => task.id !== id);
       this.setState({
         tasks: otherTasks,
       });
@@ -346,7 +346,7 @@ class App extends Component {
     const value = {
       login: this.login,
       getTasks: () => this.state.tasks,
-      getisAdmin: () => this.state.isadmin,
+      getisAdmin: () => this.state.isAdmin,
       getProjects: () => this.state.projects,
       getCompanyId: () => this.state.companyId,
       getEmployees: () => this.state.employees,
@@ -357,48 +357,75 @@ class App extends Component {
       getProjectsByCompanyId: this.getProjectsByCompanyId,
       getUsersByCompanyId: this.getUsersByCompanyId,
       addProject: this.addProject,
+      getProjectById: this.getProjectById,
+      editProject:this.editProject,
       showApiError: () => this.state.apiError,
       getIsMobile: () => this.state.isMobile,
       addTask: this.addTask,
       getTaskById: this.getTaskById,
       editTask: this.editTask,
-      deleteTask:this.deleteTask
+      deleteTask:this.deleteTask,
+      addToProjectsSelected: this.addToProjectsSelected,
+      removeFromProjectsSelected: this.removeFromProjectsSelected,
+      deleteSelectedProjects: this.deleteSelectedProjects
     };
 
     return (
       <ApiContext.Provider value={value}>
         <div className="App">
           <Header />
-          {this.renderHome()}
-          <Route exact path="/SignUp" component={SignUp} />
-          <Route exact path="/Login" component={Login} />
-          <Route exact path="/projects/:projectId" component={ProjectPage} />
-          {/* <Route exact path="/tasks/:taskId" component={TaskPage} /> */}
-          <Route exact path="/AddProject" component={AddProject} />
-          <Route
-            path="/edit/project/:project_id"
-            render={({ match, history }) => (
-              <AddProject
-                history={history}
-                projectId={match.params.project_id}
+
+          <Switch>
+            {this.renderHome()}
+            <PublicOnlyRoute exact path="/SignUp" component={SignUp} />
+            <PublicOnlyRoute exact path="/Login" component={Login} />
+            <PrivateRoute
+              exact
+              path="/projects/:projectId"
+              component={ProjectPage}
+            />
+            <PrivateRoute exact path="/AddProject" component={AddProject} />
+
+            {this.state.loggedIn ? (
+              <Route
+                path="/edit/project/:project_id"
+                render={({ match, history }) => (
+                  <AddProject
+                    history={history}
+                    projectId={match.params.project_id}
+                  />
+                )}
               />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
             )}
-          />
-          <Route
-            path="/addtask/:project_id"
-            render={({ match, history }) => (
-              <AddTask history={history} projectId={match.params.project_id} />
-            )}
-          />
-          <Route
-            path="/edit/task/:task_id"
-            render={({ match, history }) => (
-              <AddTask
-                history={history}
-                taskId={match.params.task_id}
+
+            {this.state.loggedIn ? (
+              <Route
+                path="/addtask/:project_id"
+                render={({ match, history }) => (
+                  <AddTask
+                    history={history}
+                    projectId={match.params.project_id}
+                  />
+                )}
               />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
             )}
-          />
+
+            {this.state.loggedIn ? (
+              <Route
+                path="/edit/task/:task_id"
+                render={({ match, history }) => (
+                  <AddTask history={history} taskId={match.params.task_id} />
+                )}
+              />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
+            )}
+            <Route component={PageNotFound} />
+          </Switch>
           <footer />
         </div>
       </ApiContext.Provider>

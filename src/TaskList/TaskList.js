@@ -20,7 +20,7 @@ class TaskList extends Component {
         key={task.id}
         taskId={task.id}
         task_name={task.task_name}
-        assignedTo={task.assignedTo}
+        assignedto={task.assignedto}
         description={task.description}
         priority={task.priority}
         status={task.status}

@@ -5,21 +5,29 @@ import ApiContext from '../ApiContext';
 import "./Task.css";
 
 class Task extends Component {
-
-
-
-
   static contextType = ApiContext;
 
   static defaultProps = { task: {} };
-
-
+  componentDidMount() {
+    const companyId = this.context.getCompanyId();
+    this.context
+      .getUsersByCompanyId(companyId)
+      .catch((res) => this.setState({ error: res.error }));
+   }
+  
+  createAssigneeList = (employees) => {
+    return employees.map((employee, index) => (
+      <option key={index} value={employee.id}>
+        {employee.full_name}
+      </option>
+    ));
+  };
   constructor(props) {
     super(props);
     this.state = {
       isExpanded: false,
       status: this.props.status,
-      assignedTo: this.props.assignedTo,
+      assignedto: this.props.assignedto,
       arrowDirection: "fas fa-chevron-right",
     };
   }
@@ -41,6 +49,10 @@ class Task extends Component {
       [name]: value,
     });
     //make patch request to api to update task
+    this.context
+      .editTask({
+        [name]: value}, this.props.taskId)
+      .catch((res) => this.setState({ error: res.error }));
   };
 
   renderPriority = (priority) => {
@@ -63,7 +75,6 @@ class Task extends Component {
         break;
     }
     return priorityColor;
-
   };
 
   render() {
@@ -100,12 +111,11 @@ class Task extends Component {
                   <label htmlFor="assignment">Assign To: </label>
                   <select
                     onChange={this.handleChange}
-                    value={this.state.assignment}
-                    name="assignment"
-                    id="assignment"
+                    value={this.state.assignedto}
+                    name="assignedto"
+                    id="assignedto"
                   >
-                    <option value="user1">User 1</option>
-                    <option value="user2"> User 2</option>
+                    {this.createAssigneeList(this.context.getEmployees())}
                   </select>
                 </div>
 
@@ -113,14 +123,14 @@ class Task extends Component {
                   <label htmlFor="Status">Status: </label>
                   <select
                     onChange={this.handleChange}
-                    value={this.state.assignment}
+                    value={this.state.status}
                     name="status"
                     id="status"
                   >
-                    <option value="new">New</option>
-                    <option value="in progress">In Progress</option>
-                    <option value="on hold">On Hold</option>
-                    <option value="closed">Closed</option>
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Closed">Closed</option>
                   </select>
                 </div>
               </div>
@@ -129,18 +139,19 @@ class Task extends Component {
               </div>
             </div>
 
-            
-
-            {
-              !this.context.getIsMobile() && 
-                <div className="admin-button-container">
-                  <Link to={`/edit/task/${this.props.taskId}`}>
-                    <button className="edit-button">Edit</button>
-                  </Link>
-                <button className="delete-button" onClick={()=>this.context.deleteTask(this.props.taskId)}>Delete</button>
-            </div>
-            }
-
+            {!this.context.getIsMobile() && (
+              <div className="admin-button-container">
+                <Link to={`/edit/task/${this.props.taskId}`}>
+                  <button className="edit-button">Edit</button>
+                </Link>
+                <button
+                  className="delete-button"
+                  onClick={() => this.context.deleteTask(this.props.taskId)}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
