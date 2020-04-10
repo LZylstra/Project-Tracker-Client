@@ -52,6 +52,7 @@ ul {
     border: none;
     padding: 10px 10px;
     text-transform: uppercase;
+    text-shadow: none;
 }
 @media screen and (max-width:800px) {
     #project-list{
