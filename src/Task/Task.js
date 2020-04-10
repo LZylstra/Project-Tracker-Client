@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+
 import { Link } from 'react-router-dom';
 import ApiContext from '../ApiContext';
 import "./Task.css";
 
 class Task extends Component {
+
+
+
 
   static contextType = ApiContext;
 
@@ -124,12 +128,22 @@ class Task extends Component {
                 <p>{this.props.description}</p>
               </div>
             </div>
+
             <div className="admin-button-container">
               <Link to={`/edit/task/${this.props.taskId}`}>
                 <button className="edit-button">Edit</button>
               </Link>
               <button className="delete-button" onClick={()=>this.context.deleteTask(this.props.taskId)}>Delete</button>
             </div>
+
+            {
+              !this.context.getIsMobile() && 
+                <div className="admin-button-container">
+                  <button className="edit-button">Edit</button>
+                  <button className="delete-button">Delete</button>
+                </div>
+            }
+
           </div>
         )}
       </div>

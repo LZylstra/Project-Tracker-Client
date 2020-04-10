@@ -3,10 +3,11 @@
     background:#373131;
   
     color: white;
-    width:600px;
+    width:100%;
 }
 .project-info {
     display:flex;
+    height: 100%;
 }
 #expanded-project {
     width:100%;
@@ -37,12 +38,17 @@ ul {
 .add-project-plus {
     float:right;
 }
+
+#add-project-link{
+    display: block;
+    width:100%;
+}
 #add-project-button {
     cursor:pointer;
     background: transparent;
     color: white;
     font-size: 15px;
-    width:100%;
+    width: stretch;
     border: none;
     padding: 10px 10px;
     text-transform: uppercase;
