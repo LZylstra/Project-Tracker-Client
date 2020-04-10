@@ -36,7 +36,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
+      <div id="home">
         {this.state.isLoading ? (
           <p>Loading projects</p>
         ) : (
