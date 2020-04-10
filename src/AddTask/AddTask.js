@@ -58,24 +58,27 @@ class AddTask extends Component {
   };
   handleAddTask = () => {
     this.context
-      .addTask(
-        this.state.task_name,
-        this.state.assignedto,
-        this.state.description,
-        this.state.priority,
-        this.state.status,
-        this.state.projectid
+      .addTask({
+        task_name: this.state.task_name,
+        assignedto: this.state.assignedto,
+        description: this.state.description,
+        priority: this.state.priority,
+        status: this.state.status
+      },
+      this.state.projectid
       )
       .catch((res) => this.setState({ error: res.error }));
   };
   handleEditTask = () => {
     this.context
       .editTask(
-        this.state.task_name,
-        this.state.assignedto,
-        this.state.description,
-        this.state.priority,
-        this.state.status,
+        {
+          task_name: this.state.task_name,
+          assignedto: this.state.assignedto,
+          description: this.state.description,
+          priority: this.state.priority,
+          status: this.state.status,
+        },
         this.props.taskId
       )
       .catch((res) => this.setState({ error: res.error }));
@@ -91,6 +94,7 @@ class AddTask extends Component {
       this.handleAddTask();
     }
     this.props.history.push("/")
+   
   };
 
   render() {

@@ -265,25 +265,10 @@ class App extends Component {
       });
   };
 
-  addTask = (
-    task_name,
-    assignedto,
-    description,
-    priority,
-    status,
-    projectid
-  ) => {
+  addTask = (task, projectid) => {
     const options = config.getOptions("post");
     const url = `${config.API}/api/tasks/p/${projectid}`;
-    options.body = JSON.stringify({
-      task_name,
-      assignedto,
-      description,
-      priority,
-      status,
-      projectid: projectid,
-      datemodified: new Date(),
-    });
+    options.body = JSON.stringify(task);
     return fetch(url, options)
       .then((res) => {
         if (!res.ok) {
@@ -308,17 +293,11 @@ class App extends Component {
     });
   };
 
-  editTask = (task_name, assignedto, description, priority, status, id) => {
+  editTask = (task, id) => {
     const options = config.getOptions("patch");
     const url = `${config.API}/api/tasks/${id}`;
-    options.body = JSON.stringify({
-      task_name,
-      assignedto,
-      description,
-      datemodified: new Date(),
-      priority,
-      status,
-    });
+    console.log(task);
+    options.body = JSON.stringify(task);
     console.log(options.body);
     return fetch(url, options)
       .then((res) => {
@@ -333,6 +312,7 @@ class App extends Component {
         })
       );
   };
+ 
 
   deleteTask = (id) => {
     const options = config.getOptions("delete");
@@ -377,6 +357,8 @@ class App extends Component {
       getProjectsByCompanyId: this.getProjectsByCompanyId,
       getUsersByCompanyId: this.getUsersByCompanyId,
       addProject: this.addProject,
+      getProjectById: this.getProjectById,
+      editProject:this.editProject,
       showApiError: () => this.state.apiError,
       getIsMobile: () => this.state.isMobile,
       addTask: this.addTask,
@@ -403,6 +385,7 @@ class App extends Component {
               component={ProjectPage}
             />
             <PrivateRoute exact path="/AddProject" component={AddProject} />
+
             {this.state.loggedIn ? (
               <Route
                 path="/edit/project/:project_id"
@@ -416,6 +399,7 @@ class App extends Component {
             ) : (
               <PublicOnlyRoute exact path="/Login" component={Login} />
             )}
+
             {this.state.loggedIn ? (
               <Route
                 path="/addtask/:project_id"
@@ -428,14 +412,18 @@ class App extends Component {
               />
             ) : (
               <PublicOnlyRoute exact path="/Login" component={Login} />
-              )}
-            
-            {this.state.loggedIn ? <Route
-              path="/edit/task/:task_id"
-              render={({ match, history }) => (
-                <AddTask history={history} taskId={match.params.task_id} />
-              )}
-            /> : <PublicOnlyRoute exact path="/Login" component={Login} />}
+            )}
+
+            {this.state.loggedIn ? (
+              <Route
+                path="/edit/task/:task_id"
+                render={({ match, history }) => (
+                  <AddTask history={history} taskId={match.params.task_id} />
+                )}
+              />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
+            )}
             <Route component={PageNotFound} />
           </Switch>
           <footer />
