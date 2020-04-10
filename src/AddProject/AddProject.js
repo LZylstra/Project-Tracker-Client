@@ -38,15 +38,7 @@ class AddProject extends Component {
     }
   }
 
-  clearForm = () => {
-    this.setState({
-      name: "",
-      description: "",
-      priority: "",
-      dueDate: "",
-      status: "",
-    });
-  };
+
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -72,7 +64,6 @@ class AddProject extends Component {
         this.state.priority,
         this.formatDateForAPI(this.state.dueDate)
       )
-      .then(() => this.props.history.push("/"))
       .catch((res) => {
         this.setState({ error: res.error });
       });
@@ -87,7 +78,6 @@ class AddProject extends Component {
         this.state.status,
         this.props.projectId
       )
-      .then(() => this.props.history.push("/"))
       .catch((res) => {
         this.setState({ error: res.error });
       });
@@ -100,6 +90,7 @@ class AddProject extends Component {
     } else {
       this.handleAddProject();
     }
+    this.props.history.push("/")
   };
   render() {
     // config.checkForAuth();
@@ -197,12 +188,12 @@ class AddProject extends Component {
             <button className="add-button" type="submit">
               {this.state.editMode ? "Edit Project" : "Add Project"}
             </button>
-            <button
+          <button
               type="button"
-              className="clear-button"
-              onClick={() => this.clearForm()}
+              className="cancel"
+              onClick={() => this.props.history.push("/")}
             >
-              Clear
+              Cancel
             </button>
           </div>
         </form>

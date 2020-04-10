@@ -403,30 +403,39 @@ class App extends Component {
               component={ProjectPage}
             />
             <PrivateRoute exact path="/AddProject" component={AddProject} />
-            <PrivateRoute
-              path="/edit/project/:project_id"
-              render={({ match, history }) => (
-                <AddProject
-                  history={history}
-                  projectId={match.params.project_id}
-                />
+            {this.state.loggedIn ? (
+              <Route
+                path="/edit/project/:project_id"
+                render={({ match, history }) => (
+                  <AddProject
+                    history={history}
+                    projectId={match.params.project_id}
+                  />
+                )}
+              />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
+            )}
+            {this.state.loggedIn ? (
+              <Route
+                path="/addtask/:project_id"
+                render={({ match, history }) => (
+                  <AddTask
+                    history={history}
+                    projectId={match.params.project_id}
+                  />
+                )}
+              />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
               )}
-            />
-            <PrivateRoute
-              path="/addtask/:project_id"
-              render={({ match, history }) => (
-                <AddTask
-                  history={history}
-                  projectId={match.params.project_id}
-                />
-              )}
-            />
-            <PrivateRoute
+            
+            {this.state.loggedIn ? <Route
               path="/edit/task/:task_id"
               render={({ match, history }) => (
                 <AddTask history={history} taskId={match.params.task_id} />
               )}
-            />
+            /> : <PublicOnlyRoute exact path="/Login" component={Login} />}
             <Route component={PageNotFound} />
           </Switch>
           <footer />

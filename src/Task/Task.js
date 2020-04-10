@@ -5,15 +5,20 @@ import ApiContext from '../ApiContext';
 import "./Task.css";
 
 class Task extends Component {
-
-
-
-
   static contextType = ApiContext;
 
   static defaultProps = { task: {} };
-
-
+  componentDidMount() {
+    
+   }
+  
+  createAssigneeList = (employees) => {
+    return employees.map((employee, index) => (
+      <option key={index} value={employee.id}>
+        {employee.full_name}
+      </option>
+    ));
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -63,7 +68,6 @@ class Task extends Component {
         break;
     }
     return priorityColor;
-
   };
 
   render() {
@@ -129,18 +133,19 @@ class Task extends Component {
               </div>
             </div>
 
-            
-
-            {
-              !this.context.getIsMobile() && 
-                <div className="admin-button-container">
-                  <Link to={`/edit/task/${this.props.taskId}`}>
-                    <button className="edit-button">Edit</button>
-                  </Link>
-                <button className="delete-button" onClick={()=>this.context.deleteTask(this.props.taskId)}>Delete</button>
-            </div>
-            }
-
+            {!this.context.getIsMobile() && (
+              <div className="admin-button-container">
+                <Link to={`/edit/task/${this.props.taskId}`}>
+                  <button className="edit-button">Edit</button>
+                </Link>
+                <button
+                  className="delete-button"
+                  onClick={() => this.context.deleteTask(this.props.taskId)}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
