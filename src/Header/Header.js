@@ -14,11 +14,18 @@ class Header extends Component {
 		return (
 			<header className="header" id="header">
 				<span className="logo">PROJECT TRACKER</span>
+				<div className= 'nav'>
+				<Link to='/' onClick={this.handleLogout} id="home-nav">Home</Link>
+				<Link to='/' onClick={this.handleLogout} id="completed-nav">Completed</Link>
 				{
 					!!window.sessionStorage.jwt ?
+					
 						<Link to='/' onClick={this.handleLogout} id="logout">Logout</Link>
-						: <Link to='/' onClick={this.handleLogout} id="logout" disable="true"/>
+						: <Link to='/' onClick={this.handleLogout} className="hidden-logout" id="logout" disable="true"/>
 				}
+	
+				</div>
+						 
 			</header>
 		)
 	}

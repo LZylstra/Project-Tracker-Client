@@ -6,18 +6,34 @@
     align-items: flex-end;
     text-align: center;
     font-size: 2em;
-    height: 11.5%;
+    height: 12.5%;
+    padding-top: 5px;
     background-color:#413c69;
     color: white;
     font-weight: bold;
 }
 
-#logout{
-    font-size: 0.5em;
-    display: block;
-    height: 25%;
-}
 
 .logo{
     align-self: center;
 }
+
+.hidden-logout{
+   visibility: hidden;
+}
+#logout, #home-nav, #completed-nav{
+        color: rgb(255, 255, 255);
+        font-family: helvetica;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 15px;
+        margin-right: 20px;
+        margin-bottom: 5px;
+        float: left;
+
+}
+#logout:hover, #home-nav:hover, #completed-nav:hover{
+    color: rgb(138, 138, 138);
+}
+      
+
