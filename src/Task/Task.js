@@ -27,7 +27,7 @@ class Task extends Component {
     this.state = {
       isExpanded: false,
       status: this.props.status,
-      assignedTo: this.props.assignedTo,
+      assignedto: this.props.assignedto,
       arrowDirection: "fas fa-chevron-right",
     };
   }
@@ -49,6 +49,10 @@ class Task extends Component {
       [name]: value,
     });
     //make patch request to api to update task
+    this.context
+      .editTask({
+        [name]: value}, this.props.taskId)
+      .catch((res) => this.setState({ error: res.error }));
   };
 
   renderPriority = (priority) => {
@@ -107,9 +111,9 @@ class Task extends Component {
                   <label htmlFor="assignment">Assign To:</label>
                   <select
                     onChange={this.handleChange}
-                    value={this.state.assignment}
-                    name="assignment"
-                    id="assignment"
+                    value={this.state.assignedto}
+                    name="assignedto"
+                    id="assignedto"
                   >
                     {this.createAssigneeList(this.context.getEmployees())}
                   </select>
@@ -119,14 +123,14 @@ class Task extends Component {
                   <label htmlFor="Status">Status:</label>
                   <select
                     onChange={this.handleChange}
-                    value={this.state.assignment}
+                    value={this.state.status}
                     name="status"
                     id="status"
                   >
-                    <option value="new">New</option>
-                    <option value="in progress">In Progress</option>
-                    <option value="on hold">On Hold</option>
-                    <option value="closed">Closed</option>
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Closed">Closed</option>
                   </select>
                 </div>
               </div>
