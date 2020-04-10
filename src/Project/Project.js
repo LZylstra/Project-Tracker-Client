@@ -56,8 +56,8 @@ class Project extends Component {
 
 	  makeProjectMobile = project => {
 		return (
-			<li onClick={this.handleProjectClick} key={project.id} className="project-list-item">
-				<span className="project-item-title">{project.project_name}</span>
+			<li  key={project.id} className="project-list-item">
+				<span className="project-item-title" onClick={this.handleProjectClick}>{project.project_name}</span>
 				<span className="project-priority">{project.priority}</span>
 				{
 					this.state.isExpanded && this.expandedProject()
@@ -67,6 +67,11 @@ class Project extends Component {
 	  }
 
 	render(){
+		if(this.state.isExpanded){
+			document.getElementById('root').style.height = "auto"
+		} else {
+			document.getElementById('root').style.height = "100%"
+		}
 		return this.context.getIsMobile() ?
 			this.makeProjectMobile(this.props.project) :
 			this.makeProjectPc(this.props.project)
