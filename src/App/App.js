@@ -47,6 +47,28 @@ class App extends Component {
     };
   }
 
+  addToProjectsSelected = id => {
+    console.log(this.state.selectedProjects)
+    let newSelectedProjects;
+    if(this.state.selectedProjects.length > 0){
+      newSelectedProjects = this.state.selectedProjects + "," + id
+    }else{
+      newSelectedProjects = this.state.selectedProjects + id
+    }
+    this.setState({selectedProjects: newSelectedProjects})
+  }
+
+  removeFromProjectsSelected = id => {
+    const newId = id.toString()
+    let newSelectedProjects;
+    if(this.state.selectedProjects.length > newId.length){
+      newSelectedProjects = this.state.selectedProjects.split(',' + newId).join('')
+    } else {
+      newSelectedProjects = this.state.selectedProjects.split(newId).join('')
+    }
+    this.setState({selectedProjects: newSelectedProjects})
+  }
+
   //Api call functions
 
   login = (email, password) => {
@@ -78,7 +100,7 @@ class App extends Component {
       loggedIn: true,
       userId: payload.user_id,
       companyId: payload.companyid,
-      userIsAdmin: payload.isadmin,
+      isAdmin: payload.isadmin,
     });
   };
 
@@ -112,6 +134,8 @@ class App extends Component {
     this.setState({ isMobile: window.innerWidth < 800 });
   };
 
+  //Api calls to projects endpoint
+
   getCompanyInfo = () => {
     const options = config.getOptions("get");
     if (this.state.loggedIn) {
@@ -121,13 +145,11 @@ class App extends Component {
       ])
         .then((res) => Promise.all([res[0].json(), res[1].json()]))
         .then((res) =>
-          this.setState({ projects: [...res[0]], tasks: [...res[1]] })
+          this.setState({ projects: [...res[0]], tasks: [...res[1]], selectedProjects: "" })
         )
         .catch((err) => console.error(err));
     }
   };
-
-  //Api calls to projects endpoint
 
   getProjectsByCompanyId = () => {
     const options = config.getOptions("get");
@@ -220,6 +242,11 @@ class App extends Component {
       });
     });
   };
+
+  deleteSelectedProjects = () => {
+    const ids = this.state.selectedProjects.split(',').map(id => parseInt(id))
+    Promise.all(ids.map(id => this.deleteProject(id)))
+  }
 
   getUsersByCompanyId = (companyId) => {
     const options = config.getOptions("get");
@@ -339,7 +366,7 @@ class App extends Component {
     const value = {
       login: this.login,
       getTasks: () => this.state.tasks,
-      getisAdmin: () => this.state.isadmin,
+      getisAdmin: () => this.state.isAdmin,
       getProjects: () => this.state.projects,
       getCompanyId: () => this.state.companyId,
       getEmployees: () => this.state.employees,
@@ -355,7 +382,10 @@ class App extends Component {
       addTask: this.addTask,
       getTaskById: this.getTaskById,
       editTask: this.editTask,
-      deleteTask: this.deleteTask,
+      deleteTask:this.deleteTask,
+      addToProjectsSelected: this.addToProjectsSelected,
+      removeFromProjectsSelected: this.removeFromProjectsSelected,
+      deleteSelectedProjects: this.deleteSelectedProjects
     };
 
     return (

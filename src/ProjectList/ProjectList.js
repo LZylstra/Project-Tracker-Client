@@ -52,7 +52,7 @@ class ProjectList extends Component {
         </Link>
         <h2 id="project-list-title">Your Projects</h2>
         <ul>{this.makeProjectsList(this.props.projects)}</ul>
-        <button>Delete Selected</button>
+        <button onClick={this.context.deleteSelectedProjects}>Delete Selected</button>
       </div>
       <div id="expanded-project">
         <h1 id="project-title">{this.props.selected.project_name}</h1>
