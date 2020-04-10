@@ -9,7 +9,10 @@ class Task extends Component {
 
   static defaultProps = { task: {} };
   componentDidMount() {
-    
+    const companyId = this.context.getCompanyId();
+    this.context
+      .getUsersByCompanyId(companyId)
+      .catch((res) => this.setState({ error: res.error }));
    }
   
   createAssigneeList = (employees) => {
@@ -108,8 +111,7 @@ class Task extends Component {
                     name="assignment"
                     id="assignment"
                   >
-                    <option value="user1">User 1</option>
-                    <option value="user2"> User 2</option>
+                    {this.createAssigneeList(this.context.getEmployees())}
                   </select>
                 </div>
 

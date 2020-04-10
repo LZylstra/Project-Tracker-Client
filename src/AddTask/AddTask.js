@@ -4,7 +4,7 @@ import "./AddTask.css";
 
 class AddTask extends Component {
   static contextType = ApiContext;
-
+  
   state = {
     task_name: "",
     assignedto: 1,
@@ -16,6 +16,7 @@ class AddTask extends Component {
     editmode: false,
   };
   componentDidMount() {
+    
     const companyId = this.context.getCompanyId();
     this.context
       .getUsersByCompanyId(companyId)
@@ -185,7 +186,7 @@ class AddTask extends Component {
           </div>
 
           <div className="button-container">
-            <button className="add-button" type="submit">
+            <button type="submit">
               {this.state.editMode ? "Edit Task" : "Add Task"}
             </button>
             <button

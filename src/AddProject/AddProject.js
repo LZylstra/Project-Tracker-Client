@@ -93,7 +93,7 @@ class AddProject extends Component {
     this.props.history.push("/")
   };
   render() {
-    // config.checkForAuth();
+    
     return (
       <div className="form-container">
         <h2>{this.state.editMode ? "Edit Project" : "Add Project"}</h2>
@@ -185,7 +185,7 @@ class AddProject extends Component {
           </div>
 
           <div className="button-container">
-            <button className="add-button" type="submit">
+            <button  type="submit">
               {this.state.editMode ? "Edit Project" : "Add Project"}
             </button>
           <button
