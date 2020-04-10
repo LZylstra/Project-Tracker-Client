@@ -133,11 +133,11 @@ class Task extends Component {
 
             {
               !this.context.getIsMobile() && 
-              <div className="admin-button-container">
-                <Link to={`/edit/task/${this.props.taskId}`}>
-                  <button className="edit-button">Edit</button>
-                </Link>
-              <button className="delete-button" onClick={()=>this.context.deleteTask(this.props.taskId)}>Delete</button>
+                <div className="admin-button-container">
+                  <Link to={`/edit/task/${this.props.taskId}`}>
+                    <button className="edit-button">Edit</button>
+                  </Link>
+                <button className="delete-button" onClick={()=>this.context.deleteTask(this.props.taskId)}>Delete</button>
             </div>
             }
 
