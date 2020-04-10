@@ -1,10 +1,11 @@
 .App {
+
   height: 100%;
 }
 
 footer{
   height: 25px;
-  background-color: #27aae1;
+  background-color: #222222;
 }
 
 .error{

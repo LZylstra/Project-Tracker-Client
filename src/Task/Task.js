@@ -89,15 +89,15 @@ class Task extends Component {
               <div className="task-details-sidebar">
                 <p>
                   Date Created:
-                  <span className="date-created">{this.props.datecreated}</span>
+                  <span className="date-created"> {this.props.datecreated}</span>
                 </p>
                 <p>
-                  Date Modified:
-                  <span className="modified">{this.props.datemodified}</span>
+                  Date Modified: 
+                  <span className="modified"> {this.props.datemodified}</span>
                 </p>
 
                 <div className="input-container">
-                  <label htmlFor="assignment">Assign To:</label>
+                  <label htmlFor="assignment">Assign To: </label>
                   <select
                     onChange={this.handleChange}
                     value={this.state.assignment}
@@ -110,7 +110,7 @@ class Task extends Component {
                 </div>
 
                 <div className="input-container">
-                  <label htmlFor="Status">Status:</label>
+                  <label htmlFor="Status">Status: </label>
                   <select
                     onChange={this.handleChange}
                     value={this.state.assignment}

@@ -8,13 +8,17 @@
     width:100%;
     background:rgb(34, 33, 33);
     color:white;
-    padding: 10px 10px 10px 100px;
+    padding: 10px 10px 10px 50px;
     position:relative;
     cursor:pointer;
     border-bottom:1px solid white;
     
     
 }
+.task-details-sidebar{
+    font-weight: bold;
+}
+
 
 .task-arrow {
     position:absolute;
@@ -44,15 +48,32 @@
     flex-wrap:wrap;
     justify-content:space-between;
 
-
 }
 .edit-button {
     background-color:lightgreen;
-    width:100px;
-    border-radius:0;
+
 }
 .delete-button {
     background-color:red;
-    border-radius:0;
-    width:100px;
+    width:123px;
 }
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1025px) {
+
+    .priority {
+        position:absolute;
+        right:100px;
+        color:lightgreen;
+        width:fit-content;
+        
+    }
+
+    }
+  
