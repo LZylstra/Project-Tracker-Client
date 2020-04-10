@@ -26,7 +26,7 @@ class ProjectList extends Component {
     return (
       <div className="project-info">
         <div id="project-list">
-          <Link to="/AddProject">
+          <Link to="/AddProject" id="add-project-link">
             <button id="add-project-button">
               <h1>
                 Add Project<i className="add-project-plus fas fa-plus"></i>
@@ -43,7 +43,7 @@ class ProjectList extends Component {
   displayProjectListJSX = () => (
     <div className="project-info">
       <div id="project-list">
-        <Link to="/AddProject">
+        <Link to="/AddProject" id="add-project-link">
           <button id="add-project-button">
             <h1>
               Add Project<i className="add-project-plus fas fa-plus"></i>
