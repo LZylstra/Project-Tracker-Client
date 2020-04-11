@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import Task from "../Task/Task";
 import { Link } from "react-router-dom";
+import ApiContext from '../ApiContext';
 import "./TaskList.css";
 
 class TaskList extends Component {
   static defaultProps = { tasks: [] };
+  static contextType =ApiContext;
 
   formatDate = (duedate) => {
     if (duedate) {
@@ -38,6 +40,7 @@ class TaskList extends Component {
         <Link to={`/addtask/${this.props.projectId}`}>
           <button>+ Add Task</button>
         </Link>
+        {!this.context.getIsMobile() && <button onClick={() => this.context.handleDeleteSelected('selectedTasks')}>Delete Selected</button>}
       </div>
     );
   }

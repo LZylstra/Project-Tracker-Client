@@ -8,6 +8,9 @@ class Task extends Component {
   static contextType = ApiContext;
 
   static defaultProps = { task: {} };
+  state = {
+    isSelected: false
+  }
   componentDidMount() {
     const companyId = this.context.getCompanyId();
     this.context
@@ -41,6 +44,24 @@ class Task extends Component {
           : "fas fa-chevron-right",
     });
   };
+  renderCheckboxes = () => {
+		return (
+			<>
+				<label htmlFor={`select-task-${this.props.taskId}`} className="hidden-label">Select task {this.props.task_name}</label>
+				<input type="checkbox" id={`select-task-${this.props.taskId}`} onChange={this.handleCheckBox}/>
+			</>
+		)
+  }
+  
+  handleCheckBox = () => {
+		const isSelected = !this.state.isSelected
+		if(this.state.isSelected){
+			this.context.removeFromTasksSelected(this.props.taskId)
+		}else{
+			this.context.addToTasksSelected(this.props.taskId)
+		}
+		this.setState({isSelected: isSelected})
+	}
 
   handleChange = (event) => {
     const name = event.target.name;
@@ -81,6 +102,7 @@ class Task extends Component {
     return (
       <div className="task">
         <div className="task-title-bar">
+          {!this.context.getIsMobile() && this.renderCheckboxes()}
           <h2 className="task-title" onClick={() => this.toggleExpandTask()}>
             {this.props.task_name}
             <span
