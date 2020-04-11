@@ -42,7 +42,7 @@ class ProjectList extends Component {
 
   renderButton = () => {
     if(this.context.getisAdmin()){
-      return <button onClick={() => this.context.handleDeleteSelected('selectedTasks')}>Delete Selected</button>
+      return <button onClick={() => this.context.handleDeleteSelected('selectedProjects')}>Delete Selected</button>
     }
     return;
   }
