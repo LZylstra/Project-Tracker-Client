@@ -401,6 +401,8 @@ class App extends Component {
     const htmlNode = document.getElementById("html");
     if(targetNode.scrollHeight > window.innerHeight){
       htmlNode.style = "auto"
+    } else {
+      htmlNode.style = "100%"
     }
     this.getCompanyInfo();
   };
