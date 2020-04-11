@@ -27,8 +27,11 @@ class App extends Component {
       userId: null,
       isAdmin: false,
       companyId: null,
-      isMobile: window.innerWidth < 800,
+      isMobile: window.innerWidth < 1000,
       apiError: "",
+      showPopUp: false,
+      selectedProjects: [],
+      selectedTasks: []
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -48,25 +51,25 @@ class App extends Component {
   }
 
   addToProjectsSelected = id => {
-    console.log(this.state.selectedProjects)
-    let newSelectedProjects;
-    if(this.state.selectedProjects.length > 0){
-      newSelectedProjects = this.state.selectedProjects + "," + id
-    }else{
-      newSelectedProjects = this.state.selectedProjects + id
-    }
-    this.setState({selectedProjects: newSelectedProjects})
+    const newSelectedProjects = JSON.parse(JSON.stringify(this.state.selectedProjects))
+    newSelectedProjects.push(id)
+    this.setState({selectedProjects: [...newSelectedProjects]})
   }
 
   removeFromProjectsSelected = id => {
-    const newId = id.toString()
-    let newSelectedProjects;
-    if(this.state.selectedProjects.length > newId.length){
-      newSelectedProjects = this.state.selectedProjects.split(',' + newId).join('')
-    } else {
-      newSelectedProjects = this.state.selectedProjects.split(newId).join('')
-    }
-    this.setState({selectedProjects: newSelectedProjects})
+    const newSelectedProjects = this.state.selectedProjects.filter(project => project !== id)
+    this.setState({selectedProjects: [...newSelectedProjects]})
+  }
+
+  addToTasksSelected = id => {
+    const newSelectedTasks = JSON.parse(JSON.stringify(this.state.selectedTasks))
+    newSelectedTasks.push(id)
+    this.setState({selectedTasks: [...newSelectedTasks]})
+  }
+
+  removeFromTasksSelected = id => {
+    const newSelectedTasks = this.state.selectedTasks.filter(task => task !== id)
+    this.setState({selectedTasks: [...newSelectedTasks]})
   }
 
   //Api call functions
@@ -131,7 +134,9 @@ class App extends Component {
   };
 
   handleResize = () => {
-    this.setState({ isMobile: window.innerWidth < 800 });
+    this.setState({ isMobile: window.innerWidth < 1000 });
+    const x = 100 - (Math.round((25/window.innerHeight +0.115)*10000))/100;
+    document.getElementById('home').style.height = `${x}%`;
   };
 
   //Api calls to projects endpoint
@@ -145,7 +150,7 @@ class App extends Component {
       ])
         .then((res) => Promise.all([res[0].json(), res[1].json()]))
         .then((res) =>
-          this.setState({ projects: [...res[0]], tasks: [...res[1]], selectedProjects: "" })
+          this.setState({ projects: [...res[0]], tasks: [...res[1]], selectedProjects: [], selectedTasks: [] })
         )
         .catch((err) => console.error(err));
     }
@@ -243,9 +248,54 @@ class App extends Component {
     });
   };
 
+  deleteTask = (id) => {
+    const options = config.getOptions("delete");
+    const url = `${config.API}/api/tasks/${id}`;
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      const otherTasks = this.state.tasks.filter(
+        (tasks) => tasks.id !== id
+      );
+      this.setState({
+        projects: otherTasks,
+      });
+    });
+  };
+
   deleteSelectedProjects = () => {
-    const ids = this.state.selectedProjects.split(',').map(id => parseInt(id))
+    const ids = this.state.selectedProjects.map(id => parseInt(id))
+    this.setState({showPopUp: false})
     Promise.all(ids.map(id => this.deleteProject(id)))
+  }
+
+  deleteSelectedTasks = () => {
+    const ids = this.state.selectedTasks.map(id => parseInt(id))
+    this.setState({showPopUp: false})
+    Promise.all(ids.map(id => this.deleteTask(id)))
+  }
+
+  handleDeleteSelected = nameOfSelectedArray => {
+    this.setState({showPopUp: true})
+    this.renderPopUp(nameOfSelectedArray)
+  }
+
+  popup = ""
+
+  renderPopUp = nameOfSelectedArray => {
+    const name = nameOfSelectedArray.toLowerCase().split('ted')[1]
+    console.log(name)
+    const deleteSelector = 'deleteSelected' + name.replace(name[0], name[0].toUpperCase())
+    this.popup = (
+      <div id="popUp">
+        <p>Are you sure you want to <strong id="warning">delete</strong> {name}: {this.state[nameOfSelectedArray].map(id => {
+          return this.state[name].find(item => id === item.id)[name.substring(0, name.length - 1)+'_name']
+        }).join(', ')}</p>
+        <button onClick={this[deleteSelector]}>Yes</button>
+        <button onClick={() => {this.setState({showPopUp: false})}}>Cancel</button>
+      </div>
+    )
   }
 
   getUsersByCompanyId = (companyId) => {
@@ -332,6 +382,12 @@ class App extends Component {
 
   componentDidMount = () => {
     window.addEventListener("resize", this.handleResize);
+    const observer = new MutationObserver(config.watchRoot)
+    if(this.state.isMobile){
+      const targetNode = document.getElementById('root');
+      const options = { attributes: true, childList: true, subtree: true };
+      observer.observe(targetNode, options)
+    }
     this.getCompanyInfo();
   };
 
@@ -367,12 +423,17 @@ class App extends Component {
       deleteTask:this.deleteTask,
       addToProjectsSelected: this.addToProjectsSelected,
       removeFromProjectsSelected: this.removeFromProjectsSelected,
-      deleteSelectedProjects: this.deleteSelectedProjects
+      deleteSelectedProjects: this.deleteSelectedProjects,
+      addToTasksSelected: this.addToTasksSelected,
+      removeFromTasksSelected: this.removeFromTasksSelected,
+      deleteSelectedTasks: this.deleteSelectedTasks,
+      handleDeleteSelected: this.handleDeleteSelected
     };
 
     return (
       <ApiContext.Provider value={value}>
         <div className="App">
+          {this.state.showPopUp && this.popup}
           <Header />
 
           <Switch>
