@@ -8,23 +8,6 @@ class Task extends Component {
   static contextType = ApiContext;
 
   static defaultProps = { task: {} };
-  state = {
-    isSelected: false
-  }
-  componentDidMount() {
-    const companyId = this.context.getCompanyId();
-    this.context
-      .getUsersByCompanyId(companyId)
-      .catch((res) => this.setState({ error: res.error }));
-   }
-  
-  createAssigneeList = (employees) => {
-    return employees.map((employee, index) => (
-      <option key={index} value={employee.id}>
-        {employee.full_name}
-      </option>
-    ));
-  };
   constructor(props) {
     super(props);
     this.state = {
@@ -32,8 +15,23 @@ class Task extends Component {
       status: this.props.status,
       assignedto: this.props.assignedto,
       arrowDirection: "fas fa-chevron-right",
+      isSelected: false,
     };
   }
+  componentDidMount() {
+    const companyId = this.context.getCompanyId();
+    this.context
+      .getUsersByCompanyId(companyId)
+      .catch((res) => this.setState({ error: res.error }));
+  }
+
+  createAssigneeList = (employees) => {
+    return employees.map((employee, index) => (
+      <option key={index} value={employee.id}>
+        {employee.full_name}
+      </option>
+    ));
+  };
 
   toggleExpandTask = () => {
     this.setState({
@@ -45,27 +43,35 @@ class Task extends Component {
     });
   };
   renderCheckboxes = () => {
-    if(this.context.getisAdmin()){
+    if (this.context.getisAdmin()) {
       return (
         <>
-          <label htmlFor={`select-task-${this.props.taskId}`} className="hidden-label">Select task {this.props.task_name}</label>
-          <input type="checkbox" id={`select-task-${this.props.taskId}`} onChange={this.handleCheckBox}/>
+          <label
+            htmlFor={`select-task-${this.props.taskId}`}
+            className="hidden-label"
+          >
+            Select task {this.props.task_name}
+          </label>
+          <input
+            type="checkbox"
+            id={`select-task-${this.props.taskId}`}
+            onChange={this.handleCheckBox}
+          />
         </>
-      )
+      );
     }
     return;
-		
-  }
-  
+  };
+
   handleCheckBox = () => {
-		const isSelected = !this.state.isSelected
-		if(this.state.isSelected){
-			this.context.removeFromTasksSelected(this.props.taskId)
-		}else{
-			this.context.addToTasksSelected(this.props.taskId)
-		}
-		this.setState({isSelected: isSelected})
-	}
+    const isSelected = !this.state.isSelected;
+    if (this.state.isSelected) {
+      this.context.removeFromTasksSelected(this.props.taskId);
+    } else {
+      this.context.addToTasksSelected(this.props.taskId);
+    }
+    this.setState({ isSelected: isSelected });
+  };
 
   handleChange = (event) => {
     const name = event.target.name;
@@ -75,8 +81,12 @@ class Task extends Component {
     });
     //make patch request to api to update task
     this.context
-      .editTask({
-        [name]: value}, this.props.taskId)
+      .editTask(
+        {
+          [name]: value,
+        },
+        this.props.taskId
+      )
       .catch((res) => this.setState({ error: res.error }));
   };
 
@@ -126,10 +136,13 @@ class Task extends Component {
               <div className="task-details-sidebar">
                 <p>
                   Date Created:
-                  <span className="date-created"> {this.props.datecreated}</span>
+                  <span className="date-created">
+                    {" "}
+                    {this.props.datecreated}
+                  </span>
                 </p>
                 <p>
-                  Date Modified: 
+                  Date Modified:
                   <span className="modified"> {this.props.datemodified}</span>
                 </p>
 
