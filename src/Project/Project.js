@@ -6,7 +6,8 @@ import './Project.css';
 class Project extends Component {
 	static contextType = ApiContext;
 	state = {
-		isExpanded: false
+		isExpanded: false,
+		isSelected: false
 	}
 
 	handleProjectClick = () => {
@@ -20,6 +21,16 @@ class Project extends Component {
 			return duedate.slice(0, extraChars);
 		}
 	  
+	}
+
+	handleCheckBox = () => {
+		const isSelected = !this.state.isSelected
+		if(this.state.isSelected){
+			this.context.removeFromProjectsSelected(this.props.project.id)
+		}else{
+			this.context.addToProjectsSelected(this.props.project.id)
+		}
+		this.setState({isSelected: isSelected})
 	}
 
 	expandedProject = () => {
@@ -45,9 +56,19 @@ class Project extends Component {
 		)
 	}
 
+	renderCheckboxes = (project) => {
+		return (
+			<>
+				<label htmlFor={`select-project-${project.id}`} className="hidden-label">Select project {project.project_name}</label>
+				<input type="checkbox" id={`select-project-${project.id}`} onChange={this.handleCheckBox}/>
+			</>
+		)
+	}
+
 	makeProjectPc = project => {
 		return (
 		 	 <li onClick={() => this.props.showProjectDetail(project.id)} key={project.id} className="project-list-item">
+				{this.context.getisAdmin() && this.renderCheckboxes(project)}
 				<span className="project-item-title">{project.project_name}</span>
 				<span className="project-priority">{project.priority}</span>
 		  	</li>
@@ -67,11 +88,6 @@ class Project extends Component {
 	  }
 
 	render(){
-		if(this.state.isExpanded){
-			document.getElementById('root').style.height = "auto"
-		} else {
-			document.getElementById('root').style.height = "100%"
-		}
 		return this.context.getIsMobile() ?
 			this.makeProjectMobile(this.props.project) :
 			this.makeProjectPc(this.props.project)

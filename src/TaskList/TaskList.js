@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import Task from "../Task/Task";
 import { Link } from "react-router-dom";
+import ApiContext from '../ApiContext';
 import "./TaskList.css";
 
 class TaskList extends Component {
   static defaultProps = { tasks: [] };
+  static contextType =ApiContext;
 
   formatDate = (duedate) => {
     if (duedate) {
@@ -20,7 +22,7 @@ class TaskList extends Component {
         key={task.id}
         taskId={task.id}
         task_name={task.task_name}
-        assignedTo={task.assignedTo}
+        assignedto={task.assignedto}
         description={task.description}
         priority={task.priority}
         status={task.status}
@@ -31,6 +33,13 @@ class TaskList extends Component {
     return taskList;
   };
 
+  renderButton = () => {
+    if(this.context.getisAdmin()){
+      return <button onClick={() => this.context.handleDeleteSelected('selectedTasks')}>Delete Selected</button>
+    }
+    return;
+  }
+
   render() {
     return (
       <div className="task-list">
@@ -38,6 +47,7 @@ class TaskList extends Component {
         <Link to={`/addtask/${this.props.projectId}`}>
           <button>+ Add Task</button>
         </Link>
+        {!this.context.getIsMobile() && this.renderButton()}
       </div>
     );
   }

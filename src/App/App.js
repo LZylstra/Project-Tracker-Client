@@ -1,17 +1,19 @@
-
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import './App.css';
-import ApiContext from '../ApiContext';
-import LandingPage from '../LandingPage/LandingPage';
-import Home from '../Home/Home';
-import Header from '../Header/Header';
-import SignUp from '../SignUp/SignUp';
-import Login from '../Login/Login';
-import ProjectPage from '../ProjectPage/ProjectPage';
-import AddProject from '../AddProject/AddProject';
-import AddTask from '../AddTask/AddTask';
-import config from '../config';
+import React, { Component } from "react";
+import { Route, Switch } from "react-router-dom";
+import "./App.css";
+import ApiContext from "../ApiContext";
+import LandingPage from "../LandingPage/LandingPage";
+import Home from "../Home/Home";
+import Header from "../Header/Header";
+import SignUp from "../SignUp/SignUp";
+import Login from "../Login/Login";
+import ProjectPage from "../ProjectPage/ProjectPage";
+import AddProject from "../AddProject/AddProject";
+import AddTask from "../AddTask/AddTask";
+import config from "../config";
+import PageNotFound from "../PageNotFound/PageNotFound";
+import PrivateRoute from "../utils/PrivateRoute";
+import PublicOnlyRoute from "../utils/PublicOnlyRoute";
 
 class App extends Component {
   //add persistance to state by storing state in sessionStorage
@@ -25,8 +27,11 @@ class App extends Component {
       userId: null,
       isAdmin: false,
       companyId: null,
-      isMobile: window.innerWidth < 800,
+      isMobile: window.innerWidth < 1000,
       apiError: "",
+      showPopUp: false,
+      selectedProjects: [],
+      selectedTasks: []
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -38,11 +43,34 @@ class App extends Component {
     this.setState = function () {
       let arguments0 = arguments[0];
       let arguments1 = () => (
+        // eslint-disable-next-line
         arguments[1],
         sessionStorage.setItem("state", JSON.stringify(this.state))
       );
       original.bind(this)(arguments0, arguments1);
     };
+  }
+
+  addToProjectsSelected = id => {
+    const newSelectedProjects = JSON.parse(JSON.stringify(this.state.selectedProjects))
+    newSelectedProjects.push(id)
+    this.setState({selectedProjects: [...newSelectedProjects]})
+  }
+
+  removeFromProjectsSelected = id => {
+    const newSelectedProjects = this.state.selectedProjects.filter(project => project !== id)
+    this.setState({selectedProjects: [...newSelectedProjects]})
+  }
+
+  addToTasksSelected = id => {
+    const newSelectedTasks = JSON.parse(JSON.stringify(this.state.selectedTasks))
+    newSelectedTasks.push(id)
+    this.setState({selectedTasks: [...newSelectedTasks]})
+  }
+
+  removeFromTasksSelected = id => {
+    const newSelectedTasks = this.state.selectedTasks.filter(task => task !== id)
+    this.setState({selectedTasks: [...newSelectedTasks]})
   }
 
   //Api call functions
@@ -76,7 +104,7 @@ class App extends Component {
       loggedIn: true,
       userId: payload.user_id,
       companyId: payload.companyid,
-      userIsAdmin: payload.isadmin,
+      isAdmin: payload.isadmin,
     });
   };
 
@@ -107,8 +135,12 @@ class App extends Component {
   };
 
   handleResize = () => {
-    this.setState({ isMobile: window.innerWidth < 800 });
+    this.setState({ isMobile: window.innerWidth < 1000 });
+    const x = 100 - (Math.round((25/window.innerHeight +0.115)*10000))/100;
+    document.getElementById('home').style.height = `${x}%`;
   };
+
+  //Api calls to projects endpoint
 
   getCompanyInfo = () => {
     const options = config.getOptions("get");
@@ -119,13 +151,11 @@ class App extends Component {
       ])
         .then((res) => Promise.all([res[0].json(), res[1].json()]))
         .then((res) =>
-          this.setState({ projects: [...res[0]], tasks: [...res[1]] })
+          this.setState({ projects: [...res[0]], tasks: [...res[1]], selectedProjects: [], selectedTasks: [] })
         )
         .catch((err) => console.error(err));
     }
   };
-
-  //Api calls to projects endpoint
 
   getProjectsByCompanyId = () => {
     const options = config.getOptions("get");
@@ -219,6 +249,56 @@ class App extends Component {
     });
   };
 
+  deleteTask = (id) => {
+    const options = config.getOptions("delete");
+    const url = `${config.API}/api/tasks/${id}`;
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      const otherTasks = this.state.tasks.filter(
+        (tasks) => tasks.id !== id
+      );
+      this.setState({
+        projects: otherTasks,
+      });
+    });
+  };
+
+  deleteSelectedProjects = () => {
+    const ids = this.state.selectedProjects.map(id => parseInt(id))
+    this.setState({showPopUp: false})
+    Promise.all(ids.map(id => this.deleteProject(id)))
+  }
+
+  deleteSelectedTasks = () => {
+    const ids = this.state.selectedTasks.map(id => parseInt(id))
+    this.setState({showPopUp: false})
+    Promise.all(ids.map(id => this.deleteTask(id)))
+  }
+
+  handleDeleteSelected = nameOfSelectedArray => {
+    this.setState({showPopUp: true})
+    this.renderPopUp(nameOfSelectedArray)
+  }
+
+  popup = ""
+
+  renderPopUp = nameOfSelectedArray => {
+    const name = nameOfSelectedArray.toLowerCase().split('ted')[1]
+    console.log(name)
+    const deleteSelector = 'deleteSelected' + name.replace(name[0], name[0].toUpperCase())
+    this.popup = (
+      <div id="popUp">
+        <p>Are you sure you want to <strong id="warning">delete</strong> {name}: {this.state[nameOfSelectedArray].map(id => {
+          return this.state[name].find(item => id === item.id)[name.substring(0, name.length - 1)+'_name']
+        }).join(', ')}</p>
+        <button onClick={this[deleteSelector]}>Yes</button>
+        <button onClick={() => {this.setState({showPopUp: false})}}>Cancel</button>
+      </div>
+    )
+  }
+
   getUsersByCompanyId = (companyId) => {
     const options = config.getOptions("get");
     const url = `${config.API}/api/users/c/${companyId}`;
@@ -236,25 +316,10 @@ class App extends Component {
       });
   };
 
-  addTask = (
-    task_name,
-    assignedto,
-    description,
-    priority,
-    status,
-    projectid
-  ) => {
+  addTask = (task, projectid) => {
     const options = config.getOptions("post");
     const url = `${config.API}/api/tasks/p/${projectid}`;
-    options.body = JSON.stringify({
-      task_name,
-      assignedto,
-      description,
-      priority,
-      status,
-      projectid: projectid,
-      datemodified: new Date(),
-    });
+    options.body = JSON.stringify(task);
     return fetch(url, options)
       .then((res) => {
         if (!res.ok) {
@@ -279,24 +344,11 @@ class App extends Component {
     });
   };
 
-  editTask = (
-    task_name,
-    assignedto,
-    description,
-    priority,
-    status,
-    id
-  ) => {
+  editTask = (task, id) => {
     const options = config.getOptions("patch");
     const url = `${config.API}/api/tasks/${id}`;
-    options.body = JSON.stringify({
-      task_name,
-      assignedto,
-      description,
-      datemodified:new Date(),
-      priority,
-      status,
-    });
+    console.log(task);
+    options.body = JSON.stringify(task);
     console.log(options.body);
     return fetch(url, options)
       .then((res) => {
@@ -311,6 +363,7 @@ class App extends Component {
         })
       );
   };
+ 
 
   deleteTask = (id) => {
     const options = config.getOptions("delete");
@@ -319,9 +372,7 @@ class App extends Component {
       if (!res.ok) {
         return res.json().then((e) => Promise.reject(e));
       }
-      const otherTasks = this.state.tasks.filter(
-        (task) => task.id !== id
-      );
+      const otherTasks = this.state.tasks.filter((task) => task.id !== id);
       this.setState({
         tasks: otherTasks,
       });
@@ -332,6 +383,12 @@ class App extends Component {
 
   componentDidMount = () => {
     window.addEventListener("resize", this.handleResize);
+    const observer = new MutationObserver(config.watchRoot)
+    if(this.state.isMobile){
+      const targetNode = document.getElementById('root');
+      const options = { attributes: true, childList: true, subtree: true };
+      observer.observe(targetNode, options)
+    }
     this.getCompanyInfo();
   };
 
@@ -346,7 +403,7 @@ class App extends Component {
     const value = {
       login: this.login,
       getTasks: () => this.state.tasks,
-      getisAdmin: () => this.state.isadmin,
+      getisAdmin: () => this.state.isAdmin,
       getProjects: () => this.state.projects,
       getCompanyId: () => this.state.companyId,
       getEmployees: () => this.state.employees,
@@ -357,48 +414,80 @@ class App extends Component {
       getProjectsByCompanyId: this.getProjectsByCompanyId,
       getUsersByCompanyId: this.getUsersByCompanyId,
       addProject: this.addProject,
+      getProjectById: this.getProjectById,
+      editProject:this.editProject,
       showApiError: () => this.state.apiError,
       getIsMobile: () => this.state.isMobile,
       addTask: this.addTask,
       getTaskById: this.getTaskById,
       editTask: this.editTask,
-      deleteTask:this.deleteTask
+      deleteTask:this.deleteTask,
+      addToProjectsSelected: this.addToProjectsSelected,
+      removeFromProjectsSelected: this.removeFromProjectsSelected,
+      deleteSelectedProjects: this.deleteSelectedProjects,
+      addToTasksSelected: this.addToTasksSelected,
+      removeFromTasksSelected: this.removeFromTasksSelected,
+      deleteSelectedTasks: this.deleteSelectedTasks,
+      handleDeleteSelected: this.handleDeleteSelected
     };
 
     return (
       <ApiContext.Provider value={value}>
         <div className="App">
+          {this.state.showPopUp && this.popup}
           <Header />
-          {this.renderHome()}
-          <Route exact path="/SignUp" component={SignUp} />
-          <Route exact path="/Login" component={Login} />
-          <Route exact path="/projects/:projectId" component={ProjectPage} />
-          {/* <Route exact path="/tasks/:taskId" component={TaskPage} /> */}
-          <Route exact path="/AddProject" component={AddProject} />
-          <Route
-            path="/edit/project/:project_id"
-            render={({ match, history }) => (
-              <AddProject
-                history={history}
-                projectId={match.params.project_id}
+
+          <Switch>
+            {this.renderHome()}
+            <PublicOnlyRoute exact path="/SignUp" component={SignUp} />
+            <PublicOnlyRoute exact path="/Login" component={Login} />
+            <PrivateRoute
+              exact
+              path="/projects/:projectId"
+              component={ProjectPage}
+            />
+            <PrivateRoute exact path="/AddProject" component={AddProject} />
+
+            {this.state.loggedIn ? (
+              <Route
+                path="/edit/project/:project_id"
+                render={({ match, history }) => (
+                  <AddProject
+                    history={history}
+                    projectId={match.params.project_id}
+                  />
+                )}
               />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
             )}
-          />
-          <Route
-            path="/addtask/:project_id"
-            render={({ match, history }) => (
-              <AddTask history={history} projectId={match.params.project_id} />
-            )}
-          />
-          <Route
-            path="/edit/task/:task_id"
-            render={({ match, history }) => (
-              <AddTask
-                history={history}
-                taskId={match.params.task_id}
+
+            {this.state.loggedIn ? (
+              <Route
+                path="/addtask/:project_id"
+                render={({ match, history }) => (
+                  <AddTask
+                    history={history}
+                    projectId={match.params.project_id}
+                  />
+                )}
               />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
             )}
-          />
+
+            {this.state.loggedIn ? (
+              <Route
+                path="/edit/task/:task_id"
+                render={({ match, history }) => (
+                  <AddTask history={history} taskId={match.params.task_id} />
+                )}
+              />
+            ) : (
+              <PublicOnlyRoute exact path="/Login" component={Login} />
+            )}
+            <Route component={PageNotFound} />
+          </Switch>
           <footer />
         </div>
       </ApiContext.Provider>

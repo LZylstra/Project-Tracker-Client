@@ -8,6 +8,7 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+    
 }
 
 .hidden-label{
@@ -19,7 +20,7 @@
     flex-direction: row;
     align-items: center;
     height: 40%;
-    padding-bottom: 20%;
+    padding: 10px;
 }
 
 .inputs{
