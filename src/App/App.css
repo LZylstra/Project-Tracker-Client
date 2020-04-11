@@ -20,7 +20,9 @@ footer{
   position: absolute;
   top: 25%;
   left: 25%;
-  height: 50%;
-  width: 50%;
-  background-color: white;
+  height: 30%;
+  width: 500px;
+  margin: 30px;
+  background-color: rgb(230, 230, 230);
+  z-index: 1;
 }
