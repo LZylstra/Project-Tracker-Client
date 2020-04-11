@@ -33,6 +33,13 @@ class TaskList extends Component {
     return taskList;
   };
 
+  renderButton = () => {
+    if(this.context.getisAdmin()){
+      return <button onClick={() => this.context.handleDeleteSelected('selectedTasks')}>Delete Selected</button>
+    }
+    return;
+  }
+
   render() {
     return (
       <div className="task-list">
@@ -40,7 +47,7 @@ class TaskList extends Component {
         <Link to={`/addtask/${this.props.projectId}`}>
           <button>+ Add Task</button>
         </Link>
-        {!this.context.getIsMobile() && <button onClick={() => this.context.handleDeleteSelected('selectedTasks')}>Delete Selected</button>}
+        {!this.context.getIsMobile() && this.renderButton()}
       </div>
     );
   }

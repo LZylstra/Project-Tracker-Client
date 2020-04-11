@@ -45,12 +45,16 @@ class Task extends Component {
     });
   };
   renderCheckboxes = () => {
-		return (
-			<>
-				<label htmlFor={`select-task-${this.props.taskId}`} className="hidden-label">Select task {this.props.task_name}</label>
-				<input type="checkbox" id={`select-task-${this.props.taskId}`} onChange={this.handleCheckBox}/>
-			</>
-		)
+    if(this.context.getisAdmin()){
+      return (
+        <>
+          <label htmlFor={`select-task-${this.props.taskId}`} className="hidden-label">Select task {this.props.task_name}</label>
+          <input type="checkbox" id={`select-task-${this.props.taskId}`} onChange={this.handleCheckBox}/>
+        </>
+      )
+    }
+    return;
+		
   }
   
   handleCheckBox = () => {
