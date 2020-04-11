@@ -357,13 +357,22 @@ class App extends Component {
         if (!res.ok) {
           return res.json().then((e) => Promise.reject(e));
         }
-        return res.json();
-      })
-      .then((task) =>
+        
+        const taskToUpdate = this.state.tasks.find((task) => task.id === id);
+        
+        const updatedTask = { ...taskToUpdate, ...task };
+
+        const indexToUpdate = this.state.tasks.findIndex(task => task.id === id)
+        let tasksCopy = [...this.state.tasks];
+        tasksCopy[indexToUpdate] = updatedTask;
+      
         this.setState({
-          task: [...this.state.tasks, task],
-        })
-      );
+          tasks: tasksCopy
+        });
+        return res.json();
+      
+      })
+       
   };
  
 
