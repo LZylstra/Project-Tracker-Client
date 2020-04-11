@@ -33,6 +33,17 @@ class TaskList extends Component {
     return taskList;
   };
 
+  componentDidMount = () => {
+    const htmlNode = document.getElementById("html");
+    const taskList = document.getElementById('task-list')
+    const x = 1 - (25/window.innerHeight +0.115);
+    if(taskList.scrollHeight > window.innerHeight*x){
+      htmlNode.style.height = "auto"
+    } else {
+      htmlNode.style.height = "100%"
+    }
+  }
+
   renderButton = () => {
     if(this.context.getisAdmin()){
       return <button onClick={() => this.context.handleDeleteSelected('selectedTasks')}>Delete Selected</button>
@@ -42,7 +53,7 @@ class TaskList extends Component {
 
   render() {
     return (
-      <div className="task-list">
+      <div className="task-list" id="task-list">
         {this.renderTaskList()}
         <Link to={`/addtask/${this.props.projectId}`}>
           <button>+ Add Task</button>
