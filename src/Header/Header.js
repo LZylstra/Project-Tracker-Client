@@ -21,9 +21,9 @@ class Header extends Component {
           <Link to="/" id="home-nav">
             Home
           </Link>
-          {/* <Link to="/" onClick={this.handleLogout} id="completed-nav">
+          <Link to="/completed-projects" id="completed-nav">
             Completed
-          </Link> */}
+          </Link>
         </>
       );
     } else {
