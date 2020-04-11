@@ -43,6 +43,7 @@ class App extends Component {
     this.setState = function () {
       let arguments0 = arguments[0];
       let arguments1 = () => (
+        // eslint-disable-next-line
         arguments[1],
         sessionStorage.setItem("state", JSON.stringify(this.state))
       );
