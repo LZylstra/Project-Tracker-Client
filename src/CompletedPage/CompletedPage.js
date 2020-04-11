@@ -26,6 +26,13 @@ class CompletedPage extends Component {
     this.context.getCompanyInfo();
   }
 
+    makeCompletedProjectsList = projects => {
+        return projects.map(project => (
+          <Project showProjectDetail={this.props.showProjectDetail} project={project} children={this.props.children} key={project.id}/>
+        ));
+      };
+  }
+
   showProjectDetail = (id) => {
     const projects = this.context.getProjects();
     const selected = projects.find((project) => project.id === id);

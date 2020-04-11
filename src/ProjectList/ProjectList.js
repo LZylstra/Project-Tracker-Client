@@ -20,7 +20,17 @@ class ProjectList extends Component {
     ));
   };
 
-
+  componentDidMount = () => {
+    const htmlNode = document.getElementById("html");
+    const pListHeight = document.getElementById('project-list').scrollHeight
+    const x = 1 - (25/window.innerHeight +0.115);
+    if( pListHeight > window.innerHeight*x){
+      htmlNode.style.height = "auto"
+      console.log(htmlNode.style.height)
+    } else {
+      htmlNode.style.height = "100%"
+    }
+  }
 
   displayProjectListJSXMobile = () => {
     return (
