@@ -1,5 +1,6 @@
 export default {
-  API: process.env.REACT_APP_API_ENDPOINT,
+  API: "http://localhost:8000",
+
   getOptions: (method) => {
     return JSON.parse(
       JSON.stringify({
