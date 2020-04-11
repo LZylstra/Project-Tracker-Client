@@ -40,6 +40,13 @@ class ProjectList extends Component {
     )
   }
 
+  renderButton = () => {
+    if(this.context.getisAdmin()){
+      return <button onClick={() => this.context.handleDeleteSelected('selectedTasks')}>Delete Selected</button>
+    }
+    return;
+  }
+
   displayProjectListJSX = () => (
     <div className="project-info">
       <div id="project-list">
@@ -52,7 +59,7 @@ class ProjectList extends Component {
         </Link>
         <h2 id="project-list-title">Your Projects</h2>
         <ul>{this.makeProjectsList(this.props.projects)}</ul>
-        <button onClick={() => this.context.handleDeleteSelected('selectedProjects')}>Delete Selected</button>
+        {!this.context.getIsMobile() && this.renderButton()}
       </div>
       <div id="expanded-project">
         <h1 id="project-title">{this.props.selected.project_name}</h1>
