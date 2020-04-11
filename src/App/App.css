@@ -1,12 +1,26 @@
 .App {
+
   height: 100%;
 }
 
 footer{
-  height:3%;
-  background-color: #27aae1;
+  height: 25px;
+  background-color: #222222;
 }
 
 .error{
   color: red;
+}
+
+#warning{
+  color: red;
+}
+
+#popUp{
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  height: 50%;
+  width: 50%;
+  background-color: white;
 }

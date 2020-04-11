@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ApiContext from "../ApiContext";
+// import config from "../config";
 import "./AddProject.css";
 
 class AddProject extends Component {
@@ -16,7 +17,6 @@ class AddProject extends Component {
 
   componentDidMount() {
     if (this.props.projectId) {
-
       this.context
         .getProjectById(this.props.projectId)
         .then((res) => {
@@ -24,7 +24,6 @@ class AddProject extends Component {
             ? this.formatDateFromServer(res.duedate)
             : "";
           this.setState({
-
             name: res.project_name,
             description: res.description,
             priority: res.priority,
@@ -39,15 +38,7 @@ class AddProject extends Component {
     }
   }
 
-  clearForm = () => {
-    this.setState({
-      name: "",
-      description: "",
-      priority: "",
-      dueDate: "",
-      status: "",
-    });
-  }
+
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -99,9 +90,10 @@ class AddProject extends Component {
     } else {
       this.handleAddProject();
     }
-
+    this.props.history.push("/")
   };
   render() {
+    
     return (
       <div className="form-container">
         <h2>{this.state.editMode ? "Edit Project" : "Add Project"}</h2>
@@ -193,15 +185,15 @@ class AddProject extends Component {
           </div>
 
           <div className="button-container">
-            <button className="add-button" type="submit">
+            <button  type="submit">
               {this.state.editMode ? "Edit Project" : "Add Project"}
             </button>
-            <button
+          <button
               type="button"
-              className="clear-button"
-              onClick={() => this.clearForm()}
+              className="cancel"
+              onClick={() => this.props.history.push("/")}
             >
-              Clear
+              Cancel
             </button>
           </div>
         </form>

@@ -26,7 +26,7 @@ class ProjectList extends Component {
     return (
       <div className="project-info">
         <div id="project-list">
-          <Link to="/AddProject">
+          <Link to="/AddProject" id="add-project-link">
             <button id="add-project-button">
               <h1>
                 Add Project<i className="add-project-plus fas fa-plus"></i>
@@ -43,7 +43,7 @@ class ProjectList extends Component {
   displayProjectListJSX = () => (
     <div className="project-info">
       <div id="project-list">
-        <Link to="/AddProject">
+        <Link to="/AddProject" id="add-project-link">
           <button id="add-project-button">
             <h1>
               Add Project<i className="add-project-plus fas fa-plus"></i>
@@ -52,16 +52,12 @@ class ProjectList extends Component {
         </Link>
         <h2 id="project-list-title">Your Projects</h2>
         <ul>{this.makeProjectsList(this.props.projects)}</ul>
-        <button>Delete Selected</button>
+        <button onClick={() => this.context.handleDeleteSelected('selectedProjects')}>Delete Selected</button>
       </div>
       <div id="expanded-project">
         <h1 id="project-title">{this.props.selected.project_name}</h1>
         <div id="project-description">{this.props.selected.description}</div>
         <div id="project-dueDate">Due Date: {this.formatDate(this.props.selected.duedate)}</div>
-        <div className="button-container">
-          <button>Completed</button>
-          <button>Edit</button>
-        </div>
         {this.props.children}
       </div>
     </div>

@@ -36,7 +36,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
+      <div id="home">
         {this.state.isLoading ? (
           <p>Loading projects</p>
         ) : (
@@ -46,11 +46,13 @@ class Home extends Component {
               showProjectDetail={this.showProjectDetail}
               selected={this.state.selectedProject}
             >
-              <TaskList tasks={this.context.getTasks().filter(task => {
-                return task.projectid === this.state.selectedProject.id
-              })} />  
+              <TaskList
+                tasks={this.context.getTasks().filter((task) => {
+                  return task.projectid === this.state.selectedProject.id;
+                })}
+                projectId={this.state.selectedProject.id}
+              />
             </ProjectList>
-            
           </>
         )}
       </div>

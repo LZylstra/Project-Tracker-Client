@@ -1,46 +1,53 @@
 import React, { Component } from "react";
-import ApiContext from '../ApiContext';
+import ApiContext from "../ApiContext";
 import "./AddTask.css";
 
 class AddTask extends Component {
   static contextType = ApiContext;
-
+  
   state = {
     task_name: "",
     assignedto: 1,
     description: "",
     priority: "",
     status: "",
-    projectid: 1,
+    projectid: this.props.projectId,
     error: "",
     editmode: false,
- 
-    
   };
   componentDidMount() {
-  
+    
     const companyId = this.context.getCompanyId();
-   
-        this.context.getUsersByCompanyId(companyId)
-         
-  
-          .catch((res) => this.setState({ error: res.error }))
-  
+    this.context
+      .getUsersByCompanyId(companyId)
+      .catch((res) => this.setState({ error: res.error }));
+
+    if (this.props.taskId) {
+      this.context
+        .getTaskById(this.props.taskId)
+        .then((res) => {
+          this.setState({
+            task_name: res.task_name,
+            description: res.description,
+            assignedto: res.assignedto,
+            priority: res.priority,
+            status: res.status,
+            editMode: true,
+          });
+        })
+        .catch((res) => {
+          this.setState({ error: res.error });
+        });
+    }
   }
 
-  clearForm = () => {
-    this.setState({
-      task_name: "",
-      description: "",
-      assignedto: "",
-      priority: "",
-      status: "",
-      projectid:""
-    });
+  createAssigneeList = (employees) => {
+    return employees.map((employee, index) => (
+      <option key={index} value={employee.id}>
+        {employee.full_name}
+      </option>
+    ));
   };
-  createAssigneeList = (employees) => { 
-    return employees.map((employee,index) => <option key={index} value={employee.id}>{employee.full_name}</option>)
-  }
 
   handleChange = (event) => {
     const name = event.target.name;
@@ -49,24 +56,53 @@ class AddTask extends Component {
       [name]: value,
     });
   };
+  handleAddTask = () => {
+    this.context
+      .addTask({
+        task_name: this.state.task_name,
+        assignedto: this.state.assignedto,
+        description: this.state.description,
+        priority: this.state.priority,
+        status: this.state.status
+      },
+      this.state.projectid
+      )
+      .catch((res) => this.setState({ error: res.error }));
+  };
+  handleEditTask = () => {
+    this.context
+      .editTask(
+        {
+          task_name: this.state.task_name,
+          assignedto: this.state.assignedto,
+          description: this.state.description,
+          priority: this.state.priority,
+          status: this.state.status,
+        },
+        this.props.taskId
+      )
+      .catch((res) => this.setState({ error: res.error }));
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
-    this.context.addTask(
-    this.state.task_name,
-    this.state.assignedto,
-    this.state.description,
-    this.state.priority,
-    this.state.status,
-    1,
-    )
+    this.setState({ error: "" });
+
+    if (this.props.taskId) {
+      this.handleEditTask();
+    } else {
+      this.handleAddTask();
+    }
+    this.props.history.push("/")
+   
   };
 
   render() {
     return (
       <div className="form-container">
-        <h2>Add Task</h2>
+        <h2>{this.state.editMode ? "Edit Task" : "Add Task"}</h2>
+        {/* {this.state.error && <p className="error">{this.state.error}</p>} */}
+
         <form onSubmit={this.handleSubmit}>
           <p className="input-container">
             <label htmlFor="name-input">Task Name:</label>
@@ -116,7 +152,15 @@ class AddTask extends Component {
           )}
           <div className="input-container">
             <label htmlFor="priority"> Priority:</label>
+            <input
+              type="radio"
+              onChange={this.handleChange}
+              name="priority"
+              checked={this.state.priority === "Urgent"}
+              value="Urgent"
+            />
 
+            <label className="urgent-priority">Urgent</label>
             <input
               type="radio"
               onChange={this.handleChange}
@@ -144,12 +188,17 @@ class AddTask extends Component {
 
             <label className="low-priority">Low</label>
           </div>
+
           <div className="button-container">
-            <button className="add-button" type="submit">
-              Add Task
+            <button type="submit">
+              {this.state.editMode ? "Edit Task" : "Add Task"}
             </button>
-            <button className="clear-button" onClick={this.clearForm}>
-              Clear
+            <button
+              type="button"
+              className="cancel"
+              onClick={() => this.props.history.push("/")}
+            >
+              Cancel
             </button>
           </div>
         </form>
