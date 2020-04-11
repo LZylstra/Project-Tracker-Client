@@ -14,6 +14,16 @@ export default {
 		if(!window.sessionStorage.jwt){
 			history.push('/Login')
 		}
+	},
+
+	watchRoot: (options, observer) => {
+		const htmlNode = document.getElementById('html');
+		const targetNode = document.getElementById('root');
+		if(targetNode.scrollHeight > window.innerHeight){
+			htmlNode.style.height = "auto"
+		} else {
+			htmlNode.style.height = "100%"
+		}
 	}
 }
 

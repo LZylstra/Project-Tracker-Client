@@ -88,11 +88,6 @@ class Project extends Component {
 	  }
 
 	render(){
-		if(this.state.isExpanded){
-			document.getElementById('root').style.height = "auto"
-		} else {
-			document.getElementById('root').style.height = "100%"
-		}
 		return this.context.getIsMobile() ?
 			this.makeProjectMobile(this.props.project) :
 			this.makeProjectPc(this.props.project)
