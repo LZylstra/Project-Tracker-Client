@@ -395,10 +395,12 @@ class App extends Component {
   componentDidMount = () => {
     window.addEventListener("resize", this.handleResize);
     const observer = new MutationObserver(config.watchRoot)
-    if(this.state.isMobile){
-      const targetNode = document.getElementById('root');
-      const options = { attributes: true, childList: true, subtree: true };
-      observer.observe(targetNode, options)
+    const targetNode = document.getElementById('root');
+    const options = { attributes: true, childList: true, subtree: true };
+    observer.observe(targetNode, options)
+    const htmlNode = document.getElementById("html");
+    if(targetNode.scrollHeight > window.innerHeight){
+      htmlNode.style = "auto"
     }
     this.getCompanyInfo();
   };
