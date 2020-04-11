@@ -22,14 +22,16 @@ class ProjectList extends Component {
 
   componentDidMount = () => {
     const htmlNode = document.getElementById("html");
-    const pListHeight = document.getElementById('project-list').scrollHeight
+	  const projectList = document.getElementById("project-list");
+	  const taskList = document.getElementById('task-list')
     const x = 1 - (25/window.innerHeight +0.115);
-    if( pListHeight > window.innerHeight*x){
+    if(!!projectList && projectList.scrollHeight > window.innerHeight*x){
       htmlNode.style.height = "auto"
-      console.log(htmlNode.style.height)
-    } else {
-      htmlNode.style.height = "100%"
-    }
+    } else if(!!taskList && taskList.scrollHeight > window.innerHeight*x){
+		  htmlNode.style.height = "auto"
+  	} else {
+	  	htmlNode.style.height = "100%"
+	  }
   }
 
   displayProjectListJSXMobile = () => {
