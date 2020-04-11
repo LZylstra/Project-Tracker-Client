@@ -17,12 +17,15 @@ footer{
 }
 
 #popUp{
-  position: absolute;
+  border-radius: 10px;
+  position: fixed;
   top: 25%;
-  left: 25%;
+  left: 30%;
   height: 30%;
   width: 500px;
   margin: 30px;
+  padding-left: 90px;
+  padding-right: 90px;
   background-color: rgb(230, 230, 230);
   z-index: 1;
 }
