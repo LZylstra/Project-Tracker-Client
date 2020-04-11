@@ -58,10 +58,6 @@ class ProjectList extends Component {
         <h1 id="project-title">{this.props.selected.project_name}</h1>
         <div id="project-description">{this.props.selected.description}</div>
         <div id="project-dueDate">Due Date: {this.formatDate(this.props.selected.duedate)}</div>
-        <div className="button-container">
-          <button>Completed</button>
-          <button>Edit</button>
-        </div>
         {this.props.children}
       </div>
     </div>

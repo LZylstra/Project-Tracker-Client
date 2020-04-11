@@ -1,3 +1,13 @@
-.hidden-label{
-    display: none;
+
+#project-title, #project-description, #project-dueDate{
+margin: 20px;
+
+}
+#project-title{
+    font-size: 25px;
+}
+
+#project-dueDate{
+    font-weight: bold;
+
 }

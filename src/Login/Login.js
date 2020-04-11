@@ -40,6 +40,7 @@ class Login extends Component {
 	render(){
 		return (
 			<div className="login">
+				
 				<form id="login-form" onSubmit={this.handleSubmit} >
 					{
 						this.state.submitted && <p className="error">{this.state.error}</p>
@@ -51,7 +52,9 @@ class Login extends Component {
 					<div className="login-button-wrapper">
 						<button>Login</button>
 						<button onClick={this.handleCancel}>Cancel</button>
+						
 					</div>
+					<h6>Not registered? Create an account</h6>
 				</form>
 			</div>
 		)
