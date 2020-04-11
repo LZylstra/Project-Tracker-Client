@@ -63,7 +63,7 @@ class AddProject extends Component {
         this.state.description,
         this.state.priority,
         this.formatDateForAPI(this.state.dueDate)
-      )
+      ).then(() => this.props.history.push("/"))
       .catch((res) => {
         this.setState({ error: res.error });
       });
@@ -90,7 +90,7 @@ class AddProject extends Component {
     } else {
       this.handleAddProject();
     }
-    this.props.history.push("/")
+    
   };
   render() {
     
