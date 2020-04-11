@@ -137,7 +137,9 @@ class App extends Component {
   handleResize = () => {
     this.setState({ isMobile: window.innerWidth < 1000 });
     const x = 100 - (Math.round((25/window.innerHeight +0.115)*10000))/100;
-    document.getElementById('home').style.height = `${x}%`;
+    if(!!document.getElementById('home')){
+      document.getElementById('home').style.height = `${x}%`
+    }
   };
 
   //Api calls to projects endpoint
@@ -393,10 +395,12 @@ class App extends Component {
   componentDidMount = () => {
     window.addEventListener("resize", this.handleResize);
     const observer = new MutationObserver(config.watchRoot)
-    if(this.state.isMobile){
-      const targetNode = document.getElementById('root');
-      const options = { attributes: true, childList: true, subtree: true };
-      observer.observe(targetNode, options)
+    const targetNode = document.getElementById('root');
+    const options = { attributes: true, childList: true, subtree: true };
+    observer.observe(targetNode, options)
+    const htmlNode = document.getElementById("html");
+    if(targetNode.scrollHeight > window.innerHeight){
+      htmlNode.style = "auto"
     }
     this.getCompanyInfo();
   };
