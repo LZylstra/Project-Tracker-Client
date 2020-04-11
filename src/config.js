@@ -20,11 +20,19 @@ export default {
 
   watchRoot: (options, observer) => {
     const htmlNode = document.getElementById("html");
-    const targetNode = document.getElementById("root");
-    if (targetNode.scrollHeight > window.innerHeight) {
-      htmlNode.style.height = "auto";
+	const projectList = document.getElementById("project-list");
+	const taskList = document.getElementById('task-list')
+    const x = 1 - (25/window.innerHeight +0.115);
+    if(!!projectList && projectList.scrollHeight > window.innerHeight*x){
+      htmlNode.style.height = "auto"
     } else {
-      htmlNode.style.height = "100%";
-    }
+      htmlNode.style.height = "100%"
+	}
+	
+	if(!!taskList && taskList.scrollHeight > window.innerHeight*x){
+		htmlNode.style.height = "auto"
+	} else {
+		htmlNode.style.height = "100%"
+	}
   },
 };

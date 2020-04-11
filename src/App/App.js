@@ -398,12 +398,7 @@ class App extends Component {
     const targetNode = document.getElementById('root');
     const options = { attributes: true, childList: true, subtree: true };
     observer.observe(targetNode, options)
-    const htmlNode = document.getElementById("html");
-    if(targetNode.scrollHeight > window.innerHeight){
-      htmlNode.style = "auto"
-    } else {
-      htmlNode.style = "100%"
-    }
+    
     this.getCompanyInfo();
   };
 
