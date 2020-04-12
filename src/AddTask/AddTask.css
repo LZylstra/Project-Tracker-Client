@@ -2,10 +2,6 @@
     box-sizing:border-box;
 }
 
-.form-container {
-    width:600px;
-    margin:0 auto;
-}
 
 .button-container {
     width:fit-content; 
@@ -58,8 +54,3 @@ input[type=radio] {
     color:green;
 }
 
-@media screen and (max-width:600px) {
-    .form-container {
-        width:100%;
-    }
-}
