@@ -9,6 +9,7 @@ import SignUp from "../SignUp/SignUp";
 import Login from "../Login/Login";
 import ProjectPage from "../ProjectPage/ProjectPage";
 import AddProject from "../AddProject/AddProject";
+import CompletedPage from "../CompletedPage/CompletedPage";
 import AddTask from "../AddTask/AddTask";
 import config from "../config";
 import PageNotFound from "../PageNotFound/PageNotFound";
@@ -32,6 +33,7 @@ class App extends Component {
       showPopUp: false,
       selectedProjects: [],
       selectedTasks: [],
+      completedList: false,
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -144,11 +146,10 @@ class App extends Component {
 
   handleResize = () => {
     this.setState({ isMobile: window.innerWidth < 1000 });
-    const x = 100 - (Math.round((25/window.innerHeight +0.115)*10000))/100;
-    if(!!document.getElementById('home')){
-      document.getElementById('home').style.height = `${x}%`
+    const x = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
+    if (!!document.getElementById("home")) {
+      document.getElementById("home").style.height = `${x}%`;
     }
-
   };
 
   //Api calls to projects endpoint
@@ -378,27 +379,26 @@ class App extends Component {
     //console.log(task);
     options.body = JSON.stringify(task);
     //console.log(options.body);
-    return fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((e) => Promise.reject(e));
-        }
-        
-        const taskToUpdate = this.state.tasks.find((task) => task.id === id);
-        
-        const updatedTask = { ...taskToUpdate, ...task };
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
 
-        const indexToUpdate = this.state.tasks.findIndex(task => task.id === id)
-        let tasksCopy = [...this.state.tasks];
-        tasksCopy[indexToUpdate] = updatedTask;
-      
-        this.setState({
-          tasks: tasksCopy
-        });
-        return res.json();
-      
-      })
-       
+      const taskToUpdate = this.state.tasks.find((task) => task.id === id);
+
+      const updatedTask = { ...taskToUpdate, ...task };
+
+      const indexToUpdate = this.state.tasks.findIndex(
+        (task) => task.id === id
+      );
+      let tasksCopy = [...this.state.tasks];
+      tasksCopy[indexToUpdate] = updatedTask;
+
+      this.setState({
+        tasks: tasksCopy,
+      });
+      return res.json();
+    });
   };
 
   deleteTask = (id) => {
@@ -419,10 +419,10 @@ class App extends Component {
 
   componentDidMount = () => {
     window.addEventListener("resize", this.handleResize);
-    const observer = new MutationObserver(config.watchRoot)
-    const targetNode = document.getElementById('root');
+    const observer = new MutationObserver(config.watchRoot);
+    const targetNode = document.getElementById("root");
     const options = { attributes: true, childList: true, subtree: true };
-    observer.observe(targetNode, options)
+    observer.observe(targetNode, options);
     this.getCompanyInfo();
   };
 
@@ -475,6 +475,11 @@ class App extends Component {
             {this.renderHome()}
             <PublicOnlyRoute exact path="/SignUp" component={SignUp} />
             <PublicOnlyRoute exact path="/Login" component={Login} />
+            <PrivateRoute
+              exact
+              path="/completed-projects"
+              component={CompletedPage}
+            />
             <PrivateRoute
               exact
               path="/projects/:projectId"
