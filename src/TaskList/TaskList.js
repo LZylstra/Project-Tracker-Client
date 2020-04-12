@@ -39,7 +39,6 @@ class TaskList extends Component {
 	  const projectList = document.getElementById("project-list");
 	  const taskList = document.getElementById('task-list')
     const x = (window.innerHeight -25)*0.885;
-    console.log(projectList.scrollHeight > x)
     if(projectList.scrollHeight > x){
       htmlNode.style.height = "auto"
     } else if(taskList.scrollHeight > x){
