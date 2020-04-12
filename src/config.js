@@ -1,5 +1,5 @@
 export default {
-  API: "http://localhost:8000",
+  API: process.env.REACT_APP_API_ENDPOINT,
 
   getOptions: (method) => {
     return JSON.parse(
@@ -21,19 +21,15 @@ export default {
 
   watchRoot: (options, observer) => {
     const htmlNode = document.getElementById("html");
-	const projectList = document.getElementById("project-list");
-	const taskList = document.getElementById('task-list')
+	  const projectList = document.getElementById("project-list");
+	  const taskList = document.getElementById('task-list')
     const x = (window.innerHeight -25)*0.885;
     if(!!projectList && projectList.scrollHeight > x){
-	  htmlNode.style.height = "auto"
+	    htmlNode.style.height = "auto"
     } else if(!!taskList && taskList.scrollHeight > x){
-		htmlNode.style.height = "auto"
-	} else {
-		htmlNode.style.height = "100%"
-	}
-
-
-	
-	
+		  htmlNode.style.height = "auto"
+	  } else {
+		  htmlNode.style.height = "100%"
+	  }
   },
 };
