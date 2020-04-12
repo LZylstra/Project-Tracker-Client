@@ -13,7 +13,7 @@
     height: 12.5%;
     padding-top: 5px;
     background: rgb(15,2,24);
-background: linear-gradient(0deg, rgb(34, 9, 53) 0%, rgb(63, 34, 143) 100%);
+    background: linear-gradient(0deg, rgb(34, 9, 53) 0%, rgb(63, 34, 143) 100%);
     color: white;
     font-weight: bold;
 }
