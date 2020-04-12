@@ -12,26 +12,33 @@ class CompletedPage extends Component {
     this.state = {
       isLoading: true,
       selectedProject: null,
+      completedList: true,
     };
   }
 
   componentDidMount() {
     this.context.getProjectsByCompanyId().then((res) => {
       const projects = this.context.getProjects();
+      const filteredProjects = this.makeCompletedProjectsList(projects);
       this.setState({
         isLoading: false,
-        selectedProject: projects[0],
+        selectedProject: filteredProjects[0],
       });
     });
     this.context.getCompanyInfo();
   }
 
-    makeCompletedProjectsList = projects => {
-        return projects.map(project => (
-          <Project showProjectDetail={this.props.showProjectDetail} project={project} children={this.props.children} key={project.id}/>
-        ));
-      };
-  }
+  makeCompletedProjectsList = (projects) => {
+    let newList = projects.filter((project) => {
+      return project.status === "Closed";
+    });
+    //this.updateSelected(newList[0]);
+    return newList;
+  };
+
+  updateSelected = (selected) => {
+    this.setState({ selectedProject: selected });
+  };
 
   showProjectDetail = (id) => {
     const projects = this.context.getProjects();
@@ -43,21 +50,25 @@ class CompletedPage extends Component {
 
   render() {
     return (
-      <div id="home">
+      <div id="home-completed">
         {this.state.isLoading ? (
           <p>Loading projects</p>
         ) : (
           <>
             <ProjectList
-              projects={this.context.getProjects()}
+              projects={this.makeCompletedProjectsList(
+                this.context.getProjects()
+              )}
               showProjectDetail={this.showProjectDetail}
               selected={this.state.selectedProject}
+              type="completed"
             >
               <TaskList
                 tasks={this.context.getTasks().filter((task) => {
                   return task.projectid === this.state.selectedProject.id;
                 })}
                 projectId={this.state.selectedProject.id}
+                type="completed"
               />
             </ProjectList>
           </>

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Task from "../Task/Task";
 import { Link } from "react-router-dom";
-import ApiContext from '../ApiContext';
+import ApiContext from "../ApiContext";
 import "./TaskList.css";
 
 class TaskList extends Component {
   static defaultProps = { tasks: [] };
-  static contextType =ApiContext;
+  static contextType = ApiContext;
 
   formatDate = (duedate) => {
     if (duedate) {
@@ -28,6 +28,7 @@ class TaskList extends Component {
         status={task.status}
         datecreated={this.formatDate(task.datecreated)}
         datemodified={this.formatDate(task.datemodified)}
+        type={this.props.type}
       />
     ));
     return taskList;
@@ -35,32 +36,49 @@ class TaskList extends Component {
 
   componentDidMount = () => {
     const htmlNode = document.getElementById("html");
-    const taskList = document.getElementById('task-list')
-    const x = 1 - (25/window.innerHeight +0.115);
-    if(taskList.scrollHeight > window.innerHeight*x){
-      htmlNode.style.height = "auto"
+    const taskList = document.getElementById("task-list");
+    const x = 1 - (25 / window.innerHeight + 0.115);
+    if (taskList.scrollHeight > window.innerHeight * x) {
+      htmlNode.style.height = "auto";
     } else {
-      htmlNode.style.height = "100%"
+      htmlNode.style.height = "100%";
     }
-  }
+  };
 
   renderButton = () => {
-    if(this.context.getisAdmin()){
-      return <button onClick={() => this.context.handleDeleteSelected('selectedTasks')}>Delete Selected</button>
+    if (this.context.getisAdmin()) {
+      return (
+        <button
+          onClick={() => this.context.handleDeleteSelected("selectedTasks")}
+        >
+          Delete Selected
+        </button>
+      );
     }
     return;
-  }
+  };
 
   render() {
-    return (
-      <div className="task-list" id="task-list">
-        {this.renderTaskList()}
-        <Link to={`/addtask/${this.props.projectId}`}>
-          <button>+ Add Task</button>
-        </Link>
-        {!this.context.getIsMobile() && this.renderButton()}
-      </div>
-    );
+    let listType = this.props.type;
+    if (listType === "completed") {
+      return (
+        <div className="task-list" id="task-list">
+          {this.renderTaskList()}
+          <br></br>
+          {!this.context.getIsMobile() && this.renderButton()}
+        </div>
+      );
+    } else {
+      return (
+        <div className="task-list" id="task-list">
+          {this.renderTaskList()}
+          <Link to={`/addtask/${this.props.projectId}`}>
+            <button>+ Add Task</button>
+          </Link>
+          {!this.context.getIsMobile() && this.renderButton()}
+        </div>
+      );
+    }
   }
 }
 

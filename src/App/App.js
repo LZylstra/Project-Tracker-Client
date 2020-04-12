@@ -33,6 +33,7 @@ class App extends Component {
       showPopUp: false,
       selectedProjects: [],
       selectedTasks: [],
+      completedList: false,
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
