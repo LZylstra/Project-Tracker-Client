@@ -59,6 +59,9 @@ class Project extends Component {
   };
 
   renderCheckboxes = (project) => {
+    if(project.project_name === "Demo Project"){
+      return;
+    }
     return (
       <>
         <label
