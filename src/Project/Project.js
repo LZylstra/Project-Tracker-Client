@@ -11,7 +11,8 @@ class Project extends Component {
   };
 
   handleProjectClick = () => {
-    const expanded = !this.state.isExpanded;
+	const expanded = !this.state.isExpanded;
+	this.context.setSelectedProject(this.props.project)
     this.setState({ isExpanded: expanded });
   };
 

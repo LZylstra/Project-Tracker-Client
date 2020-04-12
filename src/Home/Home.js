@@ -37,9 +37,7 @@ class Home extends Component {
   showProjectDetail = (id) => {
     const projects = this.context.getProjects();
     const selected = projects.find((project) => project.id === id);
-    this.setState({
-      selectedProject: selected,
-    });
+    this.context.setSelectedProject(selected)
   };
 
   render() {
@@ -52,14 +50,14 @@ class Home extends Component {
             <ProjectList
               projects={this.makeOpenProjectsList(this.context.getProjects())}
               showProjectDetail={this.showProjectDetail}
-              selected={this.state.selectedProject}
+              selected={this.context.getSelectedProject()}
               type="normal"
             >
               <TaskList
                 tasks={this.context.getTasks().filter((task) => {
-                  return task.projectid === this.state.selectedProject.id;
+                  return task.projectid === this.context.getSelectedProject().id;
                 })}
-                projectId={this.state.selectedProject.id}
+                projectId={this.context.getSelectedProject().id}
                 type="normal"
               />
             </ProjectList>

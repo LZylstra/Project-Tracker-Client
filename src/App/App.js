@@ -34,6 +34,7 @@ class App extends Component {
       selectedProjects: [],
       selectedTasks: [],
       completedList: false,
+      selectedProject: {}
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -139,6 +140,10 @@ class App extends Component {
         return res;
       });
   };
+  
+  setSelectedProject = project => {
+    this.setState({selectedProject: project})
+  }
 
   configUrl = (endpoint) => {
     return `${config.API}/api/${endpoint}/c/${this.state.companyId}/`;
@@ -163,12 +168,17 @@ class App extends Component {
       ])
         .then((res) => Promise.all([res[0].json(), res[1].json()]))
         .then((res) =>
-          this.setState({
-            projects: [...res[0]],
-            tasks: [...res[1]],
-            selectedProjects: [],
-            selectedTasks: [],
-          })
+          {
+            if(JSON.stringify(this.state.selectedProject).length === 2){
+              this.setState({selectedProject: res[0][0]})
+            }
+            this.setState({
+              projects: [...res[0]],
+              tasks: [...res[1]],
+              selectedProjects: [],
+              selectedTasks: [],
+            })
+          }
         )
         .catch((err) => console.error(err));
     }
@@ -357,9 +367,13 @@ class App extends Component {
         return res.json();
       })
       .then((task) =>
-        this.setState({
-          tasks: [...this.state.tasks, task],
-        })
+        {
+          const project = this.state.projects.find(project => project.id === parseInt(projectid))
+          this.setState({
+            tasks: [...this.state.tasks, task],
+            selectedProject: project
+          })        
+        } 
       );
   };
   getTaskById = (id) => {
@@ -393,9 +407,10 @@ class App extends Component {
       );
       let tasksCopy = [...this.state.tasks];
       tasksCopy[indexToUpdate] = updatedTask;
-
+      const project = this.state.projects.find(project => project.id === parseInt(taskToUpdate.projectid))
       this.setState({
         tasks: tasksCopy,
+        selectedProject: project
       });
       return res.json();
     });
@@ -428,14 +443,19 @@ class App extends Component {
 	  const taskList = document.getElementById('task-list')
     const x = (window.innerHeight -25)*0.885;
     if(!!projectList && projectList.scrollHeight > window.innerHeight*x){
-      console.log('set by app.js')
       htmlNode.style.height = "auto"
     } else if(!!taskList && taskList.scrollHeight > window.innerHeight*x){
       htmlNode.style.height = "auto"
-      console.log('set by app.js')
   	} else {
 	  	htmlNode.style.height = "100%"
-	  }
+    }
+    const y = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
+    if (!!document.getElementById("home")) {
+      document.getElementById("home").style.height = `${y}%`;
+    }
+    if(!!document.getElementById("home-completed")){
+      document.getElementById("home-completed").style.height = `${y}%`;
+    }
     this.getCompanyInfo();
   };
 
@@ -476,6 +496,8 @@ class App extends Component {
       removeFromTasksSelected: this.removeFromTasksSelected,
       deleteSelectedTasks: this.deleteSelectedTasks,
       handleDeleteSelected: this.handleDeleteSelected,
+      getSelectedProject: () => this.state.selectedProject,
+      setSelectedProject: this.setSelectedProject
     };
 
     return (
