@@ -100,3 +100,12 @@ ul {
         color:black;
     }
 }
+
+@media screen and (max-width:1000px) {
+    #project-list{
+        width: 100%
+    }
+    .priority{
+        display: none;
+    }
+}
