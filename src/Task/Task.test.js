@@ -11,7 +11,7 @@ global.MutationObserver = class {
   observe(element, initObject) {}
 };
 
-describe("ProjectList", () => {
+describe("Task", () => {
   beforeAll(() => {
     const htmlNode = document.createElement("html");
     htmlNode.setAttribute("id", "html");
