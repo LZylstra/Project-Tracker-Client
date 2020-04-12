@@ -18,9 +18,10 @@ class Home extends Component {
   componentDidMount() {
     this.context.getProjectsByCompanyId().then((res) => {
       const projects = this.context.getProjects();
+      const filteredList = this.makeOpenProjectsList(projects);
       this.setState({
         isLoading: false,
-        selectedProject: projects[0],
+        selectedProject: filteredList[0],
       });
     });
     this.context.getCompanyInfo();
