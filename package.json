@@ -22,8 +22,7 @@
     "commit": "git commit -m ",
     "postcommit": "git push",
     "predeploy": "npm run build",
-    "deploy": "now --prod ./build",
-    "postdeploy": "now alias -A ./build/now.json"
+    "deploy": "now --prod ./build"
   },
   "eslintConfig": {
     "extends": "react-app"

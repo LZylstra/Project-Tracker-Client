@@ -9,6 +9,7 @@ global.MutationObserver = class {
   observe(element, initObject) {}
 };
 it("renders without crashing", () => {
+
   const div = document.createElement("div");
   ReactDOM.render(
     <BrowserRouter>
@@ -19,4 +20,5 @@ it("renders without crashing", () => {
     div
   );
   ReactDOM.unmountComponentAtNode(div);
+
 });

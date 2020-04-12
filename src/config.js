@@ -1,5 +1,5 @@
 export default {
-  API: process.env.REACT_APP_API_ENDPOINT,
+  API: "https://tranquil-mountain-91418.herokuapp.com",
 
   getOptions: (method) => {
     return JSON.parse(
@@ -31,5 +31,6 @@ export default {
 	  } else {
 		  htmlNode.style.height = "100%"
 	  }
+
   },
 };
