@@ -9,6 +9,7 @@ import SignUp from "../SignUp/SignUp";
 import Login from "../Login/Login";
 import ProjectPage from "../ProjectPage/ProjectPage";
 import AddProject from "../AddProject/AddProject";
+import CompletedPage from "../CompletedPage/CompletedPage";
 import AddTask from "../AddTask/AddTask";
 import config from "../config";
 import PageNotFound from "../PageNotFound/PageNotFound";
@@ -32,6 +33,8 @@ class App extends Component {
       showPopUp: false,
       selectedProjects: [],
       selectedTasks: [],
+      completedList: false,
+      selectedProject: {}
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -137,6 +140,10 @@ class App extends Component {
         return res;
       });
   };
+  
+  setSelectedProject = project => {
+    this.setState({selectedProject: project})
+  }
 
   configUrl = (endpoint) => {
     return `${config.API}/api/${endpoint}/c/${this.state.companyId}/`;
@@ -144,11 +151,10 @@ class App extends Component {
 
   handleResize = () => {
     this.setState({ isMobile: window.innerWidth < 1000 });
-    const x = 100 - (Math.round((25/window.innerHeight +0.115)*10000))/100;
-    if(!!document.getElementById('home')){
-      document.getElementById('home').style.height = `${x}%`
+    const x = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
+    if (!!document.getElementById("home")) {
+      document.getElementById("home").style.height = `${x}%`;
     }
-
   };
 
   //Api calls to projects endpoint
@@ -162,12 +168,17 @@ class App extends Component {
       ])
         .then((res) => Promise.all([res[0].json(), res[1].json()]))
         .then((res) =>
-          this.setState({
-            projects: [...res[0]],
-            tasks: [...res[1]],
-            selectedProjects: [],
-            selectedTasks: [],
-          })
+          {
+            if(JSON.stringify(this.state.selectedProject).length === 2){
+              this.setState({selectedProject: res[0][0]})
+            }
+            this.setState({
+              projects: [...res[0]],
+              tasks: [...res[1]],
+              selectedProjects: [],
+              selectedTasks: [],
+            })
+          }
         )
         .catch((err) => console.error(err));
     }
@@ -356,9 +367,13 @@ class App extends Component {
         return res.json();
       })
       .then((task) =>
-        this.setState({
-          tasks: [...this.state.tasks, task],
-        })
+        {
+          const project = this.state.projects.find(project => project.id === parseInt(projectid))
+          this.setState({
+            tasks: [...this.state.tasks, task],
+            selectedProject: project
+          })        
+        } 
       );
   };
   getTaskById = (id) => {
@@ -378,27 +393,27 @@ class App extends Component {
     //console.log(task);
     options.body = JSON.stringify(task);
     //console.log(options.body);
-    return fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((e) => Promise.reject(e));
-        }
-        
-        const taskToUpdate = this.state.tasks.find((task) => task.id === id);
-        
-        const updatedTask = { ...taskToUpdate, ...task };
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
 
-        const indexToUpdate = this.state.tasks.findIndex(task => task.id === id)
-        let tasksCopy = [...this.state.tasks];
-        tasksCopy[indexToUpdate] = updatedTask;
-      
-        this.setState({
-          tasks: tasksCopy
-        });
-        return res.json();
-      
-      })
-       
+      const taskToUpdate = this.state.tasks.find((task) => task.id === id);
+
+      const updatedTask = { ...taskToUpdate, ...task };
+
+      const indexToUpdate = this.state.tasks.findIndex(
+        (task) => task.id === id
+      );
+      let tasksCopy = [...this.state.tasks];
+      tasksCopy[indexToUpdate] = updatedTask;
+      const project = this.state.projects.find(project => project.id === parseInt(taskToUpdate.projectid))
+      this.setState({
+        tasks: tasksCopy,
+        selectedProject: project
+      });
+      return res.json();
+    });
   };
 
   deleteTask = (id) => {
@@ -419,10 +434,28 @@ class App extends Component {
 
   componentDidMount = () => {
     window.addEventListener("resize", this.handleResize);
-    const observer = new MutationObserver(config.watchRoot)
-    const targetNode = document.getElementById('root');
+    const observer = new MutationObserver(config.watchRoot);
+    const targetNode = document.getElementById("root");
     const options = { attributes: true, childList: true, subtree: true };
     observer.observe(targetNode, options)
+    const htmlNode = document.getElementById("html");
+	  const projectList = document.getElementById("project-list");
+	  const taskList = document.getElementById('task-list')
+    const x = (window.innerHeight -25)*0.885;
+    if(!!projectList && projectList.scrollHeight > window.innerHeight*x){
+      htmlNode.style.height = "auto"
+    } else if(!!taskList && taskList.scrollHeight > window.innerHeight*x){
+      htmlNode.style.height = "auto"
+  	} else {
+	  	htmlNode.style.height = "100%"
+    }
+    const y = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
+    if (!!document.getElementById("home")) {
+      document.getElementById("home").style.height = `${y}%`;
+    }
+    if(!!document.getElementById("home-completed")){
+      document.getElementById("home-completed").style.height = `${y}%`;
+    }
     this.getCompanyInfo();
   };
 
@@ -463,6 +496,8 @@ class App extends Component {
       removeFromTasksSelected: this.removeFromTasksSelected,
       deleteSelectedTasks: this.deleteSelectedTasks,
       handleDeleteSelected: this.handleDeleteSelected,
+      getSelectedProject: () => this.state.selectedProject,
+      setSelectedProject: this.setSelectedProject
     };
 
     return (
@@ -475,6 +510,11 @@ class App extends Component {
             {this.renderHome()}
             <PublicOnlyRoute exact path="/SignUp" component={SignUp} />
             <PublicOnlyRoute exact path="/Login" component={Login} />
+            <PrivateRoute
+              exact
+              path="/completed-projects"
+              component={CompletedPage}
+            />
             <PrivateRoute
               exact
               path="/projects/:projectId"

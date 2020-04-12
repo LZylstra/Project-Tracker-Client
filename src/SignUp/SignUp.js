@@ -65,6 +65,11 @@ class SignUp extends Component {
     });
   };
 
+  formatDateForAPI = (str) => {
+    const [year, month, day] = str.split("-");
+    return new Date(year, month - 1, day);
+  };
+
   handleAddCompany = () => {
     const newUser = {
       email: this.state.email.trim(),
@@ -76,7 +81,15 @@ class SignUp extends Component {
     this.context.addCompany(newUser.company_name).then((res) => {
       this.context.signUp(newUser).then((response) => {
         this.context.extractPayload(response);
-        this.props.history.push("/");
+        this.context.addProject(
+          "Demo Project",
+          "Let's take a tour of Project Tracker",
+          "Low",
+          this.formatDateForAPI("3000-01-01")
+        ).then(res2 => {
+          this.props.history.push("/");
+        })
+        
       });
     });
   };

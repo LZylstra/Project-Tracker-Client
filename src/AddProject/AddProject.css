@@ -3,7 +3,9 @@
 }
 .form-container {
     width:600px;
-    margin:0 auto;
+    margin: auto;
+    padding-bottom: 492px;
+
 }
 
 .button-container {
@@ -63,10 +65,4 @@ input[type=radio] {
 
 .low-priority {
     color:green;
-}
-
-@media screen and (max-width:600px) {
-    .form-container {
-        width:100%;
-    }
 }
