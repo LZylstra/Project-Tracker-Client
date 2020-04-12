@@ -1,15 +1,16 @@
 import React, { Component } from "react";
+import ApiContext from "../ApiContext";
 import { Link } from "react-router-dom";
 import "./Header.css";
 
 class Header extends Component {
+  static contextType = ApiContext;
+
   handleLogout = () => {
     window.sessionStorage.removeItem("jwt");
     window.sessionStorage.removeItem("state");
     window.location.reload();
   };
-
-  handleCompleted = () => {};
 
   renderMenu = () => {
     if (!!window.sessionStorage.jwt) {
@@ -21,9 +22,9 @@ class Header extends Component {
           <Link to="/" id="home-nav">
             Home
           </Link>
-          {/* <Link to="/" onClick={this.handleLogout} id="completed-nav">
+          <Link to="/completed-projects" id="completed-nav">
             Completed
-          </Link> */}
+          </Link>
         </>
       );
     } else {

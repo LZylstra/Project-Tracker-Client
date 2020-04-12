@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import ApiContext from "../ApiContext";
 import ProjectList from "../ProjectList/ProjectList";
 import TaskList from "../TaskList/TaskList";
-import "./Home.css";
+import "./CompletedPage.css";
 
-class Home extends Component {
+class CompletedPage extends Component {
   static contextType = ApiContext;
 
   constructor(props) {
@@ -12,26 +12,32 @@ class Home extends Component {
     this.state = {
       isLoading: true,
       selectedProject: null,
+      completedList: true,
     };
   }
 
   componentDidMount() {
     this.context.getProjectsByCompanyId().then((res) => {
       const projects = this.context.getProjects();
-      const filteredList = this.makeOpenProjectsList(projects);
+      const filteredProjects = this.makeCompletedProjectsList(projects);
       this.setState({
         isLoading: false,
-        selectedProject: filteredList[0],
+        selectedProject: filteredProjects[0],
       });
     });
     this.context.getCompanyInfo();
   }
-  makeOpenProjectsList = (projects) => {
-    let newList = projects.filter((project) => {
-      return project.status !== "Closed";
-    });
 
+  makeCompletedProjectsList = (projects) => {
+    let newList = projects.filter((project) => {
+      return project.status === "Closed";
+    });
+    //this.updateSelected(newList[0]);
     return newList;
+  };
+
+  updateSelected = (selected) => {
+    this.setState({ selectedProject: selected });
   };
 
   showProjectDetail = (id) => {
@@ -44,23 +50,25 @@ class Home extends Component {
 
   render() {
     return (
-      <div id="home">
+      <div id="home-completed">
         {this.state.isLoading ? (
           <p>Loading projects</p>
         ) : (
           <>
             <ProjectList
-              projects={this.makeOpenProjectsList(this.context.getProjects())}
+              projects={this.makeCompletedProjectsList(
+                this.context.getProjects()
+              )}
               showProjectDetail={this.showProjectDetail}
               selected={this.state.selectedProject}
-              type="normal"
+              type="completed"
             >
               <TaskList
                 tasks={this.context.getTasks().filter((task) => {
                   return task.projectid === this.state.selectedProject.id;
                 })}
                 projectId={this.state.selectedProject.id}
-                type="normal"
+                type="completed"
               />
             </ProjectList>
           </>
@@ -70,4 +78,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default CompletedPage;
