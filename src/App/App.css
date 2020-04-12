@@ -4,8 +4,12 @@
 }
 
 footer{
-  height: 25px;
+  position: fixed;
+  height: 20px;
   background-color: #222222;
+  width: 100%;
+  left: 0;
+  bottom: 0;
 }
 
 .error{
@@ -17,12 +21,14 @@ footer{
 }
 
 #popUp{
+  border-radius: 10px;
   position: absolute;
   top: 25%;
   left: 25%;
-  height: 30%;
-  width: 500px;
+  height: 250px;
+  width: 400px;
   margin: 30px;
+  padding: 20px;
   background-color: rgb(230, 230, 230);
   z-index: 1;
 }
