@@ -1,6 +1,6 @@
-import App from './App';
+import App from "./App";
 import React from "react";
-import ApiContext from '../ApiContext';
+import ApiContext from "../ApiContext";
 import { BrowserRouter } from "react-router-dom";
 import { mount } from 'enzyme';
 
@@ -9,6 +9,7 @@ global.MutationObserver = class {
   disconnect() {}
   observe(element, initObject) {}
 };
+
 
 describe('App', () => {
   beforeAll(() => {
@@ -33,4 +34,5 @@ describe('App', () => {
       document.getElementById("html")
     );
   });
+
 });

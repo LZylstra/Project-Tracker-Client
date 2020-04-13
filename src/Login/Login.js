@@ -40,6 +40,15 @@ class Login extends Component {
   render() {
     return (
       <div className="login">
+        <p className="demoinfo">
+          Want to try it out before registering? Use the following log ins:
+        </p>
+        <p className="demoinfo">
+          Admin User <br></br> Email: demo-admin@demo.com Password: password
+        </p>
+        <p className="demoinfo">
+          Non Admin User <br></br> Email: demo@demo.com Password: password
+        </p>
         <form id="login-form" onSubmit={this.handleSubmit}>
           {this.state.submitted && <p className="error">{this.state.error}</p>}
           <label htmlFor="email-input" className="hidden-label">

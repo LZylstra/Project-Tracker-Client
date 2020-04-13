@@ -2,6 +2,7 @@ import Task from "./Task";
 import App from "../App/App";
 import React from "react";
 import ApiContext from "../ApiContext";
+
 import { BrowserRouter } from "react-router-dom";
 import { mount } from "enzyme";
 
@@ -10,6 +11,7 @@ global.MutationObserver = class {
   disconnect() {}
   observe(element, initObject) {}
 };
+
 
 describe("Task", () => {
   beforeAll(() => {
@@ -36,4 +38,5 @@ describe("Task", () => {
       document.getElementById("html")
     );
   });
+
 });

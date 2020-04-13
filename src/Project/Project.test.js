@@ -11,6 +11,7 @@ global.MutationObserver = class {
   observe(element, initObject) {}
 };
 
+
 describe("Project", () => {
   beforeAll(() => {
     const htmlNode = document.createElement("html");
@@ -36,4 +37,5 @@ describe("Project", () => {
       document.getElementById("html")
     );
   });
+
 });
