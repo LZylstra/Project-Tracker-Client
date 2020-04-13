@@ -63,7 +63,14 @@ class AddProject extends Component {
         this.state.description,
         this.state.priority,
         this.formatDateForAPI(this.state.dueDate)
-      ).then(() => this.props.history.push("/"))
+      ).then((res) => {
+        console.log(res)
+        if(this.context.getProjects().length === 0){
+          console.log(res)
+          this.context.setSelectedProject(res)
+        }
+        this.props.history.push("/")
+      })
       .catch((res) => {
         this.setState({ error: res.error });
       });

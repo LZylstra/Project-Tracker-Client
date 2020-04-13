@@ -107,7 +107,7 @@ class App extends Component {
 
   extractPayload = (res) => {
     window.sessionStorage.setItem("jwt", res.authToken);
-    let payload = res.authToken.split(".")[1];
+    let payload = window.sessionStorage.jwt.split(".")[1];
     payload = Buffer.from(payload, "base64").toString("ascii");
     payload = JSON.parse(payload);
     //console.log(payload);
@@ -125,6 +125,7 @@ class App extends Component {
     return fetch(`${config.API}/api/users`, options)
       .then((res) => res.json())
       .then((res) => {
+        console.log(res)
         return res;
       });
   };
@@ -218,10 +219,15 @@ class App extends Component {
         }
         return res.json();
       })
-      .then((project) =>
-        this.setState({
-          projects: [...this.state.projects, project],
-        })
+      .then((project) => {
+          this.setState({
+            projects: [...this.state.projects, project],
+          })
+          if(this.state.projects.length === 1){
+            this.setSelectedProject(project)
+          }
+          return project
+        }
       );
   };
   getProjectById = (id) => {

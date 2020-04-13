@@ -53,13 +53,17 @@ class Home extends Component {
               selected={this.context.getSelectedProject()}
               type="normal"
             >
-              <TaskList
-                tasks={this.context.getTasks().filter((task) => {
-                  return task.projectid === this.context.getSelectedProject().id;
-                })}
-                projectId={this.context.getSelectedProject().id}
-                type="normal"
-              />
+              {
+                this.context.getProjects().length > 0 ?
+                  <TaskList
+                  tasks={this.context.getTasks().filter((task) => {
+                    return task.projectid === this.context.getSelectedProject().id;
+                  })}
+                  projectId={this.context.getSelectedProject().id}
+                  type="normal"
+                /> :
+                "Company has no projects."
+              }
             </ProjectList>
           </>
         )}
