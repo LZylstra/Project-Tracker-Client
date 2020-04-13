@@ -38,7 +38,6 @@ class AddProject extends Component {
     }
   }
 
-
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -63,13 +62,14 @@ class AddProject extends Component {
         this.state.description,
         this.state.priority,
         this.formatDateForAPI(this.state.dueDate)
-      ).then((res) => {
-        console.log(res)
-        if(this.context.getProjects().length === 0){
-          console.log(res)
-          this.context.setSelectedProject(res)
+      )
+      .then((res) => {
+        //console.log(res)
+        if (this.context.getProjects().length === 0) {
+          // console.log(res)
+          this.context.setSelectedProject(res);
         }
-        this.props.history.push("/")
+        this.props.history.push("/");
       })
       .catch((res) => {
         this.setState({ error: res.error });
@@ -97,10 +97,8 @@ class AddProject extends Component {
     } else {
       this.handleAddProject();
     }
-    
   };
   render() {
-    
     return (
       <div className="form-container">
         <h2>{this.state.editMode ? "Edit Project" : "Add Project"}</h2>
@@ -192,10 +190,10 @@ class AddProject extends Component {
           </div>
 
           <div className="button-container">
-            <button  type="submit">
+            <button type="submit">
               {this.state.editMode ? "Edit Project" : "Add Project"}
             </button>
-          <button
+            <button
               type="button"
               className="cancel"
               onClick={() => this.props.history.push("/")}
