@@ -125,7 +125,6 @@ class App extends Component {
     return fetch(`${config.API}/api/users`, options)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res)
         return res;
       });
   };
