@@ -70,26 +70,19 @@ class SignUp extends Component {
     return new Date(year, month - 1, day);
   };
 
-  handleAddCompany = () => {
+  handleAddCompany = event => {
+    event.preventDefault();
     const newUser = {
       email: this.state.email.trim(),
       password: this.state.password,
       full_name: this.state.fullName.trim(),
-      isadmin: 1,
+      isadmin: true,
       company_name: this.state.companyName.trim(),
     };
     this.context.addCompany(newUser.company_name).then((res) => {
       this.context.signUp(newUser).then((response) => {
         this.context.extractPayload(response);
-        this.context.addProject(
-          "Demo Project",
-          "Let's take a tour of Project Tracker",
-          "Low",
-          this.formatDateForAPI("3000-01-01")
-        ).then(res2 => {
-          this.props.history.push("/");
-        })
-        
+        this.props.history.push("/");
       });
     });
   };
