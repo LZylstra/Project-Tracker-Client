@@ -19,6 +19,8 @@ class CompletedPage extends Component {
 
   componentDidMount() {
     this.context.getCompanyInfo();
+    const y = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
+    document.getElementById("home-completed").style.height = `${y}%`;
     this.context.getProjectsByCompanyId().then((res) => {
       const projects = this.context.getProjects();
       if(projects.length === 0){
