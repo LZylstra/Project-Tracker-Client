@@ -26,9 +26,6 @@ class LandingPage extends Component {
 					<button  onClick={this.onRegister}>Register</button>
 				</div>
 				</div>
-		
-
-		
 			</div>
 		)
 	}
