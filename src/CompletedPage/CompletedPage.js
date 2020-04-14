@@ -13,7 +13,6 @@ class CompletedPage extends Component {
       isLoading: true,
       selectedProject: null,
       completedList: true,
-
     };
   }
 
@@ -37,7 +36,6 @@ class CompletedPage extends Component {
     
   }
 
-
   makeCompletedProjectsList = (projects) => {
     let newList = projects.filter((project) => {
       return project.status === "Closed";
@@ -50,7 +48,6 @@ class CompletedPage extends Component {
     this.setState({ selectedProject: selected });
   };
 
-
   showProjectDetail = (id) => {
     const projects = this.context.getProjects();
     const selected = projects.find((project) => project.id === id);
@@ -61,30 +58,30 @@ class CompletedPage extends Component {
 
   render() {
     return (
-
       <div id="home-completed">
         {this.state.isLoading ? (
           <p>Loading projects</p>
         ) : (
           <>
             <ProjectList
-
               projects={this.makeCompletedProjectsList(
                 this.context.getProjects()
               )}
               showProjectDetail={this.showProjectDetail}
               selected={this.state.selectedProject}
               type="completed"
-
             >
-              <TaskList
-                tasks={this.context.getTasks().filter((task) => {
-                  return task.projectid === this.state.selectedProject.id;
-                })}
-                projectId={this.state.selectedProject.id}
-                type="completed"
-
-              />
+              {this.context.getProjects().length > 0 ? (
+                <TaskList
+                  tasks={this.context.getTasks().filter((task) => {
+                    return task.projectid === this.state.selectedProject.id;
+                  })}
+                  projectId={this.state.selectedProject.id}
+                  type="completed"
+                />
+              ) : (
+                "Currently there are no completed projects."
+              )}
             </ProjectList>
           </>
         )}
