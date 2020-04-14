@@ -20,19 +20,18 @@ class CompletedPage extends Component {
     this.context.getProjectsByCompanyId().then((res) => {
       const projects = this.context.getProjects();
       const filteredProjects = this.makeCompletedProjectsList(projects);
-      if(projects.length === 0 || filteredProjects .length === 0){
+      if (projects.length === 0 || filteredProjects.length === 0) {
         this.setState({
           isLoading: false,
           selectedProject: {},
         });
-        return
+        return;
       }
       this.setState({
         isLoading: false,
         selectedProject: filteredProjects[0],
       });
     });
-    
   }
 
   makeCompletedProjectsList = (projects) => {
@@ -70,7 +69,8 @@ class CompletedPage extends Component {
               selected={this.state.selectedProject}
               type="completed"
             >
-              {this.makeCompletedProjectsList(this.context.getProjects()).length > 0 ? (
+              {this.makeCompletedProjectsList(this.context.getProjects())
+                .length > 0 ? (
                 <TaskList
                   tasks={this.context.getTasks().filter((task) => {
                     return task.projectid === this.state.selectedProject.id;
@@ -79,7 +79,7 @@ class CompletedPage extends Component {
                   type="completed"
                 />
               ) : (
-                "Currently there are no completed projects."
+                <h3>Currently there are no completed projects.</h3>
               )}
             </ProjectList>
           </>

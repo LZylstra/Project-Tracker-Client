@@ -29,21 +29,19 @@ class ProjectList extends Component {
   componentDidMount = () => {
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
-    const formContainer = document.getElementById('form-container')
-	  const taskList = document.getElementById('task-list')
-    const x = 1 - (25/window.innerHeight +0.115);
-    if(!!projectList && projectList.scrollHeight > x){
-      htmlNode.style.height = "auto"
-    } else if(!!taskList && taskList.scrollHeight > x){
-		  htmlNode.style.height = "auto"
-  	} else if(!!formContainer && formContainer.scrollHeight > x){
-      htmlNode.style.height = "auto"
+    const formContainer = document.getElementById("form-container");
+    const taskList = document.getElementById("task-list");
+    const x = 1 - (25 / window.innerHeight + 0.115);
+    if (!!projectList && projectList.scrollHeight > x) {
+      htmlNode.style.height = "auto";
+    } else if (!!taskList && taskList.scrollHeight > x) {
+      htmlNode.style.height = "auto";
+    } else if (!!formContainer && formContainer.scrollHeight > x) {
+      htmlNode.style.height = "auto";
     } else {
-	  	htmlNode.style.height = "100%"
-	  }
-  }
-
-
+      htmlNode.style.height = "100%";
+    }
+  };
 
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
@@ -108,7 +106,9 @@ class ProjectList extends Component {
                   {this.props.selected.description}
                 </div>
                 <div id="project-dueDate">
-                  Due Date: {this.formatDate(this.props.selected.duedate)}
+                  <p>
+                    Due Date: {this.formatDate(this.props.selected.duedate)}
+                  </p>
                 </div>
                 {this.props.children}
               </>
@@ -143,7 +143,9 @@ class ProjectList extends Component {
                   {this.props.selected.description}
                 </div>
                 <div id="project-dueDate">
-                  Due Date: {this.formatDate(this.props.selected.duedate)}
+                  <p>
+                    Due Date: {this.formatDate(this.props.selected.duedate)}
+                  </p>
                 </div>
                 {this.props.children}
               </>
