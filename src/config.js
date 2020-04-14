@@ -23,12 +23,15 @@ export default {
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
     const taskList = document.getElementById("task-list");
+    const formContainer = document.getElementById('form-container')
     const x = (window.innerHeight - 25) * 0.885;
     if (!!projectList && projectList.scrollHeight > x) {
       htmlNode.style.height = "auto";
     } else if (!!taskList && taskList.scrollHeight > x) {
       htmlNode.style.height = "auto";
-    } else {
+    } else if(!!formContainer && formContainer.scrollHeight > x){
+      htmlNode.style.height = "auto"
+    }  else {
       htmlNode.style.height = "100%";
     }
   },

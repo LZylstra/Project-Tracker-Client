@@ -18,16 +18,23 @@ class CompletedPage extends Component {
   }
 
   componentDidMount() {
+    this.context.getCompanyInfo();
     this.context.getProjectsByCompanyId().then((res) => {
       const projects = this.context.getProjects();
+      if(projects.length === 0){
+        this.setState({
+          isLoading: false,
+          selectedProject: {},
+        });
+        return
+      }
       const filteredProjects = this.makeCompletedProjectsList(projects);
       this.setState({
         isLoading: false,
         selectedProject: filteredProjects[0],
-
       });
     });
-    this.context.getCompanyInfo();
+    
   }
 
 

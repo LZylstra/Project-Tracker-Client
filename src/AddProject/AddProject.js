@@ -102,7 +102,7 @@ class AddProject extends Component {
   render() {
     
     return (
-      <div className="form-container">
+      <div id="form-container">
         <h2>{this.state.editMode ? "Edit Project" : "Add Project"}</h2>
         {this.state.error && <p className="error">{this.state.error}</p>}
 

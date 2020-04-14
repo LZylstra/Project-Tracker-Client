@@ -62,7 +62,7 @@ class Home extends Component {
                   projectId={this.context.getSelectedProject().id}
                   type="normal"
                 /> :
-                "Company has no projects."
+                <h1>No projects to display</h1>
               }
             </ProjectList>
           </>

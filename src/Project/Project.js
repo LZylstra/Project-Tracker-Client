@@ -36,9 +36,6 @@ class Project extends Component {
   expandedProject = () => {
     return (
       <div id="expanded-project">
-        {!this.context.getIsMobile() && (
-          <h1 id="project-title">{this.props.project.project_name}</h1>
-        )}
         <div id="project-description">{this.props.project.description}</div>
         <div id="project-dueDate">
           Due Date: {this.formatDate(this.props.project.duedate)}
@@ -49,10 +46,12 @@ class Project extends Component {
             <button>Edit</button>
           </div>
         )}
+        {console.log(this.context.getTasks().filter(task => task.projectid === this.props.project.id))}
         <TaskList
           tasks={this.context
             .getTasks()
             .filter((task) => task.projectid === this.props.project.id)}
+            projectId={this.props.project.id}
         />
       </div>
     );

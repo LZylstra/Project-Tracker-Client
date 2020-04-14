@@ -99,7 +99,7 @@ class AddTask extends Component {
 
   render() {
     return (
-      <div className="form-container">
+      <div id="form-container">
         <h2>{this.state.editMode ? "Edit Task" : "Add Task"}</h2>
         {/* {this.state.error && <p className="error">{this.state.error}</p>} */}
 
