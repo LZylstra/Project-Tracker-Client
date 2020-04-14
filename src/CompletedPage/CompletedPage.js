@@ -7,14 +7,11 @@ import "./CompletedPage.css";
 class CompletedPage extends Component {
   static contextType = ApiContext;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      selectedProject: null,
-      completedList: true,
-    };
-  }
+  state = {
+    isLoading: true,
+    selectedProject: {},
+    completedList: true,
+  };
 
   componentDidMount() {
     this.context.getCompanyInfo();
@@ -22,14 +19,14 @@ class CompletedPage extends Component {
     document.getElementById("home-completed").style.height = `${y}%`;
     this.context.getProjectsByCompanyId().then((res) => {
       const projects = this.context.getProjects();
-      if(projects.length === 0){
+      const filteredProjects = this.makeCompletedProjectsList(projects);
+      if(projects.length === 0 || filteredProjects .length === 0){
         this.setState({
           isLoading: false,
           selectedProject: {},
         });
         return
       }
-      const filteredProjects = this.makeCompletedProjectsList(projects);
       this.setState({
         isLoading: false,
         selectedProject: filteredProjects[0],
@@ -73,7 +70,7 @@ class CompletedPage extends Component {
               selected={this.state.selectedProject}
               type="completed"
             >
-              {this.context.getProjects().length > 0 ? (
+              {this.makeCompletedProjectsList(this.context.getProjects()).length > 0 ? (
                 <TaskList
                   tasks={this.context.getTasks().filter((task) => {
                     return task.projectid === this.state.selectedProject.id;
