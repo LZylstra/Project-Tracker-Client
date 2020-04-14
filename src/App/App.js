@@ -297,6 +297,9 @@ class App extends Component {
 
   deleteSelectedProjects = () => {
     const ids = this.state.selectedProjects.map((id) => parseInt(id));
+    if(ids.length === this.state.projects.length){
+      this.setState({selectedProject: {}})
+    }
     this.setState({ showPopUp: false });
     Promise.all(ids.map((id) => this.deleteProject(id)));
   };
@@ -322,7 +325,7 @@ class App extends Component {
     this.popup = (
       <div id="popUp">
         <p>
-          Are you sure you want to <strong id="warning">delete</strong> {name}:{" "}
+          Are you sure you want to <strong id="warning">DELETE</strong> {name}:{" "}
           {this.state[nameOfSelectedArray]
             .map((id) => {
               return this.state[name].find((item) => id === item.id)[
@@ -445,13 +448,17 @@ class App extends Component {
     observer.observe(targetNode, options)
     const htmlNode = document.getElementById("html");
 	  const projectList = document.getElementById("project-list");
-	  const taskList = document.getElementById('task-list')
+    const taskList = document.getElementById('task-list')
+    const formContainer = document.getElementById('form-container')
     const x = (window.innerHeight -25)*0.885;
     if(!!projectList && projectList.scrollHeight > window.innerHeight*x){
       htmlNode.style.height = "auto"
     } else if(!!taskList && taskList.scrollHeight > window.innerHeight*x){
       htmlNode.style.height = "auto"
-  	} else {
+  	} else if(!!formContainer && formContainer.scrollHeight > x){
+      htmlNode.style.height = "auto"
+      formContainer.style.height = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100
+    } else {
 	  	htmlNode.style.height = "100%"
     }
     const y = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
@@ -515,16 +522,8 @@ class App extends Component {
             {this.renderHome()}
             <PublicOnlyRoute exact path="/SignUp" component={SignUp} />
             <PublicOnlyRoute exact path="/Login" component={Login} />
-            <PrivateRoute
-              exact
-              path="/completed-projects"
-              component={CompletedPage}
-            />
-            <PrivateRoute
-              exact
-              path="/projects/:projectId"
-              component={ProjectPage}
-            />
+            <PrivateRoute exact path="/completed-projects" component={CompletedPage} />
+            <PrivateRoute exact path="/projects/:projectId" component={ProjectPage} />
             <PrivateRoute exact path="/AddProject" component={AddProject} />
 
             {this.state.loggedIn ? (
