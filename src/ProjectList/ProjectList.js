@@ -44,6 +44,7 @@ class ProjectList extends Component {
   }
 
 
+
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
     if (listType === "completed") {
@@ -98,14 +99,20 @@ class ProjectList extends Component {
             {!this.context.getIsMobile() && this.renderButton()}
           </div>
           <div id="expanded-project">
-            <h1 id="project-title">{this.props.selected.project_name}</h1>
-            <div id="project-description">
-              {this.props.selected.description}
-            </div>
-            <div id="project-dueDate">
-              Due Date: {this.formatDate(this.props.selected.duedate)}
-            </div>
-            {this.props.children}
+            {!this.context.getSelectedProject() ? (
+              <h1>No completed projects to display</h1>
+            ) : (
+              <>
+                <h1 id="project-title">{this.props.selected.project_name}</h1>
+                <div id="project-description">
+                  {this.props.selected.description}
+                </div>
+                <div id="project-dueDate">
+                  Due Date: {this.formatDate(this.props.selected.duedate)}
+                </div>
+                {this.props.children}
+              </>
+            )}
           </div>
         </div>
       );
@@ -125,11 +132,13 @@ class ProjectList extends Component {
             {!this.context.getIsMobile() && this.renderButton()}
           </div>
           <div id="expanded-project">
-            {
-              !this.context.getSelectedProject() ?
-                <h1>No projects to display</h1> :
+            {!this.context.getSelectedProject() ? (
+              <h1>No projects to display</h1>
+            ) : (
               <>
-                <h1 id="project-title">{this.context.getSelectedProject().project_name}</h1>
+                <h1 id="project-title">
+                  {this.context.getSelectedProject().project_name}
+                </h1>
                 <div id="project-description">
                   {this.props.selected.description}
                 </div>
@@ -138,8 +147,7 @@ class ProjectList extends Component {
                 </div>
                 {this.props.children}
               </>
-            }
-            
+            )}
           </div>
         </div>
       );
