@@ -8,16 +8,10 @@ class CompletedPage extends Component {
   static contextType = ApiContext;
 
   state = {
-      isLoading: true,
-      selectedProject: {},
-      completedList: true,
-<<<<<<< HEAD
+    isLoading: true,
+    selectedProject: {},
+    completedList: true,
   };
-
-=======
-    };
-  }
->>>>>>> 420309a5b0b63370932640254ca549b5eaf31f5a
 
   componentDidMount() {
     this.context.getCompanyInfo();
@@ -25,7 +19,6 @@ class CompletedPage extends Component {
     document.getElementById("home-completed").style.height = `${y}%`;
     this.context.getProjectsByCompanyId().then((res) => {
       const projects = this.context.getProjects();
-      
       const filteredProjects = this.makeCompletedProjectsList(projects);
       if(projects.length === 0 || filteredProjects .length === 0){
         this.setState({
@@ -76,25 +69,8 @@ class CompletedPage extends Component {
               showProjectDetail={this.showProjectDetail}
               selected={this.state.selectedProject}
               type="completed"
-<<<<<<< HEAD
-
-              
             >
-              {
-                
-                JSON.stringify(this.state.selectedProject).length <= 2 ?
-                  <h1>No projects to display</h1>:
-                  <TaskList
-                    tasks={this.context.getTasks().filter((task) => {
-                      return task.projectid === this.state.selectedProject.id;
-                    })}
-                    projectId={this.state.selectedProject.id}
-                    type="completed"
-                  />
-              }
-=======
-            >
-              {this.context.getProjects().length > 0 ? (
+              {this.makeCompletedProjectsList(this.context.getProjects()).length > 0 ? (
                 <TaskList
                   tasks={this.context.getTasks().filter((task) => {
                     return task.projectid === this.state.selectedProject.id;
@@ -105,7 +81,6 @@ class CompletedPage extends Component {
               ) : (
                 "Currently there are no completed projects."
               )}
->>>>>>> 420309a5b0b63370932640254ca549b5eaf31f5a
             </ProjectList>
           </>
         )}
