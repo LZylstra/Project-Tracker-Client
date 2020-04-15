@@ -7,6 +7,14 @@ import "./ProjectList.css";
 class ProjectList extends Component {
   static contextType = ApiContext;
 
+  static defaultProps = { task: {} };
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: this.props.status,
+    };
+  }
+
   formatDate = (duedate) => {
     if (duedate) {
       let extraChars = duedate.indexOf("T");
@@ -19,11 +27,13 @@ class ProjectList extends Component {
     const value = event.target.value;
     const id = this.props.selected.id;
 
+
     //make patch request to api to update task
     this.context
       .editProject({
         [name]: value,
       }, id)
+
       .catch((res) => this.setState({ error: res.error }));
   };
 

@@ -240,6 +240,7 @@ class App extends Component {
   };
 
   editProject = (status, id) => {
+
   
     const options = config.getOptions("patch");
     const url = `${config.API}/api/projects/${id}`;
@@ -252,6 +253,7 @@ class App extends Component {
          const projectToUpdate = this.state.projects.find((project) => project.id === id);
 
       const updatedProject = { ...projectToUpdate, ...status };
+
 
       const indexToUpdate = this.state.projects.findIndex(
         (project) => project.id === id
@@ -266,6 +268,7 @@ class App extends Component {
       
       })
       
+
   };
 
   deleteProject = (id) => {
