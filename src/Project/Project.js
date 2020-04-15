@@ -38,7 +38,7 @@ class Project extends Component {
       <div id="expanded-project">
         <div id="project-description">{this.props.project.description}</div>
         <div id="project-dueDate">
-          Due Date: {this.formatDate(this.props.project.duedate)}
+          {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.props.project.duedate)}
         </div>
         {!this.context.getIsMobile() && (
           <div className="button-container">
