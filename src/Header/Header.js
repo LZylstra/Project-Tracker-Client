@@ -47,7 +47,8 @@ class Header extends Component {
         <style>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
 </style>
-        <span className="logo">PROJECT TRACKER</span>
+
+        <span className="logo"><i class="fas fa-address-book"></i> PROJECT TRACKER</span>
 
         <div className="nav">{this.renderMenu()}</div>
       </header>
