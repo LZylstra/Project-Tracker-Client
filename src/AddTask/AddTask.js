@@ -4,7 +4,7 @@ import "./AddTask.css";
 
 class AddTask extends Component {
   static contextType = ApiContext;
-  
+
   state = {
     task_name: "",
     assignedto: 1,
@@ -16,7 +16,6 @@ class AddTask extends Component {
     editmode: false,
   };
   componentDidMount() {
-    
     const companyId = this.context.getCompanyId();
     this.context
       .getUsersByCompanyId(companyId)
@@ -51,21 +50,23 @@ class AddTask extends Component {
 
   handleChange = (event) => {
     const name = event.target.name;
-    const value = event.target.value;
+    let value = event.target.value;
+
     this.setState({
       [name]: value,
     });
   };
   handleAddTask = () => {
     this.context
-      .addTask({
-        task_name: this.state.task_name,
-        assignedto: this.state.assignedto,
-        description: this.state.description,
-        priority: this.state.priority,
-        status: this.state.status
-      },
-      this.state.projectid
+      .addTask(
+        {
+          task_name: this.state.task_name,
+          assignedto: this.state.assignedto,
+          description: this.state.description,
+          priority: this.state.priority,
+          status: this.state.status,
+        },
+        this.state.projectid
       )
       .catch((res) => this.setState({ error: res.error }));
   };
@@ -88,25 +89,31 @@ class AddTask extends Component {
     event.preventDefault();
     this.setState({ error: "" });
 
+    let formatname = this.state.task_name.trim();
+    if (formatname === "") {
+      this.setState({ error: "Please enter a valid task name", task_name: "" });
+      return;
+    }
+
     if (this.props.taskId) {
       this.handleEditTask();
     } else {
       this.handleAddTask();
     }
-    this.props.history.push("/")
-   
+    this.props.history.push("/");
   };
 
   render() {
     return (
-      <div className="form-container">
+      <div id="form-container">
         <h2>{this.state.editMode ? "Edit Task" : "Add Task"}</h2>
-        {/* {this.state.error && <p className="error">{this.state.error}</p>} */}
+        {this.state.error && <p className="error">{this.state.error}</p>}
 
         <form onSubmit={this.handleSubmit}>
           <p className="input-container">
             <label htmlFor="name-input">Task Name:</label>
             <input
+              required
               type="text"
               className="name-input"
               name="task_name"
@@ -153,6 +160,7 @@ class AddTask extends Component {
           <div className="input-container">
             <label htmlFor="priority"> Priority:</label>
             <input
+              required
               type="radio"
               onChange={this.handleChange}
               name="priority"
@@ -162,6 +170,7 @@ class AddTask extends Component {
 
             <label className="urgent-priority">Urgent</label>
             <input
+              required
               type="radio"
               onChange={this.handleChange}
               name="priority"
@@ -171,6 +180,7 @@ class AddTask extends Component {
             <label className="high-priority">High</label>
 
             <input
+              required
               type="radio"
               onChange={this.handleChange}
               name="priority"
@@ -179,6 +189,7 @@ class AddTask extends Component {
             />
             <label className="medium-priority">Medium</label>
             <input
+              required
               type="radio"
               onChange={this.handleChange}
               name="priority"

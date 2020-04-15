@@ -2,7 +2,7 @@
 
 
 .header{
-    font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     display: flex;
     flex-direction: column;
@@ -21,6 +21,7 @@
 
 .logo{
     align-self: center;
+    padding: 10px;
 }
 
 .hidden-logout{
@@ -41,7 +42,9 @@
     color: rgb(138, 138, 138);
 }
       
-
+#logout, #home-nav, #completed-nav{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
 
 @media screen and (max-width: 600px) {
     .nav a:not(:first-child) {display: none;}

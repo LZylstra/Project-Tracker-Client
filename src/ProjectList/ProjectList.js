@@ -7,11 +7,34 @@ import "./ProjectList.css";
 class ProjectList extends Component {
   static contextType = ApiContext;
 
+  static defaultProps = { task: {} };
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: this.props.status,
+    };
+  }
+
   formatDate = (duedate) => {
     if (duedate) {
       let extraChars = duedate.indexOf("T");
       return duedate.slice(0, extraChars);
     }
+  };
+
+  handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const id = this.props.selected.id;
+
+
+    //make patch request to api to update task
+    this.context
+      .editProject({
+        [name]: value,
+      }, id)
+
+      .catch((res) => this.setState({ error: res.error }));
   };
 
   makeProjectsList = (projects) => {
@@ -27,18 +50,24 @@ class ProjectList extends Component {
   };
 
   componentDidMount = () => {
+  
+  
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
+    const formContainer = document.getElementById("form-container");
     const taskList = document.getElementById("task-list");
     const x = 1 - (25 / window.innerHeight + 0.115);
     if (!!projectList && projectList.scrollHeight > x) {
       htmlNode.style.height = "auto";
     } else if (!!taskList && taskList.scrollHeight > x) {
       htmlNode.style.height = "auto";
+    } else if (!!formContainer && formContainer.scrollHeight > x) {
+      htmlNode.style.height = "auto";
     } else {
       htmlNode.style.height = "100%";
     }
   };
+  
 
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
@@ -71,7 +100,7 @@ class ProjectList extends Component {
   };
 
   renderButton = () => {
-    if (this.context.getisAdmin()) {
+    if (this.context.getisAdmin() && this.context.getProjects().length > 0) {
       return (
         <button
           onClick={() => this.context.handleDeleteSelected("selectedProjects")}
@@ -103,7 +132,9 @@ class ProjectList extends Component {
                   {this.props.selected.description}
                 </div>
                 <div id="project-dueDate">
-                  Due Date: {this.formatDate(this.props.selected.duedate)}
+                  <p>
+                    Due Date: {this.formatDate(this.props.selected.duedate)}
+                  </p>
                 </div>
                 {this.props.children}
               </>
@@ -138,7 +169,23 @@ class ProjectList extends Component {
                   {this.props.selected.description}
                 </div>
                 <div id="project-dueDate">
-                  Due Date: {this.formatDate(this.props.selected.duedate)}
+                  <p>
+                    {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.context.getSelectedProject().duedate)}
+                  </p>
+                </div>
+                <div className="input-container">
+                  <label htmlFor="Status">Status: </label>
+                  <select
+                    onChange={this.handleChange}
+                      value={this.context.getSelectedProject().status}
+                    name="status"
+                    id="status"
+                  >
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Closed">Closed</option>
+                  </select>
                 </div>
                 {this.props.children}
               </>
@@ -149,6 +196,7 @@ class ProjectList extends Component {
     }
   };
   render() {
+
     return this.context.getIsMobile()
       ? this.displayProjectListJSXMobile()
       : this.displayProjectListJSX();
