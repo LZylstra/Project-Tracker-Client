@@ -72,6 +72,10 @@ class AddProject extends Component {
         this.props.history.push("/");
       })
       .catch((res) => {
+        if(!!res.error.message){
+          this.setState({error: "Project with that name already exists. Please Choose a new one"})
+          return
+        }
         this.setState({ error: res.error });
       });
   };
@@ -92,6 +96,16 @@ class AddProject extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ error: "" });
+
+    let formatname = this.state.name.trim();
+    if (formatname === "") {
+      this.setState({
+        error: "Please enter a valid project name",
+        name: "",
+      });
+      return;
+    }
+
     if (this.state.editMode) {
       this.handleEditProject();
     } else {
@@ -108,6 +122,7 @@ class AddProject extends Component {
           <p className="input-container">
             <label htmlFor="name-input">Project Name:</label>
             <input
+              required
               type="text"
               className="name-input"
               name="name"
@@ -153,6 +168,7 @@ class AddProject extends Component {
           <div className="input-container">
             <label htmlFor="priority"> Priority:</label>
             <input
+              required
               type="radio"
               onChange={this.handleChange}
               name="priority"
@@ -162,6 +178,7 @@ class AddProject extends Component {
 
             <label className="urgent-priority">Urgent</label>
             <input
+              required
               type="radio"
               onChange={this.handleChange}
               name="priority"
@@ -171,6 +188,7 @@ class AddProject extends Component {
             <label className="high-priority">High</label>
 
             <input
+              required
               type="radio"
               onChange={this.handleChange}
               name="priority"
@@ -179,6 +197,7 @@ class AddProject extends Component {
             />
             <label className="medium-priority">Medium</label>
             <input
+              required
               type="radio"
               onChange={this.handleChange}
               name="priority"

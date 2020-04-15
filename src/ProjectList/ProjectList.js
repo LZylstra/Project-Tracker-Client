@@ -29,18 +29,27 @@ class ProjectList extends Component {
   componentDidMount = () => {
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
+<<<<<<< HEAD
 
+=======
+    const formContainer = document.getElementById("form-container");
+>>>>>>> 4af77fa6182fcdac0fb7b49969392fa78ef0d45f
     const taskList = document.getElementById("task-list");
     const x = 1 - (25 / window.innerHeight + 0.115);
     if (!!projectList && projectList.scrollHeight > x) {
       htmlNode.style.height = "auto";
     } else if (!!taskList && taskList.scrollHeight > x) {
       htmlNode.style.height = "auto";
+    } else if (!!formContainer && formContainer.scrollHeight > x) {
+      htmlNode.style.height = "auto";
     } else {
       htmlNode.style.height = "100%";
     }
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4af77fa6182fcdac0fb7b49969392fa78ef0d45f
 
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
@@ -105,7 +114,9 @@ class ProjectList extends Component {
                   {this.props.selected.description}
                 </div>
                 <div id="project-dueDate">
-                  Due Date: {this.formatDate(this.props.selected.duedate)}
+                  <p>
+                    Due Date: {this.formatDate(this.props.selected.duedate)}
+                  </p>
                 </div>
                 {this.props.children}
               </>
@@ -140,7 +151,9 @@ class ProjectList extends Component {
                   {this.props.selected.description}
                 </div>
                 <div id="project-dueDate">
-                  Due Date: {this.formatDate(this.props.selected.duedate)}
+                  <p>
+                    Due Date: {this.formatDate(this.props.selected.duedate)}
+                  </p>
                 </div>
                 {this.props.children}
               </>
