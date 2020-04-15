@@ -258,13 +258,13 @@ class App extends Component {
       );
       let projectsCopy = [...this.state.projects];
       projectsCopy[indexToUpdate] = updatedProject;
-    
+        console.log(projectsCopy)
+        console.log(updatedProject)
       this.setState({
         projects: projectsCopy,
         selectedProject: updatedProject,
       });
-
-        return res.json();
+      
       })
       
   };
