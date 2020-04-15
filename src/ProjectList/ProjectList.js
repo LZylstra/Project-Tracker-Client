@@ -7,6 +7,14 @@ import "./ProjectList.css";
 class ProjectList extends Component {
   static contextType = ApiContext;
 
+  static defaultProps = { task: {} };
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: this.props.status,
+    };
+  }
+
   formatDate = (duedate) => {
     if (duedate) {
       let extraChars = duedate.indexOf("T");
@@ -18,16 +26,24 @@ class ProjectList extends Component {
     const name = event.target.name;
     const value = event.target.value;
     const id = this.props.selected.id;
-    console.log(id);
+    let updatedProject;
+    //console.log(id);
     this.setState({
       [name]: value,
     });
-    //make patch request to api to update task
+    //console.log(this.context.getProjectById(id));
+    //make patch request to api to update project
     this.context
-      .editProject({
-        [name]: value,
-        id,
-      })
+      .editProject(
+        {
+          [name]: value,
+        },
+        id
+      )
+      // .then(() => {
+      //   updatedProject = this.context.getProjectById(id);
+      // })
+      // .then(this.context.setSelectedProject(updatedProject))
       .catch((res) => this.setState({ error: res.error }));
   };
 
@@ -168,7 +184,7 @@ class ProjectList extends Component {
                   <label htmlFor="Status">Status: </label>
                   <select
                     onChange={this.handleChange}
-                    value={this.props.selected.status}
+                    value={this.context.getSelectedProject().status}
                     name="status"
                     id="status"
                   >

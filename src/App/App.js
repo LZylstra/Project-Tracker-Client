@@ -239,29 +239,33 @@ class App extends Component {
     });
   };
 
-  editProject = (project_name, description, priority, duedate, status, id) => {
+  editProject = (status, id) => {
     const options = config.getOptions("patch");
     const url = `${config.API}/api/projects/${id}`;
-    options.body = JSON.stringify({
-      project_name,
-      description,
-      priority,
-      duedate,
-      status,
-    });
+    let updatedProject;
+    options.body = JSON.stringify(status);
     // console.log(options.body);
-    return fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((e) => Promise.reject(e));
-        }
-        return res.json();
-      })
-      .then((project) =>
-        this.setState({
-          projects: [...this.state.projects, project],
-        })
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      const projectToUpdate = this.state.project.find(
+        (project) => project.id === id
       );
+      updatedProject = { ...projectToUpdate, ...status };
+      const indexToUpdate = this.state.projects.findIndex(
+        (project) => project.id === id
+      );
+      let projectsCopy = [...this.state.projects];
+      projectsCopy[indexToUpdate] = updatedProject;
+      this.setState({
+        projects: projectsCopy,
+      });
+      //console.log(updatedProject);
+      // this.setSelectedProject(updatedProject);
+      return res.json();
+    });
+    // .then(this.setSelectedProject(updatedProject));
   };
 
   deleteProject = (id) => {
