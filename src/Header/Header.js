@@ -3,6 +3,7 @@ import ApiContext from "../ApiContext";
 import { Link } from "react-router-dom";
 import "./Header.css";
 
+
 class Header extends Component {
   static contextType = ApiContext;
 
@@ -47,7 +48,11 @@ class Header extends Component {
   render() {
     return (
       <header className="header" id="header">
-        <span className="logo">PROJECT TRACKER</span>
+        <style>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
+</style>
+
+        <span className="logo"><i class="fas fa-address-book"></i> PROJECT TRACKER</span>
 
         <div className="nav">{this.renderMenu()}</div>
       </header>

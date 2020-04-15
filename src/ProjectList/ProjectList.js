@@ -7,11 +7,34 @@ import "./ProjectList.css";
 class ProjectList extends Component {
   static contextType = ApiContext;
 
+  static defaultProps = { task: {} };
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: this.props.status,
+    };
+  }
+
   formatDate = (duedate) => {
     if (duedate) {
       let extraChars = duedate.indexOf("T");
       return duedate.slice(0, extraChars);
     }
+  };
+
+  handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const id = this.props.selected.id;
+
+
+    //make patch request to api to update task
+    this.context
+      .editProject({
+        [name]: value,
+      }, id)
+
+      .catch((res) => this.setState({ error: res.error }));
   };
 
   makeProjectsList = (projects) => {
@@ -27,6 +50,8 @@ class ProjectList extends Component {
   };
 
   componentDidMount = () => {
+  
+  
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
     const formContainer = document.getElementById("form-container");
@@ -42,6 +67,7 @@ class ProjectList extends Component {
       htmlNode.style.height = "100%";
     }
   };
+  
 
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
@@ -147,6 +173,20 @@ class ProjectList extends Component {
                     {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.context.getSelectedProject().duedate)}
                   </p>
                 </div>
+                <div className="input-container">
+                  <label htmlFor="Status">Status: </label>
+                  <select
+                    onChange={this.handleChange}
+                      value={this.context.getSelectedProject().status}
+                    name="status"
+                    id="status"
+                  >
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Closed">Closed</option>
+                  </select>
+                </div>
                 {this.props.children}
               </>
             )}
@@ -156,6 +196,7 @@ class ProjectList extends Component {
     }
   };
   render() {
+
     return this.context.getIsMobile()
       ? this.displayProjectListJSXMobile()
       : this.displayProjectListJSX();

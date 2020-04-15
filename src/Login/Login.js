@@ -44,10 +44,10 @@ class Login extends Component {
           Want to try it out before registering? Use the following log ins:
         </p>
         <p className="demoinfo">
-          Admin User <br></br> Email: demo-admin@demo.com Password: password
+          Admin User <br></br> Email: <b>demo-admin@demo.com</b> Password: <b>password</b>
         </p>
         <p className="demoinfo">
-          Non Admin User <br></br> Email: demo@demo.com Password: password
+          Non Admin User <br></br> Email:<b>demo@demo.com</b> Password: <b>password</b>
         </p>
         <form id="login-form" onSubmit={this.handleSubmit}>
           {this.state.submitted && <p className="error">{this.state.error}</p>}

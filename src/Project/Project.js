@@ -11,8 +11,8 @@ class Project extends Component {
   };
 
   handleProjectClick = () => {
-	const expanded = !this.state.isExpanded;
-	this.context.setSelectedProject(this.props.project)
+    const expanded = !this.state.isExpanded;
+    this.context.setSelectedProject(this.props.project);
     this.setState({ isExpanded: expanded });
   };
 
@@ -22,6 +22,7 @@ class Project extends Component {
       return duedate.slice(0, extraChars);
     }
   };
+
 
   handleCheckBox = () => {
     const isSelected = !this.state.isSelected;
@@ -40,6 +41,7 @@ class Project extends Component {
         <div id="project-dueDate">
           {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.props.project.duedate)}
         </div>
+    
         {!this.context.getIsMobile() && (
           <div className="button-container">
             <button>Completed</button>
@@ -50,14 +52,14 @@ class Project extends Component {
           tasks={this.context
             .getTasks()
             .filter((task) => task.projectid === this.props.project.id)}
-            projectId={this.props.project.id}
+          projectId={this.props.project.id}
         />
       </div>
     );
   };
 
   renderCheckboxes = (project) => {
-    if(project.project_name === "Demo Project"){
+    if (project.project_name === "Demo Project") {
       return;
     }
     return (
