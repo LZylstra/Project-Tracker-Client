@@ -23,6 +23,7 @@ class Project extends Component {
     }
   };
 
+
   handleCheckBox = () => {
     const isSelected = !this.state.isSelected;
     if (this.state.isSelected) {
@@ -40,20 +41,7 @@ class Project extends Component {
         <div id="project-dueDate">
           {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.props.project.duedate)}
         </div>
-        <div className="input-container">
-          <label htmlFor="Status">Status: </label>
-          <select
-            onChange={this.handleChange}
-            value={this.props.project.status}
-            name="status"
-            id="status"
-          >
-            <option value="New">New</option>
-            <option value="In Progress">In Progress</option>
-            <option value="On Hold">On Hold</option>
-            <option value="Closed">Closed</option>
-          </select>
-        </div>
+    
         {!this.context.getIsMobile() && (
           <div className="button-container">
             <button>Completed</button>

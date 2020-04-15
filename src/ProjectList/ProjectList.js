@@ -26,24 +26,14 @@ class ProjectList extends Component {
     const name = event.target.name;
     const value = event.target.value;
     const id = this.props.selected.id;
-    let updatedProject;
-    //console.log(id);
-    this.setState({
-      [name]: value,
-    });
-    //console.log(this.context.getProjectById(id));
-    //make patch request to api to update project
+
+
+    //make patch request to api to update task
     this.context
-      .editProject(
-        {
-          [name]: value,
-        },
-        id
-      )
-      // .then(() => {
-      //   updatedProject = this.context.getProjectById(id);
-      // })
-      // .then(this.context.setSelectedProject(updatedProject))
+      .editProject({
+        [name]: value,
+      }, id)
+
       .catch((res) => this.setState({ error: res.error }));
   };
 
@@ -60,6 +50,8 @@ class ProjectList extends Component {
   };
 
   componentDidMount = () => {
+  
+  
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
     const formContainer = document.getElementById("form-container");
@@ -75,6 +67,7 @@ class ProjectList extends Component {
       htmlNode.style.height = "100%";
     }
   };
+  
 
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
@@ -184,7 +177,7 @@ class ProjectList extends Component {
                   <label htmlFor="Status">Status: </label>
                   <select
                     onChange={this.handleChange}
-                    value={this.context.getSelectedProject().status}
+                      value={this.context.getSelectedProject().status}
                     name="status"
                     id="status"
                   >
@@ -203,6 +196,7 @@ class ProjectList extends Component {
     }
   };
   render() {
+
     return this.context.getIsMobile()
       ? this.displayProjectListJSXMobile()
       : this.displayProjectListJSX();
