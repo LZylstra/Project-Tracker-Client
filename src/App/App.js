@@ -35,6 +35,7 @@ class App extends Component {
       selectedTasks: [],
       completedList: false,
       selectedProject: {},
+      manageUsers: false
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -52,6 +53,49 @@ class App extends Component {
       );
       original.bind(this)(arguments0, arguments1);
     };
+  }
+
+  handleManageUsers = () => {
+    this.getUsersByCompanyId(this.state.companyId)
+    this.setState({manageUsers: !this.state.manageUsers})
+  }
+
+  updateUserRole = event => {
+    const options = config.getOptions('patch')
+    const user = this.state.employees.find(user => user.id === parseInt(event.target.id.split('-')[0]))
+    user.isadmin = event.target.value
+    options.body = JSON.stringify(user)
+    fetch(`${config.API}/api/users/${user.id}`, options).then(res => {
+      if(!res.ok){
+        return res.json()
+      }
+    }).then(res => {
+      if(!!res){
+        console.log(res)
+      }
+      this.getCompanyInfo()
+    })
+  }
+
+  manageUsers = () => {
+    return (
+      <div id="manage-users-popup"> 
+        {
+          this.state.employees.map((user, i) => {
+            return (
+              <div className="user-wrapper" key={i}>
+                <label htmlFor={`${user.id}-role`}>{user.full_name}</label>
+                <select id={`${user.id}-role`} value={user.isadmin} onChange={this.updateUserRole}>
+                  <option value={true}>Administrator</option>
+                  <option value={false}>Standard</option>
+                </select>
+              </div>
+            )
+          })
+        }
+        <button onClick={this.handleManageUsers}>Done</button>
+      </div>
+    )
   }
 
   addToProjectsSelected = (id) => {
@@ -512,12 +556,14 @@ class App extends Component {
       handleDeleteSelected: this.handleDeleteSelected,
       getSelectedProject: () => this.state.selectedProject,
       setSelectedProject: this.setSelectedProject,
+      handleManageUsers: this.handleManageUsers
     };
 
     return (
       <ApiContext.Provider value={value}>
         <div className="App">
           {this.state.showPopUp && this.popup}
+          {this.state.manageUsers && this.manageUsers()}
           <Header />
 
           <Switch>
