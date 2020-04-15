@@ -72,6 +72,10 @@ class AddProject extends Component {
         this.props.history.push("/");
       })
       .catch((res) => {
+        if(!!res.error.message){
+          this.setState({error: "Project with that name already exists. Please Choose a new one"})
+          return
+        }
         this.setState({ error: res.error });
       });
   };
