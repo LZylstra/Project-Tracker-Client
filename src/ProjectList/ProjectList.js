@@ -29,11 +29,7 @@ class ProjectList extends Component {
   componentDidMount = () => {
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
-<<<<<<< HEAD
-
-=======
     const formContainer = document.getElementById("form-container");
->>>>>>> 4af77fa6182fcdac0fb7b49969392fa78ef0d45f
     const taskList = document.getElementById("task-list");
     const x = 1 - (25 / window.innerHeight + 0.115);
     if (!!projectList && projectList.scrollHeight > x) {
@@ -46,10 +42,6 @@ class ProjectList extends Component {
       htmlNode.style.height = "100%";
     }
   };
-<<<<<<< HEAD
-
-=======
->>>>>>> 4af77fa6182fcdac0fb7b49969392fa78ef0d45f
 
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
