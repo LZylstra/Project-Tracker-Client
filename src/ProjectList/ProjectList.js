@@ -91,7 +91,7 @@ class ProjectList extends Component {
   };
 
   renderButton = () => {
-    if (this.context.getisAdmin()) {
+    if (this.context.getisAdmin() && this.context.getProjects().length > 0) {
       return (
         <button
           onClick={() => this.context.handleDeleteSelected("selectedProjects")}
@@ -161,7 +161,7 @@ class ProjectList extends Component {
                 </div>
                 <div id="project-dueDate">
                   <p>
-                    Due Date: {this.formatDate(this.props.selected.duedate)}
+                    {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.context.getSelectedProject().duedate)}
                   </p>
                 </div>
                 <div className="input-container">
