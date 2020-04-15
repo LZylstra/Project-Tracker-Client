@@ -1,5 +1,5 @@
 export default {
-  //API: "https://tranquil-mountain-91418.herokuapp.com",
+  // API: "https://tranquil-mountain-91418.herokuapp.com",
   API: "http://localhost:8000",
   getOptions: (method) => {
     return JSON.parse(

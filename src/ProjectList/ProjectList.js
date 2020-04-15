@@ -14,6 +14,23 @@ class ProjectList extends Component {
     }
   };
 
+  handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const id = this.props.selected.id;
+    console.log(id);
+    this.setState({
+      [name]: value,
+    });
+    //make patch request to api to update task
+    this.context
+      .editProject({
+        [name]: value,
+        id,
+      })
+      .catch((res) => this.setState({ error: res.error }));
+  };
+
   makeProjectsList = (projects) => {
     return projects.map((project) => (
       <Project
@@ -29,11 +46,7 @@ class ProjectList extends Component {
   componentDidMount = () => {
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
-<<<<<<< HEAD
-
-=======
     const formContainer = document.getElementById("form-container");
->>>>>>> 4af77fa6182fcdac0fb7b49969392fa78ef0d45f
     const taskList = document.getElementById("task-list");
     const x = 1 - (25 / window.innerHeight + 0.115);
     if (!!projectList && projectList.scrollHeight > x) {
@@ -46,10 +59,6 @@ class ProjectList extends Component {
       htmlNode.style.height = "100%";
     }
   };
-<<<<<<< HEAD
-
-=======
->>>>>>> 4af77fa6182fcdac0fb7b49969392fa78ef0d45f
 
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
@@ -154,6 +163,20 @@ class ProjectList extends Component {
                   <p>
                     Due Date: {this.formatDate(this.props.selected.duedate)}
                   </p>
+                </div>
+                <div className="input-container">
+                  <label htmlFor="Status">Status: </label>
+                  <select
+                    onChange={this.handleChange}
+                    value={this.props.selected.status}
+                    name="status"
+                    id="status"
+                  >
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Closed">Closed</option>
+                  </select>
                 </div>
                 {this.props.children}
               </>
