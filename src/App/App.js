@@ -304,13 +304,13 @@ class App extends Component {
       this.setState({ selectedProject: {} });
     }
     this.setState({ showPopUp: false });
-    Promise.all(ids.map((id) => this.deleteProject(id)));
+    Promise.all(ids.map((id) => this.deleteProject(id))).then(res => this.setState({selectedProjects: []}));
   };
 
   deleteSelectedTasks = () => {
     const ids = this.state.selectedTasks.map((id) => parseInt(id));
     this.setState({ showPopUp: false });
-    Promise.all(ids.map((id) => this.deleteTask(id)));
+    Promise.all(ids.map((id) => this.deleteTask(id))).then(res => this.setState({selectedTasks: []}));
   };
 
   handleDeleteSelected = (nameOfSelectedArray) => {

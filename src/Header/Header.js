@@ -44,6 +44,9 @@ class Header extends Component {
   render() {
     return (
       <header className="header" id="header">
+        <style>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
+</style>
         <span className="logo">PROJECT TRACKER</span>
 
         <div className="nav">{this.renderMenu()}</div>
