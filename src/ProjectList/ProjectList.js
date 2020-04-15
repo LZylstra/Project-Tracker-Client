@@ -6,7 +6,9 @@ import "./ProjectList.css";
 
 class ProjectList extends Component {
   static contextType = ApiContext;
-
+  state = { 
+    status: this.props.selected.status
+  }
   formatDate = (duedate) => {
     if (duedate) {
       let extraChars = duedate.indexOf("T");
@@ -26,8 +28,7 @@ class ProjectList extends Component {
     this.context
       .editProject({
         [name]: value,
-        id,
-      })
+      }, id)
       .catch((res) => this.setState({ error: res.error }));
   };
 
@@ -168,7 +169,7 @@ class ProjectList extends Component {
                   <label htmlFor="Status">Status: </label>
                   <select
                     onChange={this.handleChange}
-                    value={this.props.selected.status}
+                    value={this.state.status}
                     name="status"
                     id="status"
                   >
