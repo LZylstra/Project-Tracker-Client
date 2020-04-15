@@ -11,8 +11,8 @@ class Project extends Component {
   };
 
   handleProjectClick = () => {
-	const expanded = !this.state.isExpanded;
-	this.context.setSelectedProject(this.props.project)
+    const expanded = !this.state.isExpanded;
+    this.context.setSelectedProject(this.props.project);
     this.setState({ isExpanded: expanded });
   };
 
@@ -40,25 +40,43 @@ class Project extends Component {
         <div id="project-dueDate">
           {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.props.project.duedate)}
         </div>
+        <div className="input-container">
+          <label htmlFor="Status">Status: </label>
+          <select
+            onChange={this.handleChange}
+            value={this.props.project.status}
+            name="status"
+            id="status"
+          >
+            <option value="New">New</option>
+            <option value="In Progress">In Progress</option>
+            <option value="On Hold">On Hold</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
         {!this.context.getIsMobile() && (
           <div className="button-container">
             <button>Completed</button>
             <button>Edit</button>
           </div>
         )}
-        {console.log(this.context.getTasks().filter(task => task.projectid === this.props.project.id))}
+        {console.log(
+          this.context
+            .getTasks()
+            .filter((task) => task.projectid === this.props.project.id)
+        )}
         <TaskList
           tasks={this.context
             .getTasks()
             .filter((task) => task.projectid === this.props.project.id)}
-            projectId={this.props.project.id}
+          projectId={this.props.project.id}
         />
       </div>
     );
   };
 
   renderCheckboxes = (project) => {
-    if(project.project_name === "Demo Project"){
+    if (project.project_name === "Demo Project") {
       return;
     }
     return (
