@@ -26,6 +26,9 @@ class Header extends Component {
           <Link to="/completed-projects" id="completed-nav">
             Completed
           </Link>
+          <Link to="/" onClick={this.context.handleManageUsers} id="manage-users">
+            Manage Users
+          </Link>
         </>
       );
     } else {
