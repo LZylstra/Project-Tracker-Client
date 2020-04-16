@@ -23,7 +23,6 @@ class Project extends Component {
     }
   };
 
-
   handleCheckBox = () => {
     const isSelected = !this.state.isSelected;
     if (this.state.isSelected) {
@@ -39,15 +38,17 @@ class Project extends Component {
       <div id="expanded-project">
         <div id="project-description">{this.props.project.description}</div>
         <div id="project-dueDate">
-          {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.props.project.duedate)}
+          {!!this.context.getSelectedProject().duedate && "Due Date: "}
+          {this.formatDate(this.props.project.duedate)}
         </div>
-    
+
         {!this.context.getIsMobile() && (
           <div className="button-container">
             <button>Completed</button>
             <button>Edit</button>
           </div>
         )}
+
         <TaskList
           tasks={this.context
             .getTasks()

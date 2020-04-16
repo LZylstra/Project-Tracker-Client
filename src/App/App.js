@@ -154,7 +154,6 @@ class App extends Component {
     let payload = window.sessionStorage.jwt.split(".")[1];
     payload = Buffer.from(payload, "base64").toString("ascii");
     payload = JSON.parse(payload);
-    //console.log(payload);
     this.setState({
       loggedIn: true,
       userId: payload.user_id,
@@ -284,35 +283,30 @@ class App extends Component {
   };
 
   editProject = (status, id) => {
-
-  
     const options = config.getOptions("patch");
     const url = `${config.API}/api/projects/${id}`;
     options.body = JSON.stringify(status);
-    return fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((e) => Promise.reject(e));
-        }
-         const projectToUpdate = this.state.projects.find((project) => project.id === id);
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      const projectToUpdate = this.state.projects.find(
+        (project) => project.id === id
+      );
 
       const updatedProject = { ...projectToUpdate, ...status };
-
 
       const indexToUpdate = this.state.projects.findIndex(
         (project) => project.id === id
       );
       let projectsCopy = [...this.state.projects];
       projectsCopy[indexToUpdate] = updatedProject;
-      
+
       this.setState({
         projects: projectsCopy,
         selectedProject: updatedProject,
       });
-      
-      })
-      
-
+    });
   };
 
   deleteProject = (id) => {
@@ -351,13 +345,17 @@ class App extends Component {
       this.setState({ selectedProject: {} });
     }
     this.setState({ showPopUp: false });
-    Promise.all(ids.map((id) => this.deleteProject(id))).then(res => this.setState({selectedProjects: []}));
+    Promise.all(ids.map((id) => this.deleteProject(id))).then((res) =>
+      this.setState({ selectedProjects: [] })
+    );
   };
 
   deleteSelectedTasks = () => {
     const ids = this.state.selectedTasks.map((id) => parseInt(id));
     this.setState({ showPopUp: false });
-    Promise.all(ids.map((id) => this.deleteTask(id))).then(res => this.setState({selectedTasks: []}));
+    Promise.all(ids.map((id) => this.deleteTask(id))).then((res) =>
+      this.setState({ selectedTasks: [] })
+    );
   };
 
   handleDeleteSelected = (nameOfSelectedArray) => {
@@ -369,7 +367,6 @@ class App extends Component {
 
   renderPopUp = (nameOfSelectedArray) => {
     const name = nameOfSelectedArray.toLowerCase().split("ted")[1];
-    //console.log(name);
     const deleteSelector =
       "deleteSelected" + name.replace(name[0], name[0].toUpperCase());
     this.popup = (
@@ -448,9 +445,7 @@ class App extends Component {
   editTask = (task, id) => {
     const options = config.getOptions("patch");
     const url = `${config.API}/api/tasks/${id}`;
-    //console.log(task);
     options.body = JSON.stringify(task);
-    //console.log(options.body);
     return fetch(url, options).then((res) => {
       if (!res.ok) {
         return res.json().then((e) => Promise.reject(e));

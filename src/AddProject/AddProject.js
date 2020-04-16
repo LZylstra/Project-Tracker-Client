@@ -64,17 +64,18 @@ class AddProject extends Component {
         this.formatDateForAPI(this.state.dueDate)
       )
       .then((res) => {
-        //console.log(res)
         if (this.context.getProjects().length === 0) {
-          // console.log(res)
           this.context.setSelectedProject(res);
         }
         this.props.history.push("/");
       })
       .catch((res) => {
-        if(!!res.error.message){
-          this.setState({error: "Project with that name already exists. Please Choose a new one"})
-          return
+        if (!!res.error.message) {
+          this.setState({
+            error:
+              "Project with that name already exists. Please Choose a new one",
+          });
+          return;
         }
         this.setState({ error: res.error });
       });
