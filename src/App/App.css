@@ -25,7 +25,6 @@ footer {
 .pop-up {
   border-radius: 10px;
   position: absolute;
-  overflow: scroll;
   top: 25%;
   left: 25%;
   margin: 30px;

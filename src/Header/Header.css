@@ -27,7 +27,7 @@
 .hidden-logout{
    visibility: hidden;
 }
-#logout, #home-nav, #completed-nav, #manage-users{
+#logout, #home-nav, #completed-nav{
         color: rgb(255, 255, 255);
         font-family: helvetica;
         text-decoration: none;
@@ -35,10 +35,26 @@
         font-size: 15px;
         margin-right: 20px;
         margin-bottom: 5px;
+        padding-bottom: 2px;
         float: left;
 
 }
-#logout:hover, #home-nav:hover, #completed-nav:hover{
+
+
+
+#manage-users{
+  color: rgb(255, 255, 255);
+  font-family: helvetica;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 15px;
+  margin-right: 20px;
+  margin-bottom: 5px;
+  float: left;
+  height: 22px;
+}
+
+#logout:hover, #home-nav:hover, #completed-nav:hover,#manage-users:hover{
     color: rgb(138, 138, 138);
 }
       
