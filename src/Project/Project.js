@@ -48,11 +48,7 @@ class Project extends Component {
             <button>Edit</button>
           </div>
         )}
-        {/* {console.log(
-          this.context
-            .getTasks()
-            .filter((task) => task.projectid === this.props.project.id)
-        )} */}
+
         <TaskList
           tasks={this.context
             .getTasks()

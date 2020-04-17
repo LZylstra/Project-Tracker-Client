@@ -252,8 +252,8 @@ class SignUp extends Component {
             required
           />
           <div className="signup-button-wrapper">
-            <button>Register</button>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button disabled={this.state.showPopUp}>Register</button>
+            <button onClick={this.handleCancel} disabled={this.state.showPopUp}>Cancel</button>
           </div>
           <Link to="/Login" id="login-nav">
             <h6>Already registered? Go to login page</h6>

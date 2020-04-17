@@ -20,9 +20,10 @@ footer{
   color: red;
 }
 
-#popUp{
+#popUp, #manage-users-popup, .pop-up{
   border-radius: 10px;
   position: absolute;
+  overflow: scroll;
   top: 25%;
   left: 25%;
   height: 250px;
