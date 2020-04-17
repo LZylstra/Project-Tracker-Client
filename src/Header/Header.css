@@ -27,7 +27,7 @@
 .hidden-logout{
    visibility: hidden;
 }
-#logout, #home-nav, #completed-nav{
+#logout, #home-nav, #completed-nav, #manage-users{
         color: rgb(255, 255, 255);
         font-family: helvetica;
         text-decoration: none;

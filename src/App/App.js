@@ -35,6 +35,7 @@ class App extends Component {
       selectedTasks: [],
       completedList: false,
       selectedProject: {},
+      manageUsers: false
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -52,6 +53,49 @@ class App extends Component {
       );
       original.bind(this)(arguments0, arguments1);
     };
+  }
+
+  handleManageUsers = () => {
+    this.getUsersByCompanyId(this.state.companyId)
+    this.setState({manageUsers: !this.state.manageUsers})
+  }
+
+  updateUserRole = event => {
+    const options = config.getOptions('patch')
+    const user = this.state.employees.find(user => user.id === parseInt(event.target.id.split('-')[0]))
+    user.isadmin = event.target.value
+    options.body = JSON.stringify(user)
+    fetch(`${config.API}/api/users/${user.id}`, options).then(res => {
+      if(!res.ok){
+        return res.json()
+      }
+    }).then(res => {
+      if(!!res){
+        console.log(res)
+      }
+      this.getCompanyInfo()
+    })
+  }
+
+  manageUsers = () => {
+    return (
+      <div id="manage-users-popup"> 
+        {
+          this.state.employees.map((user, i) => {
+            return (
+              <div className="user-wrapper" key={i}>
+                <label htmlFor={`${user.id}-role`}>{user.full_name}</label>
+                <select id={`${user.id}-role`} value={user.isadmin} onChange={this.updateUserRole}>
+                  <option value={true}>Administrator</option>
+                  <option value={false}>Standard</option>
+                </select>
+              </div>
+            )
+          })
+        }
+        <button onClick={this.handleManageUsers}>Done</button>
+      </div>
+    )
   }
 
   addToProjectsSelected = (id) => {
@@ -110,7 +154,6 @@ class App extends Component {
     let payload = window.sessionStorage.jwt.split(".")[1];
     payload = Buffer.from(payload, "base64").toString("ascii");
     payload = JSON.parse(payload);
-    //console.log(payload);
     this.setState({
       loggedIn: true,
       userId: payload.user_id,
@@ -239,29 +282,31 @@ class App extends Component {
     });
   };
 
-  editProject = (project_name, description, priority, duedate, status, id) => {
+  editProject = (status, id) => {
     const options = config.getOptions("patch");
     const url = `${config.API}/api/projects/${id}`;
-    options.body = JSON.stringify({
-      project_name,
-      description,
-      priority,
-      duedate,
-      status,
-    });
-    // console.log(options.body);
-    return fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((e) => Promise.reject(e));
-        }
-        return res.json();
-      })
-      .then((project) =>
-        this.setState({
-          projects: [...this.state.projects, project],
-        })
+    options.body = JSON.stringify(status);
+    return fetch(url, options).then((res) => {
+      if (!res.ok) {
+        return res.json().then((e) => Promise.reject(e));
+      }
+      const projectToUpdate = this.state.projects.find(
+        (project) => project.id === id
       );
+
+      const updatedProject = { ...projectToUpdate, ...status };
+
+      const indexToUpdate = this.state.projects.findIndex(
+        (project) => project.id === id
+      );
+      let projectsCopy = [...this.state.projects];
+      projectsCopy[indexToUpdate] = updatedProject;
+
+      this.setState({
+        projects: projectsCopy,
+        selectedProject: updatedProject,
+      });
+    });
   };
 
   deleteProject = (id) => {
@@ -300,13 +345,17 @@ class App extends Component {
       this.setState({ selectedProject: {} });
     }
     this.setState({ showPopUp: false });
-    Promise.all(ids.map((id) => this.deleteProject(id))).then(res => this.setState({selectedProjects: []}));
+    Promise.all(ids.map((id) => this.deleteProject(id))).then((res) =>
+      this.setState({ selectedProjects: [] })
+    );
   };
 
   deleteSelectedTasks = () => {
     const ids = this.state.selectedTasks.map((id) => parseInt(id));
     this.setState({ showPopUp: false });
-    Promise.all(ids.map((id) => this.deleteTask(id))).then(res => this.setState({selectedTasks: []}));
+    Promise.all(ids.map((id) => this.deleteTask(id))).then((res) =>
+      this.setState({ selectedTasks: [] })
+    );
   };
 
   handleDeleteSelected = (nameOfSelectedArray) => {
@@ -318,7 +367,6 @@ class App extends Component {
 
   renderPopUp = (nameOfSelectedArray) => {
     const name = nameOfSelectedArray.toLowerCase().split("ted")[1];
-    //console.log(name);
     const deleteSelector =
       "deleteSelected" + name.replace(name[0], name[0].toUpperCase());
     this.popup = (
@@ -397,9 +445,7 @@ class App extends Component {
   editTask = (task, id) => {
     const options = config.getOptions("patch");
     const url = `${config.API}/api/tasks/${id}`;
-    //console.log(task);
     options.body = JSON.stringify(task);
-    //console.log(options.body);
     return fetch(url, options).then((res) => {
       if (!res.ok) {
         return res.json().then((e) => Promise.reject(e));
@@ -512,12 +558,14 @@ class App extends Component {
       handleDeleteSelected: this.handleDeleteSelected,
       getSelectedProject: () => this.state.selectedProject,
       setSelectedProject: this.setSelectedProject,
+      handleManageUsers: this.handleManageUsers
     };
-
+    const manageUsers = this.state.manageUsers && this.state.isadmin
     return (
       <ApiContext.Provider value={value}>
         <div className="App">
           {this.state.showPopUp && this.popup}
+          {manageUsers && this.manageUsers()}
           <Header />
 
           <Switch>

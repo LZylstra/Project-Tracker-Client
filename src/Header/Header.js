@@ -26,6 +26,9 @@ class Header extends Component {
           <Link to="/completed-projects" id="completed-nav">
             Completed
           </Link>
+          {this.context.getisAdmin() && <Link to="/" onClick={this.context.handleManageUsers} id="manage-users">
+            Manage Users
+          </Link>}
         </>
       );
     } else {
@@ -49,7 +52,7 @@ class Header extends Component {
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
 </style>
 
-        <span className="logo"><i class="fas fa-address-book"></i> PROJECT TRACKER</span>
+        <span className="logo"><i className="fas fa-address-book"></i> PROJECT TRACKER</span>
 
         <div className="nav">{this.renderMenu()}</div>
       </header>
