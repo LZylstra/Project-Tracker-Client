@@ -47,26 +47,6 @@ ul {
   margin-bottom: 2%;
 }
 
-/* #add-project-button {
-    background: rgb(47, 45, 45);
-    background: linear-gradient(0deg, rgb(49, 43, 49) 0%, rgb(78, 64, 76) 100%);
-    cursor:pointer;
-    color: white;
-    font-size: 12px;
-    width: stretch;
-    border: none;
-    padding: 10px 10px;
-    text-transform: uppercase;
-    text-shadow: none;
-}
-@media screen and (max-width:800px) {
-    #project-list{
-        width:100%;
-    }
-    #expanded-project{
-        color:black;
-    }
-} */
 
 #add-project-button {
   box-shadow: inset 0px 1px 0px 0px #ffffff;
@@ -93,7 +73,7 @@ ul {
   top: 1px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 789px) {
   .project-list-item {
     font-size: 14px;
   }
