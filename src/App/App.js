@@ -560,7 +560,7 @@ class App extends Component {
       setSelectedProject: this.setSelectedProject,
       handleManageUsers: this.handleManageUsers
     };
-    const manageUsers = this.state.manageUsers && this.state.isadmin
+    const manageUsers = this.state.manageUsers && this.state.isAdmin
     return (
       <ApiContext.Provider value={value}>
         <div className="App">

@@ -1,10 +1,10 @@
 .App {
-
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-footer{
+footer {
   height: 20px;
   background-color: #222222;
   width: 100%;
@@ -12,29 +12,29 @@ footer{
   bottom: 0;
 }
 
-.error{
+.error {
   color: red;
 }
 
-#warning{
+#warning {
   color: red;
 }
 
-#popUp, #manage-users-popup, .pop-up{
+#popUp,
+#manage-users-popup,
+.pop-up {
   border-radius: 10px;
   position: absolute;
   overflow: scroll;
   top: 25%;
   left: 25%;
-  height: 250px;
-  width: 400px;
   margin: 30px;
-  padding: 20px;
+  padding: 60px;
   background-color: rgb(230, 230, 230);
   z-index: 1;
 }
 
-
-.demoinfo{
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.demoinfo {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
