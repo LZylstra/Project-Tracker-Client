@@ -560,12 +560,12 @@ class App extends Component {
       setSelectedProject: this.setSelectedProject,
       handleManageUsers: this.handleManageUsers
     };
-
+    const manageUsers = this.state.manageUsers && this.state.isadmin
     return (
       <ApiContext.Provider value={value}>
         <div className="App">
           {this.state.showPopUp && this.popup}
-          {this.state.manageUsers && this.manageUsers()}
+          {manageUsers && this.manageUsers()}
           <Header />
 
           <Switch>
