@@ -87,7 +87,7 @@ class App extends Component {
         {this.state.employees.map((user, i) => {
           return (
             <div className="user-wrapper" key={i}>
-              <label htmlFor={`${user.id}-role`}>{user.full_name}</label>
+              <label htmlFor={`${user.id}-role`}>{user.full_name}:</label>
               <select
                 id={`${user.id}-role`}
                 value={user.isadmin}

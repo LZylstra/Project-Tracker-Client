@@ -23,6 +23,7 @@ footer {
 #popUp,
 #manage-users-popup,
 .pop-up {
+  font-weight: bold;
   border-radius: 10px;
   position: absolute;
   top: 25%;
@@ -32,6 +33,16 @@ footer {
   background-color: rgb(230, 230, 230);
   z-index: 1;
 }
+
+select{
+  margin-left: 10px;
+}
+
+.user-wrapper{
+  margin-bottom: 5%;
+}
+
+
 
 .demoinfo {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
