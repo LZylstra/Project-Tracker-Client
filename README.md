@@ -19,7 +19,7 @@ This is a basic collaborative project tracker. All members of a given company wi
 [https://tranquil-mountain-91418.herokuapp.com/api/company](https://tranquil-mountain-91418.herokuapp.com/api/company)
 
 Example
-
+```
 fetch('https://tranquil-mountain-91418.herokuapp.com/api/company', {
     method: "POST",
     headers: {
@@ -30,14 +30,14 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/company', {
         company_name: "Company here"
     })
 })
-
+```
 #### Create New User Endpoint
 
 [https://tranquil-mountain-91418.herokuapp.com/api/users](https://tranquil-mountain-91418.herokuapp.com/api/users)
 
 
 Example
-
+```
 fetch('https://tranquil-mountain-91418.herokuapp.com/api/users', {
     method: "POST",
     headers: {
@@ -51,12 +51,12 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/users', {
         isadmin: boolean value here
     })
 })
-
+```
 ### Login Endpoint
 
 [https://tranquil-mountain-91418.herokuapp.com/api/auth/login](https://tranquil-mountain-91418.herokuapp.com/api/auth/login)
 
-
+```
 fetch('https://tranquil-mountain-91418.herokuapp.com/api/auth/login', {
     method: "POST",
     headers: {
@@ -68,13 +68,13 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/auth/login', {
         password: "password here"
     })
 })
-
+```
 ### Add or Get Projects Enpoint
 
 [https://bug-trapper-server.herokuapp.com/api/projects](https://bug-trapper-server.herokuapp.com/api/projects)
 
 Example
-
+```
 fetch('https://tranquil-mountain-91418.herokuapp.com/api/projects', {
     method: "GET",
     headers: {
@@ -82,13 +82,13 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/projects', {
         Authorization: `bearer "your bearer token here"`,
     }
 })
-
+```
 ### Add or Get Tasks Enpoint
 
 [https://bug-trapper-server.herokuapp.com/api/tasks](https://bug-trapper-server.herokuapp.com/api/tasks)
 
 Example
-
+```
 fetch('https://tranquil-mountain-91418.herokuapp.com/api/tasks', {
     method: "GET",
     headers: {
@@ -96,12 +96,13 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/tasks', {
         Authorization: `bearer "your bearer token here"`,
     }
 })
-
+```
 ### Update Task Endpoint 
 
 [https://bug-trapper-server.herokuapp.com/api/tasks/:id](https://bug-trapper-server.herokuapp.com/api/tasks/:id)
 
 Example
+```
 fetch('https://tranquil-mountain-91418.herokuapp.com/api/tasks/1', {
     method: "Patch",
     headers: {
@@ -117,12 +118,13 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/tasks/1', {
         dateclosed: date closed here (date object)
     })
 })
-
+```
 ### Update Task Endpoint 
 
 [https://bug-trapper-server.herokuapp.com/api/projects/:id](https://bug-trapper-server.herokuapp.com/api/projects/:id)
 
 Example
+```
 fetch('https://tranquil-mountain-91418.herokuapp.com/api/projects/1', {
     method: "Patch",
     headers: {
@@ -138,12 +140,13 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/projects/1', {
         dateclosed: date closed here (date object)
     })
 })
-
+```
 ### Update Task Endpoint 
 
 [https://bug-trapper-server.herokuapp.com/api/users/:id](https://bug-trapper-server.herokuapp.com/api/users/:id)
 
 Example
+```
 fetch('https://tranquil-mountain-91418.herokuapp.com/api/users/1', {
     method: "Patch",
     headers: {
@@ -156,7 +159,7 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/users/1', {
         email: "email here"
     })
 })
-
+```
 ## Tech Stack Used
 
 #### JavaScript <img src="/tech-logos/javascript.png" height="50px" width="50px" alt="javscript logo"/>
