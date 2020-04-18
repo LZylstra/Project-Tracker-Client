@@ -15,7 +15,7 @@ class Header extends Component {
 
   renderMobileMenu = () => {
     return (
-      <button onClick={this.context.handleMobileMenu} id="hamburger-menu"><img src="/hamburger.png" className="icon"/></button>
+      <button onClick={this.context.handleMobileMenu} id="hamburger-menu"><img src="/hamburger.png" alt="hamburger menu" className="icon"/></button>
     )
   }
 
