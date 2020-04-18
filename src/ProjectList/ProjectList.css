@@ -73,6 +73,10 @@ ul {
   top: 1px;
 }
 
+.no-bullet{
+  list-style-type: none;
+}
+
 @media screen and (max-width: 789px) {
   .project-list-item {
     font-size: 14px;
@@ -90,3 +94,4 @@ ul {
     display: none;
   }
 }
+

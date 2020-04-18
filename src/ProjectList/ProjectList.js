@@ -76,7 +76,7 @@ class ProjectList extends Component {
         <div className="project-info">
           <div id="project-list">
             <h2 id="project-list-title">Completed Projects</h2>
-            <ul>{this.makeProjectsList(this.props.projects)}</ul>
+            <ul className="no-bullet">{this.makeProjectsList(this.props.projects)}</ul>
           </div>
         </div>
       );
@@ -92,7 +92,7 @@ class ProjectList extends Component {
               </button>
             </Link>
             <h2 id="project-list-title">Your Projects</h2>
-            <ul>{this.makeProjectsList(this.props.projects)}</ul>
+            <ul className="no-bullet">{this.makeProjectsList(this.props.projects)}</ul>
           </div>
         </div>
       );
@@ -119,7 +119,7 @@ class ProjectList extends Component {
         <div className="project-info">
           <div id="project-list">
             <h2 id="project-list-title">Completed Projects</h2>
-            <ul>{this.makeProjectsList(this.props.projects)}</ul>
+            <ul className="no-bullet">{this.makeProjectsList(this.props.projects)}</ul>
             {!this.context.getIsMobile() && this.renderButton()}
           </div>
           <div id="expanded-project">
@@ -154,7 +154,7 @@ class ProjectList extends Component {
               </button>
             </Link>
             <h2 id="project-list-title">Your Projects</h2>
-            <ul>{this.makeProjectsList(this.props.projects)}</ul>
+            <ul className="no-bullet">{this.makeProjectsList(this.props.projects)}</ul>
             {!this.context.getIsMobile() && this.renderButton()}
           </div>
           <div id="expanded-project">
