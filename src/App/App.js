@@ -56,6 +56,12 @@ class App extends Component {
     };
   }
 
+  static defaultProps = {
+    history: {
+      listen: () => {}
+    }
+  }
+
   handleMobileMenu = () => {
     this.setState({mobileMenu: !this.state.mobileMenu})
   }
