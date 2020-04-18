@@ -1,16 +1,38 @@
-import Project from './Project';
+import Root from './Root';
 import React from 'react';
 import {BrowserRouter} from 'react-router-dom';
+import ApiContext from "../ApiContext";
 import ReactDOM from 'react-dom';
+import { mount } from 'enzyme';
+global.MutationObserver = class {
+	constructor(callback) {}
+	disconnect() {}
+	observe(element, initObject) {}
+  };
 
 
-it('renders without crashing', () => {
-	const div = document.createElement('div')
-	ReactDOM.render(
+  describe('Root', () => {
+	beforeAll(() => {
+	  const htmlNode = document.createElement("html");
+	  htmlNode.setAttribute("id", "html");
+	  document.body.appendChild(htmlNode);
+	});
+	afterAll(() => {
+	  const htmlNode = document.getElementById("html");
+	  if (htmlNode) {
+		document.body.removeChild(htmlNode);
+	  }
+	});
+  
+	it("renders without crashing", () => {
+	  const wrapper = mount(
 		<BrowserRouter>
-			<Project/>
+		  <ApiContext.Provider>
+			<Root />
+		  </ApiContext.Provider>
 		</BrowserRouter>,
-		div
-	)
-	ReactDOM.unmountComponentAtNode(div)
-})
+		document.getElementById("html")
+	  );
+	});
+  
+  });
