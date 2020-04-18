@@ -173,20 +173,29 @@ class ProjectList extends Component {
                     {!!this.context.getSelectedProject().duedate && "Due Date: "}{this.formatDate(this.context.getSelectedProject().duedate)}
                   </p>
                 </div>
-                <div className="input-container">
-                  <label htmlFor="Status">Status: </label>
-                  <select
-                    onChange={this.handleChange}
-                      value={this.context.getSelectedProject().status}
-                    name="status"
-                    id="status"
-                  >
-                    <option value="New">New</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="On Hold">On Hold</option>
-                    <option value="Closed">Closed</option>
-                  </select>
-                </div>
+                
+                
+                  {
+                    !!this.context.getSelectedProject().status && 
+                    (
+                      <div className="input-container">
+                        <label htmlFor="Status">Status: </label>
+                        <select
+                          onChange={this.handleChange}
+                            value={this.context.getSelectedProject().status}
+                          name="status"
+                          id="status"
+                        >
+                          <option value="New">New</option>
+                          <option value="In Progress">In Progress</option>
+                          <option value="On Hold">On Hold</option>
+                          <option value="Closed">Closed</option>
+                        </select>
+                        </div> 
+                    )
+                  }
+                  
+                
                 {this.props.children}
               </>
             )}
