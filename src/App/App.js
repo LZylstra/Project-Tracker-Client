@@ -249,7 +249,7 @@ class App extends Component {
 
   getCompanyInfo = () => {
     const options = config.getOptions("get");
-    if (this.state.loggedIn) {
+    if (!!window.sessionStorage.jwt) {
       Promise.all([
         fetch(this.configUrl("projects"), options),
         fetch(this.configUrl("tasks"), options),
@@ -566,6 +566,7 @@ class App extends Component {
     if (!!document.getElementById("home-completed")) {
       document.getElementById("home-completed").style.height = `${y}%`;
     }
+    
     this.getCompanyInfo();
   };
 
