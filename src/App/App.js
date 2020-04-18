@@ -69,16 +69,16 @@ class App extends Component {
   renderMobileMenu = () => {
     return (
       <ul className="no-bullet" id="menu-list">
-        <li className="menu-list-item"><Link to="/" onClick={this.handleLogout} id="logout-mobile">
+        <li className="menu-list-item"><Link to="/" onClick={this.handleLogout} id="logout-mobile" className="menu-list-item">
           Logout
         </Link></li>
-        <li className="menu-list-item"><Link to="/" id="home-nav-mobile">
+        <li className="menu-list-item"><Link to="/" id="home-nav-mobile" className="menu-list-item">
           Home
         </Link></li>
-        <li className="menu-list-item"><Link to="/completed-projects" id="completed-nav-mobile">
+        <li className="menu-list-item"><Link to="/completed-projects"  className="menu-list-item" id="completed-nav-mobile">
           Completed
         </Link></li>
-        {this.state.isAdmin && <li className="menu-list-item"><Link to="/" onClick={this.handleManageUsers} id="manage-users-mobile">
+        {this.state.isAdmin && <li className="menu-list-item"><Link to="/"  className="menu-list-item" onClick={this.handleManageUsers} id="manage-users-mobile">
           Manage Users
         </Link></li>}
       </ul>
@@ -230,6 +230,7 @@ class App extends Component {
 
   handleResize = () => {
     this.setState({ isMobile: window.innerWidth < 1000 });
+    if (!this.state.isMobile){this.setState({mobileMenu: false})};
     const x = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
     if (!!document.getElementById("home")) {
       document.getElementById("home").style.height = `${x}%`;
