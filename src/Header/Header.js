@@ -13,8 +13,17 @@ class Header extends Component {
     window.location.reload();
   };
 
+  renderMobileMenu = () => {
+    return (
+      <button onClick={this.context.handleMobileMenu} id="hamburger-menu"><img src="/hamburger.png" className="icon"/></button>
+    )
+  }
+
   renderMenu = () => {
     if (!!window.sessionStorage.jwt) {
+      if(this.context.getIsMobile()){
+        return this.renderMobileMenu()
+      }
       return (
         <>
           <Link to="/" onClick={this.handleLogout} id="logout">
@@ -52,7 +61,7 @@ class Header extends Component {
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
 </style>
 
-        <span className="logo"><i className="fas fa-address-book"></i> PROJECT TRACKER</span>
+        <span className="logo"><i className="fas fa-address-book" alt="Project icon"></i> PROJECT TRACKER</span>
 
         <div className="nav">{this.renderMenu()}</div>
       </header>

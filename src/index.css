@@ -12,6 +12,10 @@ body {
   height: 100%;
 }
 
+button{
+  text-shadow: none;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -20,4 +24,8 @@ code {
 #root{
   height: 100%;
   width: 100%;
+}
+
+a{
+text-decoration: none;
 }
