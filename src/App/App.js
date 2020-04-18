@@ -70,6 +70,9 @@ class App extends Component {
     window.sessionStorage.removeItem("jwt");
     window.sessionStorage.removeItem("state");
     window.location.reload();
+    if(this.state.mobileMenu){
+      this.setState({mobileMenu: false})
+    }
   };
 
   renderMobileMenu = () => {
