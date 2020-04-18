@@ -62,7 +62,7 @@ class App extends Component {
 
   renderMobileMenu = () => {
     return (
-      <ul id="menu-list">
+      <ul className="no-bullet" id="menu-list">
         <li className="menu-list-item"><Link to="/" onClick={this.handleLogout} id="logout-mobile">
           Logout
         </Link></li>
