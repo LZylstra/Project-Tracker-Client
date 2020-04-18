@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Link } from "react-router-dom";
 import "./App.css";
 import ApiContext from "../ApiContext";
 import LandingPage from "../LandingPage/LandingPage";
@@ -36,6 +36,7 @@ class App extends Component {
       completedList: false,
       selectedProject: {},
       manageUsers: false,
+      mobileMenu: false
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -53,6 +54,35 @@ class App extends Component {
       );
       original.bind(this)(arguments0, arguments1);
     };
+  }
+
+  handleMobileMenu = () => {
+    this.setState({mobileMenu: !this.state.mobileMenu})
+  }
+
+  handleLogout = () => {
+    window.sessionStorage.removeItem("jwt");
+    window.sessionStorage.removeItem("state");
+    window.location.reload();
+  };
+
+  renderMobileMenu = () => {
+    return (
+      <ul className="no-bullet" id="menu-list">
+        <li className="menu-list-item"><Link to="/" onClick={this.handleLogout} id="logout-mobile" className="menu-list-item">
+          Logout
+        </Link></li>
+        <li className="menu-list-item"><Link to="/" id="home-nav-mobile" className="menu-list-item">
+          Home
+        </Link></li>
+        <li className="menu-list-item"><Link to="/completed-projects"  className="menu-list-item" id="completed-nav-mobile">
+          Completed
+        </Link></li>
+        {this.state.isAdmin && <li className="menu-list-item"><Link to="/"  className="menu-list-item" onClick={this.handleManageUsers} id="manage-users-mobile">
+          Manage Users
+        </Link></li>}
+      </ul>
+    );
   }
 
   handleManageUsers = () => {
@@ -200,6 +230,7 @@ class App extends Component {
 
   handleResize = () => {
     this.setState({ isMobile: window.innerWidth < 1000 });
+    if (!this.state.isMobile){this.setState({mobileMenu: false})};
     const x = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
     if (!!document.getElementById("home")) {
       document.getElementById("home").style.height = `${x}%`;
@@ -494,6 +525,11 @@ class App extends Component {
   //Lifecycle functions
 
   componentDidMount = () => {
+    this.props.history.listen(() => {
+      if(this.state.manageUsers){
+        this.setState({manageUsers: false})
+      }
+    })
     window.addEventListener("resize", this.handleResize);
     const observer = new MutationObserver(config.watchRoot);
     const targetNode = document.getElementById("root");
@@ -565,6 +601,7 @@ class App extends Component {
       getSelectedProject: () => this.state.selectedProject,
       setSelectedProject: this.setSelectedProject,
       handleManageUsers: this.handleManageUsers,
+      handleMobileMenu: this.handleMobileMenu
     };
     const manageUsers = this.state.manageUsers && this.state.isAdmin;
     return (
@@ -573,7 +610,7 @@ class App extends Component {
           {this.state.showPopUp && this.popup}
           {manageUsers && this.manageUsers()}
           <Header />
-
+          {this.state.mobileMenu && this.renderMobileMenu()}
           <Switch>
             {this.renderHome()}
             <PublicOnlyRoute exact path="/SignUp" component={SignUp} />

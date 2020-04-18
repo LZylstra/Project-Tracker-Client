@@ -19,7 +19,6 @@
   font-size: 20px;
   padding: 20px;
   margin: 10px;
-  width: 100%;
 }
 li {
   cursor: pointer;
@@ -73,6 +72,10 @@ ul {
   top: 1px;
 }
 
+.no-bullet{
+  list-style-type: none;
+}
+
 @media screen and (max-width: 789px) {
   .project-list-item {
     font-size: 14px;
@@ -90,3 +93,4 @@ ul {
     display: none;
   }
 }
+
