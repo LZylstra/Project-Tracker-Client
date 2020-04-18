@@ -11,6 +11,10 @@ class LandingPage extends Component {
     this.props.history.push("/SignUp");
   };
 
+  componentDidMount = () => {
+    window.sessionStorage.removeItem("state")
+  }
+
   render() {
     return (
       <div className="landing-page">

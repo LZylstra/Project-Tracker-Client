@@ -67,12 +67,11 @@ class App extends Component {
   }
 
   handleLogout = () => {
-    window.sessionStorage.removeItem("jwt");
-    window.sessionStorage.removeItem("state");
-    window.location.reload();
     if(this.state.mobileMenu){
       this.setState({mobileMenu: false})
     }
+    window.sessionStorage.removeItem("jwt");
+    window.sessionStorage.removeItem("state");
   };
 
   renderMobileMenu = () => {
@@ -610,7 +609,8 @@ class App extends Component {
       getSelectedProject: () => this.state.selectedProject,
       setSelectedProject: this.setSelectedProject,
       handleManageUsers: this.handleManageUsers,
-      handleMobileMenu: this.handleMobileMenu
+      handleMobileMenu: this.handleMobileMenu,
+      getMobileMenu: () => this.state.mobileMenu
     };
     const manageUsers = this.state.manageUsers && this.state.isAdmin;
     return (
