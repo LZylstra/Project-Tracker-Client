@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Link } from "react-router-dom";
 import "./App.css";
 import ApiContext from "../ApiContext";
 import LandingPage from "../LandingPage/LandingPage";
@@ -36,6 +36,7 @@ class App extends Component {
       completedList: false,
       selectedProject: {},
       manageUsers: false,
+      mobileMenu: false
     };
     //if state isnt present in sessionStorage use that otherwise use initial state
     this.state = JSON.parse(sessionStorage.getItem("state"))
@@ -53,6 +54,29 @@ class App extends Component {
       );
       original.bind(this)(arguments0, arguments1);
     };
+  }
+
+  handleMobileMenu = () => {
+    this.setState({mobileMenu: !this.state.mobileMenu})
+  }
+
+  renderMobileMenu = () => {
+    return (
+      <ul className="no-bullet" id="menu-list">
+        <li className="menu-list-item"><Link to="/" onClick={this.handleLogout} id="logout-mobile">
+          Logout
+        </Link></li>
+        <li className="menu-list-item"><Link to="/" id="home-nav-mobile">
+          Home
+        </Link></li>
+        <li className="menu-list-item"><Link to="/completed-projects" id="completed-nav-mobile">
+          Completed
+        </Link></li>
+        {this.state.isAdmin && <li className="menu-list-item"><Link to="/" onClick={this.context.handleManageUsers} id="manage-users-mobile">
+          Manage Users
+        </Link></li>}
+      </ul>
+    );
   }
 
   handleManageUsers = () => {
@@ -565,6 +589,7 @@ class App extends Component {
       getSelectedProject: () => this.state.selectedProject,
       setSelectedProject: this.setSelectedProject,
       handleManageUsers: this.handleManageUsers,
+      handleMobileMenu: this.handleMobileMenu
     };
     const manageUsers = this.state.manageUsers && this.state.isAdmin;
     return (
@@ -573,7 +598,7 @@ class App extends Component {
           {this.state.showPopUp && this.popup}
           {manageUsers && this.manageUsers()}
           <Header />
-
+          {this.state.mobileMenu && this.renderMobileMenu()}
           <Switch>
             {this.renderHome()}
             <PublicOnlyRoute exact path="/SignUp" component={SignUp} />
