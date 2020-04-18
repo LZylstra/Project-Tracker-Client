@@ -524,12 +524,12 @@ class App extends Component {
   //Lifecycle functions
 
   componentDidMount = () => {
-    window.addEventListener("resize", this.handleResize);
-    window.addEventListener("popstate", ()=> {
+    this.props.history.listen(() => {
       if(this.state.manageUsers){
         this.setState({manageUsers: false})
       }
     })
+    window.addEventListener("resize", this.handleResize);
     const observer = new MutationObserver(config.watchRoot);
     const targetNode = document.getElementById("root");
     const options = { attributes: true, childList: true, subtree: true };
