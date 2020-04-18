@@ -20,6 +20,19 @@ footer {
   color: red;
 }
 
+#menu-list{
+  background-color: rgb(255, 255, 255);
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  position: absolute;
+  border-radius: 10px;
+}
+
+
 #popUp,
 #manage-users-popup,
 .pop-up {

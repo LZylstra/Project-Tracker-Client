@@ -60,6 +60,12 @@ class App extends Component {
     this.setState({mobileMenu: !this.state.mobileMenu})
   }
 
+  handleLogout = () => {
+    window.sessionStorage.removeItem("jwt");
+    window.sessionStorage.removeItem("state");
+    window.location.reload();
+  };
+
   renderMobileMenu = () => {
     return (
       <ul className="no-bullet" id="menu-list">
@@ -72,7 +78,7 @@ class App extends Component {
         <li className="menu-list-item"><Link to="/completed-projects" id="completed-nav-mobile">
           Completed
         </Link></li>
-        {this.state.isAdmin && <li className="menu-list-item"><Link to="/" onClick={this.context.handleManageUsers} id="manage-users-mobile">
+        {this.state.isAdmin && <li className="menu-list-item"><Link to="/" onClick={this.handleManageUsers} id="manage-users-mobile">
           Manage Users
         </Link></li>}
       </ul>
@@ -518,6 +524,11 @@ class App extends Component {
   //Lifecycle functions
 
   componentDidMount = () => {
+    this.props.history.listen(() => {
+      if(this.state.manageUsers){
+        this.setState({manageUsers: false})
+      }
+    })
     window.addEventListener("resize", this.handleResize);
     const observer = new MutationObserver(config.watchRoot);
     const targetNode = document.getElementById("root");
