@@ -1,25 +1,21 @@
-#signup-form{
-    background-color: rgb(255, 255, 255);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    
+#signup-form {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-.signup{
-    height: 97%;
+.signup {
+  height: 97%;
 }
 
-
-
-.pop-up{
-    height: 60%;
-    width: 60%;
-    position: fixed;
-    left: 15%;
-    top: 15%;
-    background-color: white;
-    z-index: 1;
-    border: solid 2px black;
+.pop-up {
+  width: 60%;
+  position: fixed;
+  left: 15%;
+  top: 15%;
+  background-color: white;
+  z-index: 1;
+  border: solid 2px black;
 }
