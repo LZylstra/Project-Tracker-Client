@@ -1,6 +1,6 @@
 # Project Tracker
 
-[Project Track](https://project-tracker.now.sh)
+[Project Tracker](https://project-tracker.now.sh)
 
 This is a basic collaborative project tracker. All members of a given company will see the same data. Once you have created an account you can create projects and add tasks to track progress on a given project. There are two different roles for users. Administrators and standard users. Initially the only admin user will be the one who creates the company. When more users are added to the company the admin can change additional users to the admin role.
 
