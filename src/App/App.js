@@ -56,29 +56,37 @@ class App extends Component {
     };
   }
 
+  static defaultProps = {
+    history: {
+      listen: () => {}
+    }
+  }
+
   handleMobileMenu = () => {
     this.setState({mobileMenu: !this.state.mobileMenu})
   }
 
   handleLogout = () => {
+    if(this.state.mobileMenu){
+      this.setState({mobileMenu: false})
+    }
     window.sessionStorage.removeItem("jwt");
     window.sessionStorage.removeItem("state");
-    window.location.reload();
   };
 
   renderMobileMenu = () => {
     return (
       <ul className="no-bullet" id="menu-list">
-        <li className="menu-list-item"><Link to="/" onClick={this.handleLogout} id="logout-mobile">
+        <li className="menu-list-item"><Link to="/" onClick={this.handleLogout} id="logout-mobile" className="menu-list-item">
           Logout
         </Link></li>
-        <li className="menu-list-item"><Link to="/" id="home-nav-mobile">
+        <li className="menu-list-item"><Link to="/" id="home-nav-mobile" className="menu-list-item">
           Home
         </Link></li>
-        <li className="menu-list-item"><Link to="/completed-projects" id="completed-nav-mobile">
+        <li className="menu-list-item"><Link to="/completed-projects"  className="menu-list-item" id="completed-nav-mobile">
           Completed
         </Link></li>
-        {this.state.isAdmin && <li className="menu-list-item"><Link to="/" onClick={this.handleManageUsers} id="manage-users-mobile">
+        {this.state.isAdmin && <li className="menu-list-item"><Link to="/"  className="menu-list-item" onClick={this.handleManageUsers} id="manage-users-mobile">
           Manage Users
         </Link></li>}
       </ul>
@@ -230,6 +238,7 @@ class App extends Component {
 
   handleResize = () => {
     this.setState({ isMobile: window.innerWidth < 1000 });
+    if (!this.state.isMobile){this.setState({mobileMenu: false})};
     const x = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
     if (!!document.getElementById("home")) {
       document.getElementById("home").style.height = `${x}%`;
@@ -240,7 +249,7 @@ class App extends Component {
 
   getCompanyInfo = () => {
     const options = config.getOptions("get");
-    if (this.state.loggedIn) {
+    if (!!window.sessionStorage.jwt) {
       Promise.all([
         fetch(this.configUrl("projects"), options),
         fetch(this.configUrl("tasks"), options),
@@ -557,6 +566,7 @@ class App extends Component {
     if (!!document.getElementById("home-completed")) {
       document.getElementById("home-completed").style.height = `${y}%`;
     }
+    
     this.getCompanyInfo();
   };
 
@@ -600,7 +610,8 @@ class App extends Component {
       getSelectedProject: () => this.state.selectedProject,
       setSelectedProject: this.setSelectedProject,
       handleManageUsers: this.handleManageUsers,
-      handleMobileMenu: this.handleMobileMenu
+      handleMobileMenu: this.handleMobileMenu,
+      getMobileMenu: () => this.state.mobileMenu
     };
     const manageUsers = this.state.manageUsers && this.state.isAdmin;
     return (
