@@ -166,7 +166,7 @@ class AddProject extends Component {
               </select>
             </p>
           )}
-          <div className="input-container">
+          <div className="input-container prioritybox">
             <label htmlFor="priority"> Priority:</label>
             <input
               required

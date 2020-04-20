@@ -89,12 +89,14 @@ class AddTask extends Component {
     event.preventDefault();
     this.setState({ error: "" });
 
+    // Ensure name entered is not an empty string
     let formatname = this.state.task_name.trim();
     if (formatname === "") {
       this.setState({ error: "Please enter a valid task name", task_name: "" });
       return;
     }
 
+    // Handle if adding or editing a task
     if (this.props.taskId) {
       this.handleEditTask();
     } else {
@@ -157,8 +159,11 @@ class AddTask extends Component {
               </select>
             </p>
           )}
-          <div className="input-container">
-            <label htmlFor="priority"> Priority:</label>
+          <div className="input-container prioritybox">
+            <label id="prioritylabel" htmlFor="priority">
+              {" "}
+              Priority:
+            </label>
             <input
               required
               type="radio"
