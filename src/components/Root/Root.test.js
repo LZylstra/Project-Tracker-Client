@@ -1,7 +1,7 @@
 import Root from './Root';
 import React from 'react';
 import {BrowserRouter} from 'react-router-dom';
-import ApiContext from "../ApiContext";
+import ApiContext from "../../context/ApiContext";
 import ReactDOM from 'react-dom';
 import { mount } from 'enzyme';
 global.MutationObserver = class {
