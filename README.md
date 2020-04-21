@@ -175,12 +175,12 @@ fetch('https://tranquil-mountain-91418.herokuapp.com/api/users/1', {
 
 ## Tech Stack Used
 
-#### JavaScript <img src="img/tech-logos/javascript.png" height="50px" width="50px" alt="javscript logo"/>
+#### JavaScript <img src="/src/img/tech-logos/javascript.png" height="50px" width="50px" alt="javscript logo"/>
 
-### React <img src="img/tech-logos/react.png" height="50px" width="50px" alt="react logo"/>
+### React <img src="/src/img/tech-logos/react.png" height="50px" width="50px" alt="react logo"/>
 
-### Css <img src="img/tech-logos/css.png" height="50px" width="50px" alt="css logo"/>
+### Css <img src="/src/img/tech-logos/css.png" height="50px" width="50px" alt="css logo"/>
 
-### PostgreSQL <img src="img/tech-logos/postgre.jpeg" height="50px" width="50px" alt="postgresql logo"/>
+### PostgreSQL <img src="/src/img/tech-logos/postgre.jpeg" height="50px" width="50px" alt="postgresql logo"/>
 
-### Nodejs <img src="img/tech-logos/node.png" height="50px" width="50px" alt="nodejs logo"/>
+### Nodejs <img src="/src/img/tech-logos/node.png" height="50px" width="50px" alt="nodejs logo"/>
