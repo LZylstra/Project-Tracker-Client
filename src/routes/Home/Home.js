@@ -3,7 +3,6 @@ import ApiContext from "../../context/ApiContext";
 import ProjectList from "../../components/ProjectList/ProjectList";
 //import TaskList from "../TaskList/TaskList";
 import "./Home.css";
-import ProjectApiService from "../../services/projects-api-service";
 
 class Home extends Component {
   static contextType = ApiContext;
@@ -17,15 +16,15 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    ProjectApiService.getProjectsByCompanyId().then((res) => {
-      const projects = ProjectApiService.getProjects();
+    this.context.getProjectsByCompanyId().then((res) => {
+      const projects = this.context.getProjects();
       const filteredList = this.makeOpenProjectsList(projects);
       this.setState({
         isLoading: false,
         selectedProject: filteredList[0],
       });
     });
-    ProjectApiService.getCompanyInfo();
+    this.context.getCompanyInfo();
   }
   makeOpenProjectsList = (projects) => {
     let newList = projects.filter((project) => {
