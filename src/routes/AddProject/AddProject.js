@@ -38,6 +38,7 @@ class AddProject extends Component {
     }
   }
 
+  // Watch for any changes to status or assignment
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -56,6 +57,7 @@ class AddProject extends Component {
   };
 
   handleAddProject = () => {
+    // Add the new project to the database
     this.context
       .addProject(
         this.state.name,
@@ -63,6 +65,7 @@ class AddProject extends Component {
         this.state.priority,
         this.formatDateForAPI(this.state.dueDate)
       )
+      // If there was no existing projects make the new one selected
       .then((res) => {
         if (this.context.getProjects().length === 0) {
           this.context.setSelectedProject(res);
@@ -80,7 +83,9 @@ class AddProject extends Component {
         this.setState({ error: res.error });
       });
   };
+
   handleEditProject = () => {
+    // Edit the existing project in the database
     this.context
       .editProject(
         this.state.name,
@@ -98,6 +103,7 @@ class AddProject extends Component {
     event.preventDefault();
     this.setState({ error: "" });
 
+    // Prevent user from submitting a name that is just empty strings
     let formatname = this.state.name.trim();
     if (formatname === "") {
       this.setState({

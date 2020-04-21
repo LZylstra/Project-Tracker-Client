@@ -16,30 +16,7 @@ class ProjectList extends Component {
     };
   }
 
-  // formatDate = (duedate) => {
-  //   if (duedate) {
-  //     let extraChars = duedate.indexOf("T");
-  //     return duedate.slice(0, extraChars);
-  //   }
-  // };
-
-  // handleChange = (event) => {
-  //   const name = event.target.name;
-  //   const value = event.target.value;
-  //   const id = this.props.selected.id;
-
-  //   //make patch request to api to update task
-  //   this.context
-  //     .editProject(
-  //       {
-  //         [name]: value,
-  //       },
-  //       id
-  //     )
-
-  //     .catch((res) => this.setState({ error: res.error }));
-  // };
-
+  // Map list of projects into Project component
   makeProjectsList = (projects) => {
     return projects.map((project) => (
       <Project
@@ -70,7 +47,7 @@ class ProjectList extends Component {
     }
   };
 
-  //display different components if mobile
+  // Display minimal functionality components if mobile
   displayProjectListJSXMobile = () => {
     let listType = this.props.type;
     if (listType === "completed") {
@@ -119,7 +96,7 @@ class ProjectList extends Component {
     return;
   };
 
-  // Display if desktop
+  // Display full functionality if desktop
   displayProjectListJSX = () => {
     let listType = this.props.type;
     if (listType === "completed") {

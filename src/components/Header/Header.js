@@ -6,12 +6,14 @@ import "./Header.css";
 class Header extends Component {
   static contextType = ApiContext;
 
+  // Remove auth token and state
   handleLogout = () => {
     window.sessionStorage.removeItem("jwt");
     window.sessionStorage.removeItem("state");
     window.location.reload();
   };
 
+  // Show hamburger menu when in mobile view
   renderMobileMenu = () => {
     return (
       <button onClick={this.context.handleMobileMenu} id="hamburger-menu">
@@ -20,6 +22,7 @@ class Header extends Component {
     );
   };
 
+  //Displays menu options based on if user is logged in or not
   renderMenu = () => {
     if (!!window.sessionStorage.jwt) {
       if (this.context.getIsMobile()) {

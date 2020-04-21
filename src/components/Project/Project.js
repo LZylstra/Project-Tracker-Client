@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ApiContext from "../../context/ApiContext";
-//import TaskList from "../TaskList/TaskList";
 import ExpandedProject from "../ExpandedProject/ExpandedProject";
 import "./Project.css";
 
@@ -35,31 +34,9 @@ class Project extends Component {
     this.setState({ isSelected: isSelected });
   };
 
-  //Show expanded details for project, mobile?
+  //Show expanded details for projects in mobile
   expandedProject = () => {
     return (
-      // <div id="expanded-project">
-      //   <div id="project-description">{this.props.project.description}</div>
-      //   <div id="project-dueDate">
-      //     {!!this.context.getSelectedProject().duedate && "Due Date: "}
-      //     {this.formatDate(this.props.project.duedate)}
-      //   </div>
-      //   {!!this.context.getSelectedProject().status && (
-      //     <div className="input-container">
-      //       <label htmlFor="Status">Status: </label>
-      //       <select
-      //         onChange={this.handleChange}
-      //         value={this.context.getSelectedProject().status}
-      //         name="status"
-      //         id="status"
-      //       >
-      //         <option value="New">New</option>
-      //         <option value="In Progress">In Progress</option>
-      //         <option value="On Hold">On Hold</option>
-      //         <option value="Closed">Closed</option>
-      //       </select>
-      //     </div>
-      //   )}
       <div>
         <ExpandedProject type={this.props.type} selected={this.props.project} />
 
@@ -69,17 +46,11 @@ class Project extends Component {
             <button>Edit</button>
           </div>
         )}
-
-        {/* <TaskList
-          tasks={this.context
-            .getTasks()
-            .filter((task) => task.projectid === this.props.project.id)}
-          projectId={this.props.project.id}
-        /> */}
       </div>
     );
   };
 
+  // Show checkboxes for admin users
   renderCheckboxes = (project) => {
     if (project.project_name === "Demo Project") {
       return;

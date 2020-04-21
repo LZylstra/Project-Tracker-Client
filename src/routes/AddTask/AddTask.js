@@ -15,6 +15,7 @@ class AddTask extends Component {
     error: "",
     editmode: false,
   };
+
   componentDidMount() {
     const companyId = this.context.getCompanyId();
     this.context
@@ -56,7 +57,9 @@ class AddTask extends Component {
       [name]: value,
     });
   };
+
   handleAddTask = () => {
+    // Add task to the database
     this.context
       .addTask(
         {
@@ -71,6 +74,7 @@ class AddTask extends Component {
       .catch((res) => this.setState({ error: res.error }));
   };
   handleEditTask = () => {
+    // Edit existing task in the database
     this.context
       .editTask(
         {

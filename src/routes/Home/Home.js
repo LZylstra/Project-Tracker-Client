@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import ApiContext from "../../context/ApiContext";
 import ProjectList from "../../components/ProjectList/ProjectList";
-//import TaskList from "../TaskList/TaskList";
 import "./Home.css";
 
 class Home extends Component {
@@ -26,6 +25,8 @@ class Home extends Component {
     });
     this.context.getCompanyInfo();
   }
+
+  // Filter list of projects to only show only when status is not completed
   makeOpenProjectsList = (projects) => {
     let newList = projects.filter((project) => {
       return project.status !== "Closed";
@@ -52,19 +53,7 @@ class Home extends Component {
               showProjectDetail={this.showProjectDetail}
               selected={this.context.getSelectedProject()}
               type="normal"
-            >
-              {/* {
-                this.context.getProjects().length > 0 ?
-                  <TaskList
-                  tasks={this.context.getTasks().filter((task) => {
-                    return task.projectid === this.context.getSelectedProject().id;
-                  })}
-                  projectId={this.context.getSelectedProject().id}
-                  type="normal"
-                /> :
-                <h1>No projects to display</h1>
-              } */}
-            </ProjectList>
+            ></ProjectList>
           </>
         )}
       </div>

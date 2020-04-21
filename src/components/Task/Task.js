@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { Link } from "react-router-dom";
 import ApiContext from "../../context/ApiContext";
 import "./Task.css";
@@ -25,6 +24,7 @@ class Task extends Component {
       .catch((res) => this.setState({ error: res.error }));
   }
 
+  // Create list for selecting employee assigned to a task
   createAssigneeList = (employees) => {
     return employees.map((employee, index) => (
       <option key={index} value={employee.id}>
@@ -33,12 +33,14 @@ class Task extends Component {
     ));
   };
 
+  // Check if a task is closed and display a check mark if it is
   checkStatus = () => {
     if (this.props.status === "Closed") {
       return <i className="fas fa-check"></i>;
     }
   };
 
+  // Handle a task being clicked
   toggleExpandTask = () => {
     this.setState({
       isExpanded: !this.state.isExpanded,
@@ -48,6 +50,8 @@ class Task extends Component {
           : "fas fa-chevron-right",
     });
   };
+
+  // If a user is an admin show checkboxes for mass deletion
   renderCheckboxes = () => {
     if (this.context.getisAdmin()) {
       return (
@@ -79,6 +83,7 @@ class Task extends Component {
     this.setState({ isSelected: isSelected });
   };
 
+  // Watch for changes to assignment or status and update accordingly
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -118,6 +123,7 @@ class Task extends Component {
     return priorityColor;
   };
 
+  // Render options based on if user is in view mode normal or completed
   render() {
     let listType = this.props.type;
     if (listType === "completed") {

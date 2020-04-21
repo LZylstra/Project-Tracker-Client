@@ -61,6 +61,7 @@ class TaskList extends Component {
     return;
   };
 
+  // Display list of tasks and removes option to add if user is in completed view
   render() {
     let listType = this.props.type;
     if (listType === "completed") {

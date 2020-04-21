@@ -29,6 +29,8 @@ class ExpandedProject extends Component {
 
       .catch((res) => this.setState({ error: res.error }));
   };
+
+  // Creates dropdown with status
   renderStatus = () => {
     return (
       !!this.context.getSelectedProject().status && (
@@ -53,6 +55,7 @@ class ExpandedProject extends Component {
   render() {
     return (
       <div id="expanded-project">
+        {/* Handles case of no projects */}
         {!this.context.getSelectedProject() ? (
           <h1>No completed projects to display</h1>
         ) : (
@@ -68,6 +71,7 @@ class ExpandedProject extends Component {
             {this.props.type === "normal" ? this.renderStatus() : <></>}
           </>
         )}
+        {/* Handles case of no projects */}
         {this.context.getProjects().length > 0 ? (
           <TaskList
             tasks={this.context.getTasks().filter((task) => {

@@ -70,6 +70,7 @@ class SignUp extends Component {
     return new Date(year, month - 1, day);
   };
 
+  // If a company does not already exist and user wants to add, add it to database
   handleAddCompany = (event) => {
     event.preventDefault();
     const newUser = {
@@ -91,6 +92,7 @@ class SignUp extends Component {
     this.setState({ showPopUp: false });
   };
 
+  // Warn user that the company they entered does not exist yet
   renderPopUp = () => {
     return (
       <div className="pop-up">
