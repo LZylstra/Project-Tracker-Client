@@ -1,0 +1,12 @@
+@media screen and (max-width: 1000px) {
+  #expanded-project {
+    font-size: 80%;
+    color: black;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #expanded-project {
+    font-size: 100%;
+  }
+}

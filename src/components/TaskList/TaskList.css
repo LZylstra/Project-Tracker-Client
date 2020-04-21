@@ -1,0 +1,10 @@
+@media screen and (max-width: 600px) {
+  .add-task-btn-container {
+    text-align: center;
+    width: 100%;
+  }
+  .add-task-btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
