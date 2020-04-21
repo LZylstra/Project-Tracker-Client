@@ -2,6 +2,7 @@ export default {
   API: "https://tranquil-mountain-91418.herokuapp.com",
   //API: process.env.REACT_APP_API_ENDPOINT,
 
+  // Helper function for CRUD operations
   getOptions: (method) => {
     return JSON.parse(
       JSON.stringify({
@@ -14,12 +15,14 @@ export default {
     );
   },
 
+  // Checks that a user has signed in
   checkForAuth: (history) => {
     if (!window.sessionStorage.jwt) {
       history.push("/Login");
     }
   },
 
+  // Watches for mobile and desktop size changes
   watchRoot: (options, observer) => {
     const htmlNode = document.getElementById("html");
     const projectList = document.getElementById("project-list");
