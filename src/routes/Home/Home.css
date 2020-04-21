@@ -1,0 +1,9 @@
+#home {
+  height: 86%;
+}
+
+@media screen and (max-width: 600px) {
+  #status {
+    margin-bottom: 20px;
+  }
+}
