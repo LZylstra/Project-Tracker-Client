@@ -1,16 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {BrowserRouter} from 'react-router-dom'
-import './index.css';
-import Root from './Root/Root';
-
-
-
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import "./index.css";
+import Root from "./components/Root/Root";
 
 ReactDOM.render(
   <BrowserRouter>
-    <Root/>
+    <Root />
   </BrowserRouter>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
