@@ -1,0 +1,107 @@
+.header {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: center;
+  font-size: 2em;
+  height: 12.5%;
+  padding-top: 5px;
+  background: rgb(15, 2, 24);
+  background: linear-gradient(0deg, rgb(34, 9, 53) 0%, rgb(63, 34, 143) 100%);
+  color: white;
+  font-weight: bold;
+}
+
+.logo {
+  align-self: center;
+  padding: 10px;
+}
+
+.hidden-logout {
+  visibility: hidden;
+}
+#logout,
+#home-nav,
+#completed-nav,
+#manage-users {
+  color: rgb(255, 255, 255);
+  font-family: helvetica;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 15px;
+  margin-right: 20px;
+  margin-bottom: 5px;
+  padding-bottom: 2px;
+  float: left;
+}
+
+#logout:hover,
+#home-nav:hover,
+#completed-nav:hover,
+#manage-users:hover {
+  color: rgb(138, 138, 138);
+}
+
+#logout,
+#home-nav,
+#completed-nav,
+#manage-users {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+@media screen and (max-width: 600px) {
+  .nav a:not(:first-child) {
+    display: none;
+  }
+  .nav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .nav.responsive {
+    position: relative;
+  }
+  .nav.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .nav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+
+#hamburger-menu {
+  box-shadow: none;
+  background: none;
+  background-color: none;
+  border-radius: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: none;
+  font-weight: bold;
+  padding: none;
+  margin: none;
+  text-decoration: none;
+  text-shadow: none;
+  height: 15px;
+  width: 20px;
+}
+.icon {
+  display: block;
+  height: 15px;
+  width: 20px;
+}
