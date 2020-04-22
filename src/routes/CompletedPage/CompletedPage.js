@@ -46,6 +46,24 @@ class CompletedPage extends Component {
     this.setState({ selectedProject: selected });
   };
 
+  componentWillMount = () => {
+        // formatting for mobile vs desktop
+        const htmlNode = document.getElementById("html");
+        const projectList = document.getElementById("project-list");
+        const formContainer = document.getElementById("form-container");
+        const taskList = document.getElementById("task-list");
+        const x = 1 - (25 / window.innerHeight + 0.115);
+        if (!!projectList && projectList.scrollHeight > x) {
+          htmlNode.style.height = "auto";
+        } else if (!!taskList && taskList.scrollHeight > x) {
+          htmlNode.style.height = "auto";
+        } else if (!!formContainer && formContainer.scrollHeight > x) {
+          htmlNode.style.height = "auto";
+        } else {
+          htmlNode.style.height = "100%";
+        }
+  }
+
   // Display the details for a project
   showProjectDetail = (id) => {
     const projects = this.context.getProjects();
