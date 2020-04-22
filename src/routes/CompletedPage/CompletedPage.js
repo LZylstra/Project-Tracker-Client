@@ -14,6 +14,7 @@ class CompletedPage extends Component {
 
   componentDidMount() {
     // Handle mobile view and desktop view
+
     this.context.getCompanyInfo();
     const y = 100 - Math.round((25 / window.innerHeight + 0.115) * 10000) / 100;
     document.getElementById("home-completed").style.height = `${y}%`;
@@ -23,14 +24,14 @@ class CompletedPage extends Component {
       if (projects.length === 0 || filteredProjects.length === 0) {
         this.setState({
           isLoading: false,
-          selectedProject: {},
         });
+        this.context.setSelectedProject({})
         return;
       }
       this.setState({
         isLoading: false,
-        selectedProject: filteredProjects[0],
       });
+      this.context.setSelectedProject(filteredProjects[0])
     });
   }
 
@@ -49,9 +50,7 @@ class CompletedPage extends Component {
   showProjectDetail = (id) => {
     const projects = this.context.getProjects();
     const selected = projects.find((project) => project.id === id);
-    this.setState({
-      selectedProject: selected,
-    });
+    this.context.setSelectedProject(selected)
   };
 
   render() {
@@ -66,7 +65,7 @@ class CompletedPage extends Component {
                 this.context.getProjects()
               )}
               showProjectDetail={this.showProjectDetail}
-              selected={this.state.selectedProject}
+              selected={this.context.getSelectedProject()}
               type="completed"
             ></ProjectList>
           </>
