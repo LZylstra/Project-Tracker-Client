@@ -16,6 +16,7 @@ class LandingPage extends Component {
   };
 
   render() {
+    window.sessionStorage.removeItem("state");
     return (
       <div className="landing-page">
         <div className="greeting">
