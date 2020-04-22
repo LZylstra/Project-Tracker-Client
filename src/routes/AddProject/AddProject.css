@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+}
+#form-container {
+  width: 600px;
+  margin: auto;
+  padding-bottom: 492px;
+}
+
+.button-container {
+  width: fit-content;
+  float: right;
+}
+
+.input-container {
+  width: 100%;
+}
+
+.description,
+.name-input {
+  width: 100%;
+}
+
+textarea {
+  height: 150px;
+}
+
+input[type="radio"] {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.clear-button {
+  width: 100px;
+  background: rgb(240, 122, 122);
+  border-radius: 0;
+  font-weight: 600;
+  font-size: small;
+  float: right;
+}
+
+.add-button {
+  width: 100px;
+  background: lightgreen;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: small;
+}
+.urgent-priority {
+  color: red;
+  font-weight: 700;
+}
+.error {
+  color: red;
+}
+
+.high-priority {
+  color: red;
+}
+
+.medium-priority {
+  color: orange;
+}
+
+.low-priority {
+  color: green;
+}
+
+@media screen and (max-width: 1000px) {
+  #form-container {
+    margin: 15px;
+    width: 80%;
+    padding-bottom: 80px;
+  }
+
+  /* .input-container {
+    display: flex;
+    flex-direction: column;
+  } */
+  #prioritylabel {
+    padding-left: 0;
+  }
+  .prioritybox label {
+    display: block;
+    padding-left: 10px;
+    cursor: inherit;
+    padding-bottom: 10px;
+  }
+  .prioritybox {
+    display: block;
+    clear: both;
+  }
+  .prioritybox input[type="radio"] {
+    float: left;
+    width: 20px;
+    margin-left: 80px;
+  }
+}
